@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seccions', function (Blueprint $table) {
+        Schema::create('aulas', function (Blueprint $table) {
             $table->id();
+            $table->enum('grado', ['5', '6']);
+            $table->enum('seccion', ['A', 'B', 'C', 'D', 'E']);
+            $table->unsignedInteger('cantidad_usuarios')->default(0);
             $table->timestamps();
-            $table->string('seccion');
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('seccions');
+        Schema::dropIfExists('aulas');
     }
 };

@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('grados', function (Blueprint $table) {
+        Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('evaluacion_id')->constrained('evaluaciones')->onDelete('cascade');
+            $table->enum('tipo_pregunta', ['SeleccionMultiple', 'VerdaderoFalso', 'RespuestaCorta']);
+            $table->text('enunciado');
             $table->timestamps();
-            $table->integer('grado');
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('grados');
+        Schema::dropIfExists('preguntas');
     }
 };
