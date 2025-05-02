@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('preguntas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('evaluacion_id')->constrained('evaluaciones')->onDelete('cascade');
+            $table->foreignId('evaluacion_id')->constrained('evaluacions')->onDelete('cascade');
             $table->enum('tipo_pregunta', ['SeleccionMultiple', 'VerdaderoFalso', 'RespuestaCorta']);
             $table->text('enunciado');
             $table->timestamps();

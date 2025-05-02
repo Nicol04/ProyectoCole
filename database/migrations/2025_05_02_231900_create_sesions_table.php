@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('sesions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('curso_id')->constrained('cursos');
-            $table->foreignId('user_id')->constrained('users'); // docente
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('aula_id')->constrained('aulas');
             $table->date('fecha');
             $table->enum('dia', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']);
             $table->string('titulo');
             $table->text('objetivo');
             $table->text('actividades');
-            $table->foreignId('grado_seccion_id')->nullable()->constrained('grado_seccion');
             $table->timestamps();
         });
     }
