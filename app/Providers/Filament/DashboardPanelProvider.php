@@ -26,14 +26,21 @@ class DashboardPanelProvider extends PanelProvider
         return $panel
             ->sidebarCollapsibleOnDesktop() // INTEGRAR SIDEBAR
             ->default()
+            ->brandName('AprendiBot')
             ->id('dashboard')
             ->path('dashboard')
             ->login(\Filament\Pages\Auth\Login::class) // -> This line will fix the issue
+            ->favicon(asset('assets/img/logo_colegio.png'))
             ->colors([
-                'primary' => '#409192',
+                'primary' => '#FC8A18',
                 'secondary' => '#c27e51',
-                'accent' => '#705449'
+                'accent' => '#705449',
+                'danger' => '#f44336',
+                'success' => '#b6cf4d',
+                'info' => '#03a9f4',
+                'warning' => '#ffc326',
             ])
+            ->font('Poppins')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
@@ -43,7 +50,6 @@ class DashboardPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
