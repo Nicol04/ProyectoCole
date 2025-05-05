@@ -27,7 +27,10 @@ class Aula extends Model
     }
     public function cursos()
     {
-        return $this->belongsToMany(Curso::class, 'aula_curso')
-        ->withTimestamps();
+        return $this->belongsToMany(Curso::class, 'aula_curso')->withTimestamps();
+    }
+    public function getGradoSeccionAttribute()
+    {
+        return "{$this->grado} - {$this->seccion}";
     }
 }

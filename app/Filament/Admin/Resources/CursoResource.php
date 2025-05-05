@@ -4,8 +4,12 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\CursoResource\Pages;
 use App\Filament\Admin\Resources\CursoResource\RelationManagers;
+use App\Models\Aula;
 use App\Models\Curso;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -22,26 +26,34 @@ class CursoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            Forms\Components\Section::make('Información General')
-                ->columns(3)
-                ->description('Cursos.')
-                ->schema([
-                    Forms\Components\TextInput::make('curso')
-                        ->required()
-                        ->maxLength(60),
-        
-                    Forms\Components\Textarea::make('descripcion')
-                        ->columnSpan(2),
-                    Forms\Components\FileUpload::make('image_url')
-                        ->image()
-                        ->imageEditor()
-                        ->required()
-                        ->directory('cursos')
-                        ->disk('public')
-                        ->label('Imagen del curso'),
-                ]),
-            ]);        
+            ->schema([
+                Forms\Components\Section::make('Información General')
+                    ->columns(3)
+                    ->description('Cursos.')
+                    ->schema([
+                        Forms\Components\TextInput::make('curso')
+                            ->required()
+                            ->maxLength(60),
+
+                        Forms\Components\Textarea::make('descripcion')
+                            ->columnSpan(2),
+                        Forms\Components\FileUpload::make('image_url')
+                            ->image()
+                            ->imageEditor()
+                            ->required()
+                            ->directory('cursos')
+                            ->disk('public')
+                            ->label('Imagen del curso'),
+                    ]),
+
+                    Select::make('aulas')
+                    ->multiple()
+                    ->relationship('aulas', 'grado_seccion')
+                    ->getOptionLabelFromRecordUsing(fn (Aula $record) => $record->grado_seccion)
+                    ->searchable()
+                    ->preload()
+                    ->placeholder('Selecciona usuarios'),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -58,7 +70,9 @@ class CursoResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('curso')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image_url'),
+                Tables\Columns\ImageColumn::make('image_url')
+                    ->size(150)
+                    ->label('Imagen del curso'),
             ])
             ->filters([
                 //

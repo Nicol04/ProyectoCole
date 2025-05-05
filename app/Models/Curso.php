@@ -32,6 +32,7 @@ class Curso extends Model
     }
     public function aulas()
     {
-        return $this->hasMany(aula::class, 'aula_curso');
+        return $this->belongsToMany(Aula::class, 'aula_curso')->withTimestamps();
     }
+    
 }
