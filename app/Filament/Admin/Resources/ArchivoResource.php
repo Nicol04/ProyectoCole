@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ArchivoResource extends Resource
 {
     protected static ?string $model = Archivo::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $navigationGroup = 'Gestión de documentos';
 
     public static function form(Form $form): Form
     {

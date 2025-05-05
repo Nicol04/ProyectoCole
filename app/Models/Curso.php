@@ -30,4 +30,8 @@ class Curso extends Model
     {
         return $this->hasMany(Evaluacion::class);
     }
+    public function aulas()
+    {
+        return $this->hasMany(aula::class, 'aula_curso');
+    }
 }

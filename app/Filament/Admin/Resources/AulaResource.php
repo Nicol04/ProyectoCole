@@ -4,6 +4,8 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\AulaResource\Pages;
 use App\Filament\Admin\Resources\AulaResource\RelationManagers;
+use App\Filament\Admin\Resources\AulaResource\RelationManagers\CursosRelationManager;
+use App\Filament\Admin\Resources\AulaResource\RelationManagers\UsersRelationManager;
 use App\Models\Aula;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -44,7 +46,6 @@ class AulaResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -67,6 +68,7 @@ class AulaResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -79,10 +81,17 @@ class AulaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            UsersRelationManager::class,
+            CursosRelationManager::class,
         ];
     }
-
+    public static function relationManagers(): array
+    {
+        return [
+            UsersRelationManager::class,
+            CursosRelationManager::class,
+        ];
+    }
     public static function getPages(): array
     {
         return [

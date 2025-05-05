@@ -14,7 +14,7 @@ class Aula extends Model
         'cantidad_usuarios'
     ];
 
-    public function usuarios()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'usuario_aulas')
         ->withTimestamps()
@@ -24,5 +24,10 @@ class Aula extends Model
     public function sesiones()
     {
         return $this->hasMany(Sesion::class);
+    }
+    public function cursos()
+    {
+        return $this->belongsToMany(Curso::class, 'aula_curso')
+        ->withTimestamps();
     }
 }

@@ -22,15 +22,26 @@ class CursoResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('curso')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('descripcion')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image_url')
-                    ->image(),
-            ]);
+        ->schema([
+            Forms\Components\Section::make('Información General')
+                ->columns(3)
+                ->description('Cursos.')
+                ->schema([
+                    Forms\Components\TextInput::make('curso')
+                        ->required()
+                        ->maxLength(60),
+        
+                    Forms\Components\Textarea::make('descripcion')
+                        ->columnSpan(2),
+                    Forms\Components\FileUpload::make('image_url')
+                        ->image()
+                        ->imageEditor()
+                        ->required()
+                        ->directory('cursos')
+                        ->disk('public')
+                        ->label('Imagen del curso'),
+                ]),
+            ]);        
     }
 
     public static function table(Table $table): Table

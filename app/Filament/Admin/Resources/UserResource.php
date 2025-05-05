@@ -24,11 +24,22 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Administrar usuarios';
     protected static ?string $navigationGroup = 'Gestión de usuarios';
-    
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+                // Using CheckboxList Component
+                Forms\Components\CheckboxList::make('roles')
+                    ->relationship('roles', 'name')
+                    ->searchable(),
+
+                //ROLES
                 Forms\Components\Section::make('Datos de la Persona')
                     ->description('Datos personales.')
                     ->schema([
@@ -74,26 +85,26 @@ class UserResource extends Resource
                             ->dehydrated(true)
                             ->label('Nombre de usuario'),
 
-                            \Filament\Forms\Components\Actions::make([
-                                \Filament\Forms\Components\Actions\Action::make('Generar nombre')
-                                    ->icon('heroicon-o-arrow-path')
-                                    ->action(function ($get, $set) {
-                                        $nombre = $get('persona.nombre');
-                                        $apellidoCompleto = $get('persona.apellido');
-                            
-                                        if ($nombre && $apellidoCompleto) {
-                                            $dosLetra = substr($nombre, 0, 1);
-                                            $apellidoPaterno = strtok($apellidoCompleto, ' ');
-                                            $apellidoMaternoCompleto = trim(strrchr($apellidoCompleto, ' '));
-                                            $apellidoMaterno = substr($apellidoMaternoCompleto, 0, 2);
-                            
-                                            $username = ucfirst(strtolower($dosLetra . $apellidoPaterno . $apellidoMaterno));
-                            
-                                            $set('name', $username);
-                                        }
-                                    }),
-                                ]),
-                            
+                        \Filament\Forms\Components\Actions::make([
+                            \Filament\Forms\Components\Actions\Action::make('Generar nombre')
+                                ->icon('heroicon-o-arrow-path')
+                                ->action(function ($get, $set) {
+                                    $nombre = $get('persona.nombre');
+                                    $apellidoCompleto = $get('persona.apellido');
+
+                                    if ($nombre && $apellidoCompleto) {
+                                        $dosLetra = substr($nombre, 0, 1);
+                                        $apellidoPaterno = strtok($apellidoCompleto, ' ');
+                                        $apellidoMaternoCompleto = trim(strrchr($apellidoCompleto, ' '));
+                                        $apellidoMaterno = substr($apellidoMaternoCompleto, 0, 2);
+
+                                        $username = ucfirst(strtolower($dosLetra . $apellidoPaterno . $apellidoMaterno));
+
+                                        $set('name', $username);
+                                    }
+                                }),
+                        ]),
+
                         TextInput::make('email')
                             ->email()
                             ->maxLength(40),
@@ -125,6 +136,59 @@ class UserResource extends Resource
                                 'Inactivo' => 'Inactivo',
                             ]),
                     ]),
+                Forms\Components\Section::make('Datos de las aulas')
+                    ->schema([
+                        Forms\Components\Repeater::make('usuario_aulas')
+                            ->relationship('usuario_aulas')
+                            ->columns(3)
+                            ->maxItems(1)
+                            ->label(false)
+                            ->deletable(false)
+                            ->schema([
+                                Forms\Components\Select::make('grado')
+                                    ->label('Grado')
+                                    ->options(
+                                        \App\Models\Aula::query()->pluck('grado', 'grado')->unique()
+                                    )
+                                    ->reactive()
+                                    ->required()
+                                    ->afterStateUpdated(function ($state, $get, $set) {
+                                        $set('seccion', null);
+                                        $set('aula_id', null);
+                                    }),
+
+                                Forms\Components\Select::make('seccion')
+                                    ->label('Sección')
+                                    ->options(
+                                        fn(callable $get) =>
+                                        \App\Models\Aula::where('grado', $get('grado'))
+                                            ->pluck('seccion', 'seccion')
+                                    )
+                                    ->reactive()
+                                    ->required()
+                                    ->afterStateUpdated(function ($state, $get, $set) {
+                                        $grado = $get('grado');
+                                        $seccion = $state;
+                                        if ($grado && $seccion) {
+                                            $aula = \App\Models\Aula::where('grado', $grado)
+                                                ->where('seccion', $seccion)
+                                                ->first();
+
+                                            if ($aula) {
+                                                $set('aula_id', $aula->id);
+                                            } else {
+                                                $set('aula_id', null);
+                                            }
+                                        }
+                                    }),
+                                TextInput::make('aula_id')
+                                    ->disabled()
+                                    ->dehydrated(true),
+                                Forms\Components\Hidden::make('año_id')
+                                    ->default(fn() => \App\Models\Año::latest('id')->first()?->id),
+                            ])
+                    ])
+
             ]);
     }
 
@@ -134,14 +198,17 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nombre de usuario')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('persona.nombre')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('avatar_usuario_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Nombres y apellidos'),
+                Tables\Columns\ImageColumn::make('avatar.path')
+                    ->label('Avatar')
+                    ->disk('public')
+                    ->size(90),
                 Tables\Columns\TextColumn::make('estado'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
