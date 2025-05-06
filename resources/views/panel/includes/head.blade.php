@@ -1,0 +1,28 @@
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AprendiBot</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logo_colegio.png') }}">
+    <!-- === webfont=== -->
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet"> 
+    <!--Font awesome css-->
+    <link rel="stylesheet" href="{{ asset('css/panel/font-awesome.min.css') }}">
+    <!--Bootstrap-->
+    <link href="{{ asset('css/panel/boostrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+     <!--UI css-->
+    <link rel="stylesheet" href="{{ asset('css/panel/jquery-ui.css') }}">
+    <!-- Venobox CSS -->
+    <link rel="stylesheet" href="{{ asset('css/panel/venobox.css') }}">
+    <!--Owl Carousel css-->
+    <link href="{{ asset('css/panel/owl.carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/panel/owl.theme.css') }}" rel="stylesheet">
+    <!--Animate css-->
+    <link href="{{ asset('css/panel/animate.css') }}" rel="stylesheet">
+     <!--Main Stylesheet -->
+    <link href="{{ asset('css/panel/style.css') }}" rel="stylesheet">
+    <!--Responsive Stylesheet -->
+    <link href="{{ asset('css/panel/responsive.css') }}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="venobox/venobox.min.css" type="text/css" media="screen" />

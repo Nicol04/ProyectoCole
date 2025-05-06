@@ -11,7 +11,9 @@
 <body> 
     <div class="login-container">
         <div class="container">
-
+            <a href="/panel/index">
+                <img src="{{ asset('assets/img/logo_colegio.png') }}" alt=""alt="" width="80">
+            </a>
             <h2 class="titulo-coolvetica">INICIA SESIÓN</h2>
             <form action="/panel/index" method="post">
                 <div class="input-container">

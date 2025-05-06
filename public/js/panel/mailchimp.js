@@ -1,21 +1,11 @@
 (function ($) {
     "use strict";
-
-
-
-
     $(document).ready(function () {
-
-
-
         $('[data-deventform]').each(function () {
             var $this = $(this);
             $('.form-result', $this).css('display', 'none');
-
             $this.submit(function () {
-
                 $('button[type="submit"]', $this).addClass('clicked');
-
                 // Create a object and assign all fields name and value.
                 var values = {};
 
@@ -48,13 +38,6 @@
                 });
                 return false;
             });
-
         });
-
-
-
     });
-
-
-
 })(jQuery);
