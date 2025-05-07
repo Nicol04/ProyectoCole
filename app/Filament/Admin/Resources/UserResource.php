@@ -29,16 +29,11 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('roles')
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->searchable(),
-                // Using CheckboxList Component
-                Forms\Components\CheckboxList::make('roles')
-                    ->relationship('roles', 'name')
-                    ->searchable(),
-
+                Radio::make('role_id')
+                    ->label('Rol')
+                    ->options(\Spatie\Permission\Models\Role::all()->pluck('name', 'id'))
+                    ->required()
+                    ->inline(),
                 //ROLES
                 Forms\Components\Section::make('Datos de la Persona')
                     ->description('Datos personales.')

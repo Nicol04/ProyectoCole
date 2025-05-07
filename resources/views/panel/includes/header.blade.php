@@ -13,7 +13,7 @@
             <div class="serch-wrapper float-right hide-sm-up">
                     <div class="search align-middle">
                         <input class="search-input" placeholder="Search" type="text">
-                        <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
+                        <a href=""><i class="fa fa-search"></i></a>
                     </div>
                 </div>
                 <div class=" cart-area">

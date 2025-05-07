@@ -19,8 +19,8 @@
                             <div class="slider-text">
                                 <span class="animated"><img
                                         src="{{ asset('assets/img/panel/icon/slider-text.png') }}"
-                                        alt=""></span>
-                                <p class="animated ">WHO SAID EDUCATION WAS BORING?</p>
+                                        alt="" height="120px"></span>
+                                <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para aprender</p>
                                 <a href="#" class="first-btn kids-care-btn bgc-orange">More about us</a>
                                 <a href="#" class="sec-btn  kids-care-btn bg-blue">Our teachers</a>
                             </div>

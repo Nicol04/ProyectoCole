@@ -11,3 +11,11 @@ Route::get('/panel', function () {
 Route::get('/panel/index', function () {
     return view('panel.index');
 });
+
+Route::get('/panel/cursos', function () {
+    return view('panel.cursos.index');
+});
+
+Route::get('/panel/estudiantes', function () {
+    return view('panel.estudiantes.index');
+});
