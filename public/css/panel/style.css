@@ -3539,6 +3539,13 @@ mainmenu-two .mega-catagory.mega-img {
 
 }
 
+/* -- Cursos --*/
+.sin-upc-event-two img {
+    width: 320px;
+    height: 200px;
+    object-fit: cover; /* Esto asegura que la imagen no se deforme, pero se recorta para ajustarse al tamaño */
+}
+
 /*-----Kindergarten routine area css-------------*/
 
 .sin-kin-routine {

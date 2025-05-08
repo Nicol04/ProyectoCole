@@ -29,12 +29,20 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                //ROLES
                 Radio::make('role_id')
                     ->label('Rol')
                     ->options(\Spatie\Permission\Models\Role::all()->pluck('name', 'id'))
                     ->required()
-                    ->inline(),
-                //ROLES
+                    ->inline()
+                    ->afterStateHydrated(function ($set, $state, $record) {
+                        if (!$state && $record) {
+                            $role = $record->roles()->first();
+                            if ($role) {
+                                $set('role_id', $role->id);
+                            }
+                        }
+                    }),
                 Forms\Components\Section::make('Datos de la Persona')
                     ->description('Datos personales.')
                     ->schema([
@@ -134,6 +142,7 @@ class UserResource extends Resource
                 Forms\Components\Section::make('Datos de las aulas')
                     ->schema([
                         Forms\Components\Repeater::make('usuario_aulas')
+                        
                             ->relationship('usuario_aulas')
                             ->columns(3)
                             ->maxItems(1)
@@ -147,6 +156,14 @@ class UserResource extends Resource
                                     )
                                     ->reactive()
                                     ->required()
+                                    ->afterStateHydrated(function ($state, $set, $record) {
+                                        if (!$state && $record?->aula_id) {
+                                            $aula = \App\Models\Aula::find($record->aula_id);
+                                            if ($aula) {
+                                                $set('grado', $aula->grado);
+                                            }
+                                        }
+                                    })
                                     ->afterStateUpdated(function ($state, $get, $set) {
                                         $set('seccion', null);
                                         $set('aula_id', null);
@@ -161,6 +178,14 @@ class UserResource extends Resource
                                     )
                                     ->reactive()
                                     ->required()
+                                    ->afterStateHydrated(function ($state, $set, $record) {
+                                        if (!$state && $record?->aula_id) {
+                                            $aula = \App\Models\Aula::find($record->aula_id);
+                                            if ($aula) {
+                                                $set('seccion', $aula->seccion);
+                                            }
+                                        }
+                                    })
                                     ->afterStateUpdated(function ($state, $get, $set) {
                                         $grado = $get('grado');
                                         $seccion = $state;
@@ -183,7 +208,6 @@ class UserResource extends Resource
                                     ->default(fn() => \App\Models\Año::latest('id')->first()?->id),
                             ])
                     ])
-
             ]);
     }
 
@@ -200,6 +224,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('persona.nombre')
                     ->sortable()
                     ->label('Nombres y apellidos'),
+                Tables\Columns\TextColumn::make('role.name')
+                    ->label('Rol')
+                    ->getStateUsing(function ($record) {
+                        return $record->roles->first()?->name ?? 'Sin rol';
+                    }),
                 Tables\Columns\ImageColumn::make('avatar.path')
                     ->label('Avatar')
                     ->disk('public')

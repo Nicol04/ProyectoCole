@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
+    
     protected $fillable = [
         'name',
         'email',
@@ -45,5 +46,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(aula::class, 'usuario_aulas');
     }
-    
 }

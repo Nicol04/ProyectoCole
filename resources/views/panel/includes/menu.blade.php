@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="mega-catagory">
-                                <h4><a class="font-per" href="infant.html"><span>Mi docente</span></a></h4>
+                                <h4><a class="font-per"><span>Mi docente</span></a></h4>
                                 <div class="mega-button">
                                 </div>
                             </div>

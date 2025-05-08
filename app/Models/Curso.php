@@ -34,5 +34,4 @@ class Curso extends Model
     {
         return $this->belongsToMany(Aula::class, 'aula_curso')->withTimestamps();
     }
-    
 }

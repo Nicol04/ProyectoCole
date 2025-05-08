@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\UserResource\Pages;
 
 use App\Filament\Admin\Resources\UserResource;
+use Spatie\Permission\Models\Role;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,5 +16,15 @@ class EditUser extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+    protected function afterSave(): void
+    {
+        $roleId = $this->data['role_id'] ?? null;
+        if ($roleId) {
+            $role = Role::find($roleId);
+            if ($role) {
+                $this->record->syncRoles([$role->name]);
+            }
+        }
     }
 }
