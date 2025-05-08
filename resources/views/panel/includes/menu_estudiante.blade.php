@@ -155,8 +155,11 @@
                         <a href="javascript:void(0)"><i class="fa fa-search"></i></a>
                     </div>
                     <div class="top-contact-btn align-middle">
-                        <a href="" class="kids-care-btn bg-sky">Cerrar sesión</a>
-                    </div>
+                        <form action="{{ route('logout') }}" class="kids-care-btn bg-sky" method="POST">
+                            @csrf
+                            <button type="submit" class="logout-button kids-care-btn bg-sky">Salir</button>
+                        </form>
+                    </div>                    
                 </div>
             </div>
         </div>

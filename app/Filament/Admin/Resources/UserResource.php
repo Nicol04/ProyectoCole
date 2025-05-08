@@ -228,7 +228,7 @@ class UserResource extends Resource
                     ->label('Rol')
                     ->getStateUsing(function ($record) {
                         return $record->roles->first()?->name ?? 'Sin rol';
-                    }),
+                }),
                 Tables\Columns\ImageColumn::make('avatar.path')
                     ->label('Avatar')
                     ->disk('public')

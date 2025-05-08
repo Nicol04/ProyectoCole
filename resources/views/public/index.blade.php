@@ -5,9 +5,9 @@
 </head>
 <body>
     <div class="preloader"></div>
-    <div class="preloader"></div> <!-- cargaaaaa -->
-    @include('panel.includes.menu_estudiante')
-    
+    @include('panel.includes.header')
+    <div class="preloader"></div>
+
     <!-- Slides start -->
     <div class="slider-wrapper">
         <div class="homepage-s  owl-carousel owl-theme">

@@ -9,7 +9,7 @@
     <div class="preloader"></div>
     @include('panel.includes.header')
     <div class="preloader"></div>
-    @include('panel.includes.menu')
+    @include('panel.includes.menu_estudiante')
 
     <!--Estudiantes area start-->
 

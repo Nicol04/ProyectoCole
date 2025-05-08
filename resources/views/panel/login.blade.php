@@ -15,10 +15,22 @@
                 <img src="{{ asset('assets/img/logo_colegio.png') }}" alt=""alt="" width="80">
             </a>
             <h2 class="titulo-coolvetica">INICIA SESIÓN</h2>
-            <form action="/panel/index" method="post">
+            <form action="{{ route('login.submit') }}" method="post">
+                @csrf
+                <div class="input-container">
+                    @if (($message = Session::get('mensaje')) && ($icono = Session::get('icono')))
+                    <script>
+                        Swal.fire({
+                            title: "Mensaje",
+                            text: "{{ $message }}",
+                            icon: "{{ $icono }}"
+                        });
+                    </script>
+                @endif
+                </div>
                 <div class="input-container">
                     <i class="fa fa-user"></i>
-                    <input type="text" name="name" placeholder="Nombre de usuario" required autofocus>
+                    <input type="text" name="name" placeholder="Nombre de usuario" required autofocus maxlength="30" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]{1,30}" title="Solo letras, hasta 30 caracteres">
                 </div>
                 <div class="input-container">
                     <i class="fa fa-lock"></i>
@@ -26,11 +38,10 @@
                     <i class="fa fa-eye" id="togglePassword"></i>
                 </div>
                 <div class="roles">
-                    <input type="radio" id="docente" name="role" value="docente" required>
-                    <label for="docente">Docente</label>
-                
-                    <input type="radio" id="estudiante" name="role" value="estudiante" required>
-                    <label for="estudiante">Estudiante</label>
+                    <input type="radio" id="docente" name="role" value="Docente" required>
+                        <label for="docente">Docente</label>
+                        <input type="radio" id="estudiante" name="role" value="Estudiante" required>
+                        <label for="estudiante">Estudiante</label>
                 </div>                
                 <div class="remember-me-container">
                     <input type="checkbox" name="remember" id="remember-me">
@@ -41,4 +52,18 @@
         </div>
     </div>
 </body>
+<script>
+    const togglePassword = document.querySelector("#togglePassword");
+    const passwordInput = document.querySelector("input[name='password']");
+
+    togglePassword.addEventListener("click", function () {
+        // Alternar tipo de input
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+
+        // Cambiar ícono
+        this.classList.toggle("fa-eye");
+        this.classList.toggle("fa-eye-slash");
+    });
+</script>
 </html>

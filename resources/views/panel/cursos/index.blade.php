@@ -5,20 +5,21 @@
 </head>
 <body>
     <div class="preloader"></div>
-    @include('panel.includes.header')
     <div class="preloader"></div>
-    @include('panel.includes.menu')
+    
+    @include('panel.includes.menu_estudiante')
 
     <!--CURSOS area Start-->
     <div class="image-breadcrumb">CURSOS</div>
     <div class="text-bread-crumb d-flex align-items-center bgc-orange">
         <div class="container-fluid">
             <div class="bread-crumb-line" style="text-align: center;"> AULA:
-                <a> Docente: </a> <!-- Docente id nombre -->
-            </div> <!-- Aula id grado seccion -->
+                {{ $aula->grado ?? 'Grado no asignado' }} {{ $aula->seccion ?? '' }}<br>
+                <a> Docente: {{ $nombreDocente ?? 'No asignado' }}</a>
+            </div>
         </div>
     </div>
-    <!--CURSOS area start-->
+    <!--CURSOS area end-->
 
     <!--Cursos area start-->
     <section class="kids-care-event-area">
@@ -35,7 +36,6 @@
                     @php
                         $backgroundColors = ['bg-green', 'bg-orange', 'bg-red', 'bg-sky'];
                         $bgColor = $backgroundColors[$index % count($backgroundColors)];
-                        // Verifica si hay una imagen; si no, usa la imagen predeterminada
                         $imageUrl = $curso->image_url ? asset('storage/' . $curso->image_url) : asset('assets/img/panel/facilities/curso_defecto.jpg');
                     @endphp
                     <div class="col-sm-6 col-xl-3">

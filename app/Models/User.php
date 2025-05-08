@@ -44,6 +44,8 @@ class User extends Authenticatable
     }
     public function aulas()
     {
-        return $this->hasMany(aula::class, 'usuario_aulas');
+        return $this->belongsToMany(Aula::class, 'usuario_aulas')
+            ->withTimestamps()
+            ->withPivot('año_id');
     }
 }
