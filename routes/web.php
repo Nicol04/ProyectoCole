@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
 // parte informativa
 Route::get('/', function () {
     return view('public.index');
@@ -25,9 +27,6 @@ Route::middleware(['auth'])->group(function () {
         return view('panel.index');
     })->name('index');
 
-    Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
-});
-
-Route::get('/panel/estudiantes', function () {
-    return view('panel.estudiantes.index');
+Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
+Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
 });

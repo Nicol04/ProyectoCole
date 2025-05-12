@@ -74,9 +74,6 @@
                         <div class="mega-menu">
                             <div class="mega-catagory">
                                 <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
-                                <div class="mega-button">
-                                    <a href=""><span>Aca los cursos</span></a>
-                                </div>
                             </div>
                             <div class="mega-catagory">
                                 <h4><a class="font-per"><span>Mi docente</span></a></h4>

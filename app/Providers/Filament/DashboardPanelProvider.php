@@ -32,7 +32,7 @@ class DashboardPanelProvider extends PanelProvider
             ->login(\Filament\Pages\Auth\Login::class) // -> This line will fix the issue
             ->favicon(asset('assets/img/logo_colegio.png'))
             ->colors([
-                'primary' => '#FC8A18',
+                'primary' => '#03a9f4',
                 'secondary' => '#c27e51',
                 'accent' => '#705449',
                 'danger' => '#f44336',

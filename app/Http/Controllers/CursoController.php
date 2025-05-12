@@ -9,30 +9,21 @@ class CursoController extends Controller
 {
     
     public function index()
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
+        $aula = $user->aulas()->first();
 
-    // Obtén el aula asociada al usuario
-    $aula = $user->aulas()->first(); // Aquí buscamos la primera aula asociada
-
-    // Si el aula existe, buscamos al docente
-    $docente = null;
-    if ($aula) {
-        // Suponemos que el docente tiene el rol 'docente'
-        $docente = $aula->users()
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'docente');
-            })
-            ->first(); // Tomamos el primer docente encontrado
+        $docente = null;
+        if ($aula) {
+            $docente = $aula->users()
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'docente');
+                })
+                ->first();
+        }
+        $nombreDocente = $docente ? $docente->persona->nombre . ' ' . $docente->persona->apellido : 'No asignado';
+        $cursos = $aula ? $aula->cursos : collect();
+        return view('panel.cursos.index', compact('cursos', 'aula', 'nombreDocente'));
     }
-
-    // Acceder al nombre y apellido del docente
-    $nombreDocente = $docente ? $docente->persona->nombre . ' ' . $docente->persona->apellido : 'No asignado';
-
-    // Obtenemos los cursos disponibles
-    $cursos = Curso::all(); // o puedes filtrar por el aula si lo necesitas
-
-    return view('panel.cursos.index', compact('cursos', 'aula', 'nombreDocente'));
-}
 
 }
