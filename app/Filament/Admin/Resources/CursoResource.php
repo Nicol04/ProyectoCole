@@ -4,8 +4,10 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\CursoResource\Pages;
 use App\Filament\Admin\Resources\CursoResource\RelationManagers;
+use App\Filament\Imports\CursoImporter;
 use App\Models\Aula;
 use App\Models\Curso;
+use Filament\Actions\ImportAction;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;

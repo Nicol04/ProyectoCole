@@ -3,7 +3,9 @@
 namespace App\Filament\Admin\Resources\CursoResource\Pages;
 
 use App\Filament\Admin\Resources\CursoResource;
+use App\Filament\Imports\CursoImporter;
 use Filament\Actions;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCursos extends ListRecords

@@ -29,4 +29,5 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
 Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
+Route::get('/users/exportar',[UserController::class,'exportarUsuarios'])->name('users.exportarUsuarios');
 });

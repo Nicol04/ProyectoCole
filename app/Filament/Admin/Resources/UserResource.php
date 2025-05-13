@@ -2,9 +2,11 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Exports\ExportUser;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Filament\Tables\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Radio;
@@ -35,6 +37,7 @@ class UserResource extends Resource
                     ->options(\Spatie\Permission\Models\Role::all()->pluck('name', 'id'))
                     ->required()
                     ->inline()
+                    ->reactive()
                     ->afterStateHydrated(function ($set, $state, $record) {
                         if (!$state && $record) {
                             $role = $record->roles()->first();
@@ -139,7 +142,9 @@ class UserResource extends Resource
                                 'Inactivo' => 'Inactivo',
                             ]),
                     ]),
+                    
                 Forms\Components\Section::make('Datos de las aulas')
+                    ->visible(fn (callable $get) => $get('role_id') && (int) $get('role_id') !== 1)
                     ->schema([
                         Forms\Components\Repeater::make('usuario_aulas')
                         
@@ -211,7 +216,6 @@ class UserResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -250,6 +254,13 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            ])->headerActions([
+            Action::make('exportar')
+                ->label('Exportar')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->url(route('users.exportarUsuarios'))
+                ->openUrlInNewTab(false)
+                ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
