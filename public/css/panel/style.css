@@ -8192,8 +8192,31 @@ ul.sort-by-age li:first-child {
     color: white;
 }
 .avatar-elevated {
-    margin-top: -10px; /* Ajusta según necesidad */
+    margin-top: -10px;
 }
+
+.avatar-label input[type="radio"]:checked + img {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 10px #28a745;
+    transition: border-color 0.3s ease;
+}
+
+#prevBtn, #nextBtn {
+        font-family: 'Grandstander';
+        font-size: 18px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    #prevBtn i, #nextBtn i {
+        font-size: 16px;
+    }
+
+    #prevBtn:hover, #nextBtn:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
 
 
 	/*----------------------------------------*/

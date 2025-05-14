@@ -33,7 +33,7 @@
     <script src="{{ asset('js/panel/mobile-menu.js') }}"></script>
     <!-- === Main  js === -->
     <script src="{{ asset('js/panel/main.js') }}"></script>
-    
+
 <script>
         $(document).ready(function() {
             $('#gallery').imagesLoaded(function() {

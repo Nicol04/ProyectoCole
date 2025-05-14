@@ -51,10 +51,10 @@ class UserController extends Controller
         ]);
 
         $user = User::findOrFail($id);
-        $user->avatar_id = $request->avatar_id;
+        $user->avatar_usuario_id = $request->input('avatar_id');
         $user->save();
 
-        return redirect()->back()
+        return redirect()->route('users.perfil')
             ->with('mensaje', 'Avatar actualizado correctamente.')
             ->with('icono', 'success');
     }

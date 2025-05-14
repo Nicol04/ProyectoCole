@@ -110,31 +110,19 @@
                                 <div class="mega-catagory">
                                     <h4><a href="blog.html"><span>Mensajes</span></a></h4>
                                     <div class="mega-button">
-                                        <a href="blog.html"><span>Blog</span></a>
-                                        <a href="blog-leftsidebar.html"><span>Blog with sidbar</span></a>
-                                        <a href="blog-rightsidebar.html"><span>Blog right sidbar</span></a>
-                                        <a href="blog-leftsidebar.html"><span>Blog left sidbar</span></a>
-                                        <a href="single.html"><span>Single blog</span></a>
+                                        <a href=""><span>Blog</span></a>
                                     </div>
                                 </div>
                                 <div class="mega-catagory">
                                     <h4><a class="font-per" href="shop.html"><span>Shop</span></a></h4>
                                     <div class="mega-button">
-                                        <a href="shop.html"><span>Cart page</span></a>
-                                        <a href="shop.html"><span>Shop page </span></a>
-                                        <a href="admission.html"><span>Registration</span></a>
-                                        <a href="shop.html"><span>Checkout</span></a>
-                                        <a href="product.html"><span>Single shop</span></a>
+                                        <a href=""><span>Cart page</span></a>
                                     </div>
                                 </div>
                                 <div class="mega-catagory">
                                     <h4><a class="font-green" href="shop.html"><span>Recursos</span></a></h4>
                                     <div class="mega-button">
-                                        <a href="product.html"><span>Single Product</span></a>
-                                        <a href="shop.html"><span>Shop Page</span></a>
-                                        <a href="admission.html"><span>Registration</span></a>
-                                        <a href="contact.html"><span>Contact form</span></a>
-                                        <a href="product.html"><span>Product</span></a>
+                                        <a href=""><span>Single Product</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -187,3 +175,4 @@
     </div>
 </section>
 <!--Main menu area end-->
+
