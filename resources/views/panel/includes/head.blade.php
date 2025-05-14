@@ -24,5 +24,5 @@
     <link href="{{ asset('css/panel/style.css') }}" rel="stylesheet">
     <!--Responsive Stylesheet -->
     <link href="{{ asset('css/panel/responsive.css') }}" rel="stylesheet">
-    
-    <link rel="stylesheet" href="venobox/venobox.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/panel/venobox.css') }}" type="text/css" media="screen" />

@@ -7,7 +7,17 @@
     <div class="preloader"></div>
     <div class="preloader"></div>
     
-    @include('panel.includes.menu_estudiante')
+    @if(auth()->check())
+    @php
+        $roleId = auth()->user()->roles->first()?->id;
+    @endphp
+
+    @if($roleId == 3)
+        @include('panel.includes.menu_estudiante')
+    @elseif($roleId == 2)
+        @include('panel.includes.menu_docente')
+    @endif
+@endif
 
     <!--CURSOS area Start-->
     <div class="image-breadcrumb">CURSOS</div>
@@ -27,7 +37,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <h2 class="area-heading st-two font-red">CURSOS</h2>
-                    <p class="area-subline">Aquí podrás ver todas las materias que estudias en tu salón. En cada curso encontrarás clases, tareas y evaluaciones que te ayudarán a aprender de forma divertida. ¡Haz clic y descubre todo lo que puedes aprender!</p>
+                    <p class="area-subline">Aquí podrás ver todas las materias en tu salón. En cada curso encontrarás clases, tareas y evaluaciones que te ayudarán a aprender de forma divertida. ¡Haz clic y descubre todo lo que puedes aprender!</p>
                 </div>
             </div>
     

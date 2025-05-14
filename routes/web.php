@@ -23,11 +23,14 @@ Route::post('/logout', function () {
 })->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/panel/index', function () {
+Route::get('/panel/index', function () {
         return view('panel.index');
     })->name('index');
 
 Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
 Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
 Route::get('/users/exportar',[UserController::class,'exportarUsuarios'])->name('users.exportarUsuarios');
+Route::get('/users/perfil',[UserController::class,'perfil'])->name('users.perfil');
+Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->name('users.avatar.edit');
+Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvatar'])->name('user.avatar.update');
 });

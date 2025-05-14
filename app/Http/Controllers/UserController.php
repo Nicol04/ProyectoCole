@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportUser;
+use App\Models\Avatar_usuarios;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,5 +29,33 @@ class UserController extends Controller
     public function exportarUsuarios()
     {
         return Excel::download(new ExportUser, 'usuarios.xlsx');
+    }
+    public function perfil()
+    {
+        $user = Auth::user();
+        $persona = $user->persona;
+        $rol = $user->roles->first()?->name;
+        return view('panel.perfil.index', compact('user', 'persona', 'rol'));
+    }
+
+    public function editarAvatar($id)
+    {
+        $user = User::findOrFail($id);
+        $avatars = Avatar_usuarios::all();
+        return view('panel.perfil.edit', compact('user', 'avatars'));
+    }
+    public function actualizarAvatar(Request $request, $id)
+    {
+        $request->validate([
+            'avatar_id' => 'required|exists:avatar_usuarios,id',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->avatar_id = $request->avatar_id;
+        $user->save();
+
+        return redirect()->back()
+            ->with('mensaje', 'Avatar actualizado correctamente.')
+            ->with('icono', 'success');
     }
 }

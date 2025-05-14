@@ -8161,6 +8161,40 @@ ul.sort-by-age li:first-child {
 		background-attachment: fixed;
 		padding-bottom: 150px;
 	}
+	
+
+.avatar-container {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.user-info {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-left: 5px;
+}
+
+.dropdown-menu {
+    min-width: 150px;
+}
+.logout-red {
+    transition: background-color 0.3s ease;
+}
+
+.logout-red:hover {
+    background-color: #ff4d4d; /* rojo suave */
+    color: white;
+}
+.avatar-elevated {
+    margin-top: -10px; /* Ajusta según necesidad */
+}
+
 
 	/*----------------------------------------*/
 	/*  24.  Home page Nine   
