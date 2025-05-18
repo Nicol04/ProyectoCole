@@ -7,7 +7,7 @@
     <!-- === webfont=== -->
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <!--Font awesome css-->
-    <link rel="stylesheet" href="{{ asset('css/panel/font-awesome.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('css/panel/font-awesome.min.css') }}"> -->
     <!--Bootstrap-->
     <link href="{{ asset('css/panel/boostrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"

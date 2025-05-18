@@ -22,21 +22,27 @@ class RecursoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('curso_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('curso_id')
+                    ->label('Curso')
+                    ->relationship('curso', 'curso')
+                    ->required(),
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('descripcion')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('url')
+                Forms\Components\FileUpload::make('archivo')
+                    ->label('Archivo 3D')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('public_id')
-                    ->maxLength(255)
-                    ->default(null),
+                    ->acceptedFileTypes([
+                        'model/gltf-binary',
+                        'application/octet-stream',
+                        '.glb', '.gltf', '.obj'
+                    ])
+                    ->disk('public')
+                    ->directory('temp')
+                    ->visibility('private'),
             ]);
     }
 

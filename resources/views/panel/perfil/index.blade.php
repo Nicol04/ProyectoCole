@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>Perfil</h2>
-                    <div class="bread-crumb-line"><span><a href="">About us / </a></span>Perfil</div>
+                    <div class="bread-crumb-line"><span>Hola {{ ucfirst($rol) }} !!</span></div>
                 </div>
             </div>
         </div>

@@ -20,7 +20,7 @@
                     <a href="/panel"><i class="fa fa-desktop"></i><span class="hide-sm">Iniciar sesión</span></a>
                 </div> 
                 <ul class="social-icon">
-                    <li><a href="https://web.facebook.com/ann.goulden.3"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://web.facebook.com/ann.goulden.3"><i class="fab fa-facebook"></i></a></li>
                 </ul>
             </div>
         </div>

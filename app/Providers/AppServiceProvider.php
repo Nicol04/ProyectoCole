@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\usuario_aula;
+use App\Observers\UsuarioAulaObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -22,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Paginator::useBootstrapFive();
+        usuario_aula::observe(UsuarioAulaObserver::class);
     }
 }

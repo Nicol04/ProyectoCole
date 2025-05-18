@@ -75,6 +75,10 @@ class CursoResource extends Resource
                 Tables\Columns\ImageColumn::make('image_url')
                     ->size(150)
                     ->label('Imagen del curso'),
+                Tables\Columns\TextColumn::make('descripcion')
+                    ->searchable()
+                    ->limit(50)
+                    ->label('Descripción'),
             ])
             ->filters([
                 //

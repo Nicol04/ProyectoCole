@@ -161,6 +161,7 @@
                             <div class="dropdown-menu dropdown-menu-right text-center">
                                 <span class="dropdown-item-text">
                                     <i class="fa-solid fa-user me-1"></i> {{ Auth::user()->name }}
+                                    
                                 </span>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf

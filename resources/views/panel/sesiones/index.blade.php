@@ -81,12 +81,11 @@
                                 </div>
                                 <div class="details">
                                     <p>{{ Str::limit($sesion->objetivo, 60) }}</p>
-                                    <a href="#" class="kids-care-btn bgc-orange">Ver detalle</a>
+                                        <a href="{{ route('sesiones.show', $sesion->id) }}" class="kids-care-btn bgc-orange">Ver detalle</a>
                                 </div>
                             </div>
                         </div>
                     @endforeach
-
                     <div class="d-flex justify-content-center mt-4">
                         {{ $sesiones->links() }}
                     </div>

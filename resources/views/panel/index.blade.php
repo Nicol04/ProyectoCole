@@ -1,25 +1,25 @@
 <!doctype html>
 <html lang="es">
+
 <head>
     @include('panel.includes.head')
 </head>
+
 <body>
     <div class="preloader"></div>
     <div class="preloader"></div> <!-- cargaaaaa -->
-    @if(auth()->check())
-    @php
-        $roleId = auth()->user()->roles->first()?->id;
-    @endphp
+    @if (auth()->check())
+        @php
+            $roleId = auth()->user()->roles->first()?->id;
+        @endphp
 
-    @if($roleId == 3)
-        @include('panel.includes.menu_estudiante')
-    @elseif($roleId == 2)
-        @include('panel.includes.menu_docente')
+        @if ($roleId == 3)
+            @include('panel.includes.menu_estudiante')
+        @elseif($roleId == 2)
+            @include('panel.includes.menu_docente')
+        @endif
     @endif
-@endif
 
-
-    
     <!-- Slides start -->
     <div class="slider-wrapper">
         <div class="homepage-s  owl-carousel owl-theme">
@@ -29,10 +29,10 @@
                     <div class="row">
                         <div class="col-xl-12 slider-ext-wrap">
                             <div class="slider-text">
-                                <span class="animated"><img
-                                        src="{{ asset('assets/img/panel/icon/slider-text.png') }}"
+                                <span class="animated"><img src="{{ asset('assets/img/panel/icon/slider-text.png') }}"
                                         alt="" height="120px"></span>
-                                <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para aprender</p>
+                                <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para
+                                    aprender</p>
                             </div>
 
                         </div>
@@ -66,8 +66,7 @@
                         <div class="col-sm-6 col-xl-4 col-md-4">
                             <div class="single-features bg-orange wow fadeInUp" data-wow-delay=".4s">
                                 <div class="fet-icon">
-                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-1.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-1.png') }}" alt="">
                                 </div>
                                 <h3>Happy Environment</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
@@ -78,8 +77,7 @@
                         <div class="col-sm-6 col-xl-4 col-md-4">
                             <div class="single-features bg-sky wow fadeInUp" data-wow-delay=".6s">
                                 <div class="fet-icon">
-                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-2.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-2.png') }}" alt="">
                                 </div>
 
                                 <h3>Active Learning</h3>
@@ -92,8 +90,7 @@
                         <div class="col-sm-6 col-xl-4 col-md-4">
                             <div class="single-features bg-per wow fadeInUp" data-wow-delay=".8s">
                                 <div class="fet-icon">
-                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-3.png') }}"
-                                        alt="">
+                                    <img src="{{ asset('assets/img/panel/icon/feature-icon-3.png') }}" alt="">
                                 </div>
                                 <h3>Creative Lessons</h3>
                                 <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
@@ -172,7 +169,8 @@
                         </div>
                         <div class="ex-detail">
                             <h5>Ambiente seguro y estimulante</h5>
-                            <p>Nuestra infraestructura está diseñada para proporcionar un espacio donde los niños pueden explorar y aprender con confianza.</p>
+                            <p>Nuestra infraestructura está diseñada para proporcionar un espacio donde los niños pueden
+                                explorar y aprender con confianza.</p>
                         </div>
                     </div>
                 </div>
@@ -232,7 +230,9 @@
                             <div class="sin-pop-tes color-red">
                                 <div class="con-part">
                                     <h6>Active Learning</h6>
-                                    <p>IE Ann Goulden se destaca por su enfoque en la formación integral de los estudiantes, incorporando valores como el respeto, la responsabilidad y la solidaridad. </p>
+                                    <p>IE Ann Goulden se destaca por su enfoque en la formación integral de los
+                                        estudiantes, incorporando valores como el respeto, la responsabilidad y la
+                                        solidaridad. </p>
                                 </div>
                                 <div class="img-part">
                                     <div class="pt-img">
@@ -300,9 +300,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-1.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-1.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>School</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -316,9 +315,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-2.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-2.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Kindergarten</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -332,9 +330,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-3.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-3.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Picnics Gallery</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -348,9 +345,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-4.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-4.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>School</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -364,9 +360,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-5.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-5.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Kindergarten</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -380,9 +375,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-6.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-6.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Picnics Gallery</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -396,9 +390,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-7.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-7.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>School</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -412,9 +405,8 @@
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-8.jpg') }}"
-                                    class="venobox vbox-item" data-gall="gallery1"><i
-                                        class="fa fa-search"></i></a>
+                                <a href="{{ asset('assets/img/panel/gallery/gal-8.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Kindergarten</h4>
                                 <p>By: kidzcare Theme</p>
                             </div>
@@ -429,53 +421,50 @@
     <!--Gallery area end-->
 
 
-<!--Features style three start-->
-   
-   <div class="about-kids-three bg-white">
-       <div class="container-fluid">
-           <div class="row">
+    <!--Features style three start-->
+    <div class="about-kids-three bg-white">
+        <div class="container-fluid">
+            <div class="row">
                 <div class="col-md-12">
                     <h1 class="area-heading font-per style-two">Feature style three</h1>
-                    <p class="heading-para">we promised you that, we always try to take care of your childdren.Early child care is a very important and often overlooked component of child development</p>
+                    <p class="heading-para">we promised you that, we always try to take care of your childdren.Early
+                        child care is a very important and often overlooked component of child development</p>
                 </div>
             </div>
             <div class="row">
                 <div class="order-md-2 col-md-6 col-lg-4 order-lg-1 offset-xl-1 col-xl-4">
                     <div class="wel3-oneside">
-                      
-                       <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                          <div class="sin-wel-3-con ">
-                            <h3>Funny and Happy</h3>
-                            <p>We are group of teachers who really love childrens and enjoy every moment.</p>
+                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
+                            <div class="sin-wel-3-con ">
+                                <h3>Funny and Happy</h3>
+                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
+                            </div>
+                            <div class="wel3-icon">
+                                <img src="{{ asset('assets/img/panel/icon/wel-three-1.png') }}" alt="">
+                            </div>
                         </div>
-                        <div class="wel3-icon">
-                            <img src="{{ asset('assets/img/panel/icon/wel-three-1.png') }}" alt="">
+                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
+                            <div class="sin-wel-3-con">
+                                <h3>Fulfill With Love</h3>
+                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
+                            </div>
+                            <div class="wel3-icon">
+                                <img src="{{ asset('assets/img/panel/icon/wel-three-2.png') }}" alt="">
+                            </div>
+
                         </div>
-                           
-                       </div>
-                       
-                       <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                          <div class="sin-wel-3-con">
-                            <h3>Fulfill With Love</h3>
-                            <p>We are group of teachers who really love childrens and enjoy every moment.</p>
+
+                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
+                            <div class="sin-wel-3-con">
+                                <h3>Special Education</h3>
+                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
+                            </div>
+                            <div class="wel3-icon">
+                                <img src="{{ asset('assets/img/panel/icon/wel-three-3.png') }}" alt="">
+                            </div>
+
                         </div>
-                        <div class="wel3-icon">
-                            <img src="{{ asset('assets/img/panel/icon/wel-three-2.png') }}" alt="">
-                        </div>
-                           
-                       </div>
-                       
-                       <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                          <div class="sin-wel-3-con">
-                            <h3>Special Education</h3>
-                            <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                        </div>
-                        <div class="wel3-icon">
-                            <img src="{{ asset('assets/img/panel/icon/wel-three-3.png') }}" alt="">
-                        </div>
-                           
-                       </div>
-                        
+
                     </div>
                 </div>
                 <div class="order-md-1 col-md-12 order-lg-2 col-lg-4 col-xl-2">
@@ -519,9 +508,9 @@
                     </div>
                 </div>
             </div>
-       </div>
-   </div>
-   <!--Feature style three end-->
+        </div>
+    </div>
+    <!--Feature style three end-->
 
     <!--Latest news three area start-->
     <section class="latest-news-three">
@@ -711,4 +700,5 @@
     @include('panel.includes.footer2')
     @include('panel.includes.footer')
 </body>
+
 </html>
