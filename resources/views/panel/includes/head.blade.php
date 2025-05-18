@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{ asset('css/panel/venobox.css') }}" type="text/css" media="screen" />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
     @csrf
     <div class="input-container">

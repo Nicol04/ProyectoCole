@@ -130,10 +130,13 @@ class UserResource extends Resource
                                 }
                             }),
 
-                        TextInput::make('password')
+                        Forms\Components\TextInput::make('password')
                             ->password()
-                            ->required()
-                            ->maxLength(10),
+                            ->maxLength(10)
+                            ->required(fn (string $context) => $context === 'create')
+                            ->dehydrateStateUsing(fn ($state) => $state ? bcrypt($state) : null)
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->helperText('Deja vacío para mantener la contraseña actual cuando edites.'),
 
                         Select::make('estado')
                             ->required()

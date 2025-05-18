@@ -15,6 +15,7 @@ class Recurso extends Model
         'descripcion',
         'url',
         'public_id',
+        'imagen_preview',
     ];
 
     public function curso()

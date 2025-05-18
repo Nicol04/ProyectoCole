@@ -41,10 +41,7 @@
                             <div class="link font-per"><a href="">Comunicados</a></div>
                         </li>
                         <li>
-                            <div class="link font-red">Recursos<i class="fa fa-chevron-down"></i></div>
-                            <ul class="submenu font-red">
-                                <li><a href="#">Faq</a></li>
-                            </ul>
+                            <div class="link font-red"><a href="/recursos">Recursos</a></div>
                         </li>
                         <li>
                             <div class="link font-per"><a href="/users/perfil">Perfil</a></div>
@@ -103,29 +100,8 @@
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="events.html">Comunicados</a></li>
-                        <li class="fc-orange hav-sub"> <img
-                                src="{{ asset('assets/img/panel/icon/menu-icon6.png') }}" alt=""> <a
-                                href="">Recursos<i class="fa fa-angle-down"></i></a>
-                            <div class="mega-menu mm-two">
-                                <div class="mega-catagory">
-                                    <h4><a href="blog.html"><span>Mensajes</span></a></h4>
-                                    <div class="mega-button">
-                                        <a href=""><span>Blog</span></a>
-                                    </div>
-                                </div>
-                                <div class="mega-catagory">
-                                    <h4><a class="font-per" href="shop.html"><span>Shop</span></a></h4>
-                                    <div class="mega-button">
-                                        <a href=""><span>Cart page</span></a>
-                                    </div>
-                                </div>
-                                <div class="mega-catagory">
-                                    <h4><a class="font-green" href="shop.html"><span>Recursos</span></a></h4>
-                                    <div class="mega-button">
-                                        <a href=""><span>Single Product</span></a>
-                                    </div>
-                                </div>
-                            </div>
+                        <li class="fc-orange hav-sub"> <img src="{{ asset('assets/img/panel/icon/menu-icon6.png') }}"
+                                alt=""> <a href="/recursos">Recursos</a>
                         </li>
                         <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon7.png') }}"
                             alt=""><a href="/users/perfil">Perfil</a></li>

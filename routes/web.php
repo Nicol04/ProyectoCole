@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\SesionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -41,5 +42,8 @@ Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesio
 Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');
 Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');
 Route::put('cursos/sesion/{id}', [SesionController::class, 'update'])->name('sesiones.update');
+
+Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
+Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos.show');
 
 });

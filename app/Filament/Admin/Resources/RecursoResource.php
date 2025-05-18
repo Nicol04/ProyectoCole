@@ -32,9 +32,14 @@ class RecursoResource extends Resource
                 Forms\Components\TextInput::make('descripcion')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\FileUpload::make('imagen_preview')
+                    ->image()
+                    ->imageEditor()
+                    ->directory('recursos')
+                    ->disk('public')
+                    ->label('Imagen del recurso'),
                 Forms\Components\FileUpload::make('archivo')
                     ->label('Archivo 3D')
-                    ->required()
                     ->acceptedFileTypes([
                         'model/gltf-binary',
                         'application/octet-stream',
@@ -42,7 +47,10 @@ class RecursoResource extends Resource
                     ])
                     ->disk('public')
                     ->directory('temp')
-                    ->visibility('private'),
+                    ->visibility('private')
+                    ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
+                    ->enableDownload()
+                    ->helperText('Si no subes un archivo nuevo, se conservará el actual.'),
             ]);
     }
 
@@ -57,10 +65,9 @@ class RecursoResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descripcion')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('url')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('public_id')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('imagen_preview')
+                    ->size(150)
+                    ->label('Imagen del recurso'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
