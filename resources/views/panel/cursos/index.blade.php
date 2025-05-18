@@ -57,7 +57,7 @@
                             <div class="sin-up-content">
                                 <h6>{{ $curso->curso }}</h6>
                                 <p>{{ Str::limit($curso->descripcion, 100) }}</p>
-                                <a class="{{ $bgColor }}" href="#">Ver más</a>
+                                    <a class="{{ $bgColor }}" href="{{ route('sesiones.index', ['id' => $curso->id]) }}">Ver más</a>
                             </div>
                         </div>
                     </div>

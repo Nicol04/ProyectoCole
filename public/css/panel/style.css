@@ -962,7 +962,7 @@ button:focus {
 }
 
 .bg-11 {
-	background-image: url('/assets/img/panel/slider/slider10.jpg');
+	background-image: url('/assets/img/panel/slider/slider100.jpg');
 	position: relative;
 	width: 100%;
 	height: 700px;
@@ -4873,6 +4873,48 @@ a.pro-title {
 .ui-slider-range {
 	background: #E48080 none repeat scroll 0 0;
 }
+.btn-circle-agregar {
+    background-color: #7eb929;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    text-align: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* Texto oculto por defecto */
+.btn-text-hover {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    color: white;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Mostrar texto al hacer hover */
+.btn-circle-agregar:hover {
+    background-color: #6aa721;
+    width: auto;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 20px;
+}
+
+.btn-circle-agregar:hover .btn-text-hover {
+    opacity: 1;
+    max-width: 200px;
+    margin-left: 8px;
+}
+
 
 p.sub-title {
 	color: #e48080;

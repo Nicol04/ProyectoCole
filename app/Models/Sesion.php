@@ -10,14 +10,12 @@ class Sesion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'curso_id',
-        'user_id',
-        'aula_id',
         'fecha',
         'dia',
         'titulo',
         'objetivo',
         'actividades',
+        'aula_curso_id',
     ];
 
     public function curso()
@@ -30,8 +28,8 @@ class Sesion extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function aula()
+    public function aulaCurso()
     {
-        return $this->belongsTo(Aula::class);
+        return $this->belongsTo(AulaCurso::class);
     }
 }

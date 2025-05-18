@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SesionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -33,4 +34,7 @@ Route::get('/users/exportar',[UserController::class,'exportarUsuarios'])->name('
 Route::get('/users/perfil',[UserController::class,'perfil'])->name('users.perfil');
 Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->name('users.avatar.edit');
 Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvatar'])->name('user.avatar.update');
+
+Route::get('/cursos/{id}', [CursoController::class, 'sesiones'])->name('sesiones.index');
+
 });
