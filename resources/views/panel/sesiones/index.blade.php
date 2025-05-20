@@ -45,12 +45,19 @@
                             <img src="{{ asset('assets/img/panel/icon/pen-orange.png') }}" alt="">
                         </h2>
 
-                        <a href=""
-                            class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
-                            title="Agregar sesión">
-                            <i class="fas fa-plus"></i>
-                            <span class="btn-text-hover ms-2">Agregar sesión</span>
-                        </a>
+                        @php
+    $rolId = auth()->user()->roles->first()?->id;
+@endphp
+
+@if ($rolId == 2) <!-- Solo Docente <!--{{ route('sesiones.create', ['curso_id' => $curso->id]) }}-->
+    <a href="" 
+        class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
+        title="Agregar sesión">
+        <i class="fas fa-plus"></i>
+        <span class="btn-text-hover ms-2">Agregar sesión</span>
+    </a>
+@endif
+
                     </div>
 
                     @if ($sesiones->isEmpty())

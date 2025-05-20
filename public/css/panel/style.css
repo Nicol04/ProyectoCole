@@ -8236,6 +8236,13 @@ ul.sort-by-age li:first-child {
 .avatar-elevated {
     margin-top: -10px;
 }
+.link-red {
+    color: #03a9f4 !important;
+    text-decoration: none;
+}
+.link-red:hover {
+    color: #f44336 !important;
+}
 
 .avatar-label input[type="radio"]:checked + img {
     border-color: #28a745 !important;

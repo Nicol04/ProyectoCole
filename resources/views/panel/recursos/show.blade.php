@@ -49,12 +49,12 @@
                                 <!-- Modal flotante de ayuda -->
                                 <div id="ayudaModal"
                                     style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:#fff; color:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:9999; max-width:90%;">
-                                    <h5><strong>Navigation basics</strong></h5>
-                                    <p><strong>All controls:</strong></p>
+                                    <h5><strong>Navegación básica</strong></h5>
+                                    <p><strong>Todos los controles:</strong></p>
                                     <ul style="text-align:left;">
-                                        <li><strong>Orbit:</strong> Left click + drag / One finger drag (touch)</li>
-                                        <li><strong>Zoom:</strong> Double click on model / Scroll / Pinch (touch)</li>
-                                        <li><strong>Pan:</strong> Right click + drag / Two fingers drag (touch)</li>
+                                        <li><strong>Orbita:</strong> Clic izquierdo + arrastrar / Arrastrar con un dedo (tocar)</li>
+                                        <li><strong>Zoom:</strong> Doble clic en el modelo / Desplazarse / Pellizcar (tocar)</li>
+                                        <li><strong>Pan:</strong> Clic derecho + arrastrar / Arrastrar con dos dedos (tocar)</li>
                                     </ul>
                                     <div class="text-center">
                                         <button class="btn btn-secondary btn-sm" onclick="cerrarAyuda()">Cerrar</button>

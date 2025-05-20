@@ -43,7 +43,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
-                    <h2 class="area-heading font-sky">Estudiantes</h2>
+                    <h2 class="area-heading font-sky">Estudiantes  del aula {{ $aula->grado ? $aula->grado : 'Grado no asignado' }} {{ $aula->seccion ? $aula->seccion : '' }} </h2>
                 </div>
             </div>
             <div class="row justify-content-center no-gutters">

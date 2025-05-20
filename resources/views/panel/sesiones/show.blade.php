@@ -84,7 +84,13 @@
                     </div>
                 </div>
             </div>
-                <a href="{{ route('sesiones.edit', $sesion->id) }}" class="kids-care-btn bgc-orange">Editar Sesión</a>
+
+
+            <!-- Botón solo visible si el usuario es docente (rol_id == 2) -->
+@if (auth()->check() && auth()->user()->roles->first()?->id == 2)
+    <a href="{{ route('sesiones.edit', $sesion->id) }}" class="kids-care-btn bgc-orange">Editar Sesión</a>
+@endif
+
         </div>
     </section>
     <!--Child care area end-->

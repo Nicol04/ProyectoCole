@@ -29,9 +29,8 @@ class RecursoResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('descripcion')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\TextArea::make('descripcion')
+                    ->required(),
                 Forms\Components\FileUpload::make('imagen_preview')
                     ->image()
                     ->imageEditor()
