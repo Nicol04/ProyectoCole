@@ -12,6 +12,7 @@ class Recurso extends Model
     protected $fillable = [
         'curso_id',
         'nombre',
+        'categoria_id',
         'descripcion',
         'url',
         'public_id',
@@ -21,5 +22,10 @@ class Recurso extends Model
     public function curso()
     {
         return $this->belongsTo(Curso::class);
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
     }
 }

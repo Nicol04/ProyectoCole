@@ -98,6 +98,7 @@ class AulaResource extends Resource
             'index' => Pages\ListAulas::route('/'),
             'create' => Pages\CreateAula::route('/create'),
             'edit' => Pages\EditAula::route('/{record}/edit'),
+            'ver-sesiones' => Pages\VerSesiones::route('/{record}/ver-sesiones/{cursoId}'),
         ];
     }
 }

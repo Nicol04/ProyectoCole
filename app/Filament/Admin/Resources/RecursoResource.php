@@ -17,7 +17,7 @@ class RecursoResource extends Resource
 {
     protected static ?string $model = Recurso::class;
     protected static ?string $navigationIcon = 'heroicon-o-folder';
-    protected static ?string $navigationGroup = 'Gestión de documentos';
+    protected static ?string $navigationGroup = 'Gestión de documentos 3d';
     public static function form(Form $form): Form
     {
         return $form
@@ -31,6 +31,9 @@ class RecursoResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextArea::make('descripcion')
                     ->required(),
+                Forms\Components\Select::make('categoria_id')
+                    ->label('Categoría')
+                    ->relationship('categoria', 'nombre'),
                 Forms\Components\FileUpload::make('imagen_preview')
                     ->image()
                     ->imageEditor()
@@ -57,12 +60,14 @@ class RecursoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('curso_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('curso.curso')
+                    ->label('Curso'),
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descripcion')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('categoria.nombre')
+                    ->label('Categoría')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('imagen_preview')
                     ->size(150)
@@ -80,6 +85,7 @@ class RecursoResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

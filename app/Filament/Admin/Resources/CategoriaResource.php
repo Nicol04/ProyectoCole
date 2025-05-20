@@ -2,9 +2,9 @@
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\ArchivoResource\Pages;
-use App\Filament\Admin\Resources\ArchivoResource\RelationManagers;
-use App\Models\Archivo;
+use App\Filament\Admin\Resources\CategoriaResource\Pages;
+use App\Filament\Admin\Resources\CategoriaResource\RelationManagers;
+use App\Models\Categoria;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,28 +13,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ArchivoResource extends Resource
+class CategoriaResource extends Resource
 {
-    protected static ?string $model = Archivo::class;
-    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?string $model = Categoria::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Gestión de documentos 3d';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('curso_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('nombre')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('tipo')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('url')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -44,17 +34,7 @@ class ArchivoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('curso_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('nombre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tipo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('url')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -88,9 +68,9 @@ class ArchivoResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArchivos::route('/'),
-            'create' => Pages\CreateArchivo::route('/create'),
-            'edit' => Pages\EditArchivo::route('/{record}/edit'),
+            'index' => Pages\ListCategorias::route('/'),
+            'create' => Pages\CreateCategoria::route('/create'),
+            'edit' => Pages\EditCategoria::route('/{record}/edit'),
         ];
     }
 }

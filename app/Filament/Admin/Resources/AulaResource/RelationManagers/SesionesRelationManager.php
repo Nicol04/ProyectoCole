@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Resources\AulaResource\RelationManagers;
+namespace App\Filament\Admin\Resources\RelationManagers;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -10,26 +10,28 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CursosRelationManager extends RelationManager
+class SesionesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'Cursos';
+    protected static string $relationship = 'sesiones';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('curso')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+                Forms\Components\DatePicker::make('fecha')->required(),
+                Forms\Components\TextInput::make('dia')->required(),
+                Forms\Components\TextInput::make('titulo')->required(),
+                Forms\Components\Textarea::make('objetivo'),
+                Forms\Components\Textarea::make('actividades'),
+        ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('curso')
+            ->recordTitleAttribute('titulo')
             ->columns([
-                Tables\Columns\TextColumn::make('curso'),
+                Tables\Columns\TextColumn::make('titulo'),
             ])
             ->filters([
                 //
@@ -38,13 +40,8 @@ class CursosRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\Action::make('verSesiones')
-    ->label('Sesiones')
-    ->icon('heroicon-o-clipboard-document')
-    ->url(fn ($record) => route('filament.dashboard.resources.aulas.ver-sesiones', [
-        'record' => $this->ownerRecord->id,
-        'cursoId' => $record->id,
-    ]))
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
