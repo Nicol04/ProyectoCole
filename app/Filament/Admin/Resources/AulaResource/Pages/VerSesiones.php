@@ -16,7 +16,6 @@ class VerSesiones extends Page
     public $curso;
     public $sesiones;
 
-
     public function mount($record, $cursoId)
     {
         $this->aula = Aula::findOrFail($record);
@@ -30,7 +29,6 @@ class VerSesiones extends Page
     }
     protected function getViewData(): array
     {
-        logger('getViewData ejecutado');
         return [
             'aula' => $this->aula,
             'curso' => $this->curso,

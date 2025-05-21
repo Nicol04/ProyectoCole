@@ -33,4 +33,12 @@ class Aula extends Model
     {
         return "{$this->grado} - {$this->seccion}";
     }
+    public function getDocenteAttribute()
+    {
+        return $this->users()
+            ->whereHas('roles', fn($q) => $q->where('name', 'docente'))
+            ->with(['persona'])
+            ->first();
+    }
+
 }

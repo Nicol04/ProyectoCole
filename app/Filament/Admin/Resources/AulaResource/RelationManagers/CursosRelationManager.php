@@ -39,12 +39,12 @@ class CursosRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\Action::make('verSesiones')
-    ->label('Sesiones')
-    ->icon('heroicon-o-clipboard-document')
-    ->url(fn ($record) => route('filament.dashboard.resources.aulas.ver-sesiones', [
-        'record' => $this->ownerRecord->id,
-        'cursoId' => $record->id,
-    ]))
+                    ->label('Sesiones')
+                    ->icon('heroicon-o-clipboard-document')
+                    ->url(fn($record) => route('filament.dashboard.resources.aulas.ver-sesiones', [
+                        'record' => $this->ownerRecord->id,
+                        'cursoId' => $record->id,
+                    ]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

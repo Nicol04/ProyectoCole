@@ -69,7 +69,6 @@
                                     document.getElementById('dia').value = dia;
                                 });
 
-
                                 document.getElementById('fecha').addEventListener('change', function() {
                                     const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
                                     const fechaSeleccionada = new Date(this.value);

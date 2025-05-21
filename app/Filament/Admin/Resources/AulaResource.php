@@ -20,7 +20,7 @@ class AulaResource extends Resource
     protected static ?string $model = Aula::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -99,6 +99,7 @@ class AulaResource extends Resource
             'create' => Pages\CreateAula::route('/create'),
             'edit' => Pages\EditAula::route('/{record}/edit'),
             'ver-sesiones' => Pages\VerSesiones::route('/{record}/ver-sesiones/{cursoId}'),
+            'crear-sesion' => Pages\CrearSesion::route('/{record}/crear-sesion/{cursoId}'),
         ];
     }
 }
