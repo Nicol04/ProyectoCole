@@ -70,9 +70,10 @@
                                 <div class="post-details">
                                     <h2 class="post-heading">{{ $recurso->nombre }}</h2>
                                     <p>{{ $recurso->descripcion }}</p>
-                                    <h5 class="font-green">Curso: {{ $recurso->curso->curso ?? 'Sin curso asignado' }}
+                                    <h5 class="font-green">
+                                        <div>Curso: {{ $recurso->curso->curso ?? 'Sin curso asignado' }}</div>
+                                        <div>Categoría: {{ $recurso->categoria->nombre ?? 'Sin categoría asignada' }}</div>
                                     </h5>
-
                                 </div>
 
                             </div>
