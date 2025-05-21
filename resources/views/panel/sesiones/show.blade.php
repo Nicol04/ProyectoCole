@@ -29,7 +29,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-12 col-lg-5">
                     <h2>Sesion {{ $sesion->titulo }}</h2>
-                    <div class="bread-crumb-line"><span> <a href="{{ route('sesiones.index', $sesion->aulaCurso->curso->id) }}">{{ $sesion->aulaCurso->curso->curso }}/ </a></span>
+                    <div class="bread-crumb-line"><span> <a
+                                href="{{ route('sesiones.index', $sesion->aulaCurso->curso->id) }}">{{ $sesion->aulaCurso->curso->curso }}/
+                            </a></span>
                         Sesion {{ $sesion->titulo }}</div>
                 </div>
             </div>
@@ -87,9 +89,9 @@
 
 
             <!-- Botón solo visible si el usuario es docente (rol_id == 2) -->
-@if (auth()->check() && auth()->user()->roles->first()?->id == 2)
-    <a href="{{ route('sesiones.edit', $sesion->id) }}" class="kids-care-btn bgc-orange">Editar Sesión</a>
-@endif
+            @if (auth()->check() && auth()->user()->roles->first()?->id == 2)
+                <a href="{{ route('sesiones.edit', $sesion->id) }}" class="kids-care-btn bgc-orange">Editar Sesión</a>
+            @endif
 
         </div>
     </section>

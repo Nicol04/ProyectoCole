@@ -37,7 +37,8 @@ Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->
 Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvatar'])->name('user.avatar.update');
 
 Route::get('/cursos/{id}', [CursoController::class, 'sesiones'])->name('sesiones.index');
-Route::get('cursos/sesion', [SesionController::class, 'create'])->name('sesiones.create');
+Route::get('cursos/sesion/create', [SesionController::class, 'create'])->name('sesiones.create');
+Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
 Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
 Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');
 Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');

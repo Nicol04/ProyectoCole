@@ -9,10 +9,37 @@ use Illuminate\Http\Request;
 
 class SesionController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        return view('panel.sesiones.create');
+        $aulaCursoId = $request->query('aula_curso_id');
+        $aulaCurso = \App\Models\AulaCurso::findOrFail($aulaCursoId);
+        $curso = $aulaCurso->curso;
+        return view('panel.sesiones.create', compact('aulaCurso', 'curso'));
     }
+
+    public function store(Request $request)
+    {
+            $validated = $request->validate([
+            'titulo' => 'required|string|max:255',
+            'objetivo' => 'required|string',
+            'actividades' => 'required|string',
+            'fecha' => 'required|date',
+            'aula_curso_id' => 'required|exists:aula_curso,id',
+        ]);
+
+        $validated['dia'] = $request->input('dia');
+
+        \App\Models\Sesion::create($validated);
+
+        $aulaCurso = \App\Models\AulaCurso::find($request->aula_curso_id);
+        $cursoId = $aulaCurso->curso_id;
+
+        return redirect()->route('sesiones.index', ['id' => $cursoId])
+            ->with('mensaje', 'Sesión creada exitosamente')
+            ->with('icono', 'success');
+    }
+
+
     public function show($id)
     {
         $sesion = Sesion::with('aulaCurso.curso')->findOrFail($id);
@@ -45,7 +72,7 @@ class SesionController extends Controller
             'actividades' => $request->actividades,
         ]);
         return redirect()->route('sesiones.show', $id)
-        ->with('mensaje', 'Sesión actualizada exitosamente')
-        ->with('icono', 'success');
+            ->with('mensaje', 'Sesión actualizada exitosamente')
+            ->with('icono', 'success');
     }
 }

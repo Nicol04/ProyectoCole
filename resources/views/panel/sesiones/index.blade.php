@@ -46,17 +46,19 @@
                         </h2>
 
                         @php
-    $rolId = auth()->user()->roles->first()?->id;
-@endphp
+                            $rolId = auth()->user()->roles->first()?->id;
+                        @endphp
 
-@if ($rolId == 2) <!-- Solo Docente <!--{{ route('sesiones.create', ['curso_id' => $curso->id]) }}-->
-    <a href="" 
-        class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
-        title="Agregar sesión">
-        <i class="fas fa-plus"></i>
-        <span class="btn-text-hover ms-2">Agregar sesión</span>
-    </a>
-@endif
+                        @if ($rolId == 2)
+                            <!-- Solo Docente -->
+                            <a href="{{ route('sesiones.create', ['aula_curso_id' => $aulaCurso->id]) }}"
+   class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
+   title="Agregar sesión">
+   <i class="fas fa-plus"></i>
+   <span class="btn-text-hover ms-2">Agregar sesión</span>
+</a>
+
+                        @endif
 
                     </div>
 
@@ -88,7 +90,8 @@
                                 </div>
                                 <div class="details">
                                     <p>{{ Str::limit($sesion->objetivo, 60) }}</p>
-                                        <a href="{{ route('sesiones.show', $sesion->id) }}" class="kids-care-btn bgc-orange">Ver detalle</a>
+                                    <a href="{{ route('sesiones.show', $sesion->id) }}"
+                                        class="kids-care-btn bgc-orange">Ver detalle</a>
                                 </div>
                             </div>
                         </div>

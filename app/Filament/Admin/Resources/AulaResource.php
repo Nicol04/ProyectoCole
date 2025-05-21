@@ -100,6 +100,7 @@ class AulaResource extends Resource
             'edit' => Pages\EditAula::route('/{record}/edit'),
             'ver-sesiones' => Pages\VerSesiones::route('/{record}/ver-sesiones/{cursoId}'),
             'crear-sesion' => Pages\CrearSesion::route('/{record}/crear-sesion/{cursoId}'),
+            'editar-sesion' => Pages\EditarSesion::route('/editar-sesion/{record}'),
         ];
     }
 }

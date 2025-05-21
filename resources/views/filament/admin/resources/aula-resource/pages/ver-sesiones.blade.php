@@ -24,6 +24,12 @@
                             {{ $aula->docente->persona->apellido ?? '' }}
                         </p>
                     @endif
+
+                    <x-filament::button tag="a"
+                        href="{{ route('filament.dashboard.resources.aulas.editar-sesion', ['record' => $sesion->id]) }}"
+                        color="secondary">
+                        Editar
+                    </x-filament::button>
                 </li>
             @empty
                 <li>No hay sesiones registradas.</li>
