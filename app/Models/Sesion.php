@@ -32,4 +32,12 @@ class Sesion extends Model
     {
         return $this->belongsTo(AulaCurso::class);
     }
+    public function evaluaciones()
+    {
+        return $this->hasMany(Evaluacion::class);
+    }
+    public function archivo()
+    {
+        return $this->hasMany(Archivo::class);
+    }
 }

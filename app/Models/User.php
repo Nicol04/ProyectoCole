@@ -49,4 +49,24 @@ class User extends Authenticatable
             ->withTimestamps()
             ->withPivot('año_id');
     }
+    public function archivos()
+    {
+        return $this->hasMany(Archivo::class);
+    }
+    public function evaluaciones()
+    {
+        return $this->hasMany(Evaluacion::class);
+    }
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
+    public function intentos()
+    {
+        return $this->hasMany(IntentoEvaluacion::class);
+    }
+    public function respuestas()
+    {
+        return $this->hasMany(Respuesta_estudiante::class);
+    }
 }

@@ -10,8 +10,9 @@ class Evaluacion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'curso_id',
+        'sesion_id',
         'user_id',
+        'archivo_id',
         'modo',
         'es_supervisado',
         'titulo',
@@ -19,9 +20,9 @@ class Evaluacion extends Model
         'cantidad_preguntas',
     ];
 
-    public function curso()
+    public function sesion()
     {
-        return $this->belongsTo(Curso::class);
+        return $this->belongsTo(Sesion::class);
     }
 
     public function docente()
@@ -32,5 +33,17 @@ class Evaluacion extends Model
     public function preguntas()
     {
         return $this->hasMany(Pregunta::class);
+    }
+    public function intentos()
+    {
+        return $this->hasMany(IntentoEvaluacion::class);
+    }
+    public function calificaciones()
+    {
+        return $this->hasMany(Calificacion::class);
+    }
+    public function archivo()
+    {
+        return $this->belongsTo(Archivo::class);
     }
 }

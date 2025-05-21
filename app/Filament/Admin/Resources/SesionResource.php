@@ -119,12 +119,19 @@ class SesionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('aulaCurso.aula.grado_seccion')
+                    ->label('Aula'),
+                Tables\Columns\TextColumn::make('aulaCurso.curso.curso')
+                    ->label('Curso'),
+                Tables\Columns\TextColumn::make('titulo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('aulaCurso.aula.docente.persona.nombre')
+                    ->label('Docente')
+                    ->formatStateUsing(fn ($state, $record) =>
+                        optional($record->aulaCurso?->aula?->docente?->persona)->nombre ?? 'Sin docente'),
                 Tables\Columns\TextColumn::make('fecha')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('dia'),
-                Tables\Columns\TextColumn::make('titulo')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -133,10 +140,7 @@ class SesionResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('aulaCurso.curso.curso')
-                    ->label('Curso'),
-                Tables\Columns\TextColumn::make('aulaCurso.aula.grado_seccion')
-                    ->label('Aula'),
+                
             ])
             ->filters([
                 //

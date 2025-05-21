@@ -9,22 +9,12 @@ class Archivo extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'curso_id',
-        'user_id',
-        'nombre',
         'tipo',
         'url',
     ];
 
-    // Relación con el curso
-    public function curso()
+    public function evaluacion()
     {
-        return $this->belongsTo(Curso::class);
-    }
-
-    // Relación con el docente
-    public function docente()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Evaluacion::class);
     }
 }
