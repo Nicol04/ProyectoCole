@@ -10,42 +10,30 @@ use App\Models\Curso;
 class RecursoController extends Controller
 {
     public function index(Request $request)
-{
-    // Iniciar la consulta base
-    $recursos = Recurso::query();
+    {
+        $recursos = Recurso::query();
+        if ($request->filled('buscar')) {
+            $recursos->where('nombre', 'like', '%' . $request->buscar . '%');
+        }
+        if ($request->filled('categoria')) {
+            $recursos->where('categoria_id', $request->categoria);
+        }
+        if ($request->filled('curso')) {
+            $recursos->where('curso_id', $request->curso);
+        }
+        $recursos = $recursos->get();
+        $cursos = Curso::withCount('recursos')->get();
+        $categorias = Categoria::withCount('recursos')->get();
 
-    // Filtro búsqueda por nombre
-    if ($request->filled('buscar')) {
-        $recursos->where('nombre', 'like', '%' . $request->buscar . '%');
+        return view('panel.recursos.index', [
+            'recursos' => $recursos,
+            'cursos' => $cursos,
+            'categorias' => $categorias,
+            'categoriaId' => $request->categoria,
+            'cursoId' => $request->curso,
+            'buscar' => $request->buscar,
+        ]);
     }
-
-    // Filtro por categoría si viene en la request
-    if ($request->filled('categoria')) {
-        $recursos->where('categoria_id', $request->categoria);
-    }
-
-    // Filtro por curso si viene en la request
-    if ($request->filled('curso')) {
-        $recursos->where('curso_id', $request->curso);
-    }
-
-    // Obtener los resultados (puedes usar paginate si quieres)
-    $recursos = $recursos->get();
-
-    // Obtener datos para filtros laterales
-    $cursos = Curso::withCount('recursos')->get();
-    $categorias = Categoria::withCount('recursos')->get();
-
-    // Pasar variables a la vista
-    return view('panel.recursos.index', [
-        'recursos' => $recursos,
-        'cursos' => $cursos,
-        'categorias' => $categorias,
-        'categoriaId' => $request->categoria,
-        'cursoId' => $request->curso,
-        'buscar' => $request->buscar,
-    ]);
-}
 
     public function show($id)
     {

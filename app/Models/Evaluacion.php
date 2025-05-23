@@ -13,11 +13,11 @@ class Evaluacion extends Model
         'sesion_id',
         'user_id',
         'archivo_id',
-        'modo',
         'es_supervisado',
         'titulo',
         'fecha_creacion',
         'cantidad_preguntas',
+        'cantidad_intentos',
     ];
 
     public function sesion()
@@ -37,10 +37,6 @@ class Evaluacion extends Model
     public function intentos()
     {
         return $this->hasMany(IntentoEvaluacion::class);
-    }
-    public function calificaciones()
-    {
-        return $this->hasMany(Calificacion::class);
     }
     public function archivo()
     {

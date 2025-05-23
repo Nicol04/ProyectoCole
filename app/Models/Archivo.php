@@ -13,8 +13,4 @@ class Archivo extends Model
         'url',
     ];
 
-    public function evaluacion()
-    {
-        return $this->belongsTo(Evaluacion::class);
-    }
 }

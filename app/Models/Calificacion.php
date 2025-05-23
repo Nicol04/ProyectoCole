@@ -12,21 +12,18 @@ class Calificacion extends Model
     protected $table = 'calificaciones';
 
     protected $fillable = [
-        'evaluacion_id',
-        'user_id',
-        'nota',
+        'intento_id',
         'retroalimentacion',
         'fecha',
+        'puntaje_total',
+        'puntaje_maximo',
+        'porcentaje',
+        'estado'
     ];
 
     // Relaciones
-    public function evaluacion()
+    public function intento()
     {
-        return $this->belongsTo(Evaluacion::class);
-    }
-
-    public function usuario()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(IntentoEvaluacion::class, 'intento_id');
     }
 }

@@ -13,6 +13,7 @@ class Respuesta_estudiante extends Model
         'pregunta_id',
         'user_id',
         'respuesta_id',
+        'intento_id',
         'respuesta_abierta',
         'fecha_respuesta',
     ];
@@ -31,4 +32,9 @@ class Respuesta_estudiante extends Model
     {
         return $this->belongsTo(Respuesta::class);
     }
+    public function intento()
+    {
+        return $this->belongsTo(IntentoEvaluacion::class, 'intento_id');
+    }
+
 }

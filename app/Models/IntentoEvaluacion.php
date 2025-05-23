@@ -30,9 +30,9 @@ class IntentoEvaluacion extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Opcionalmente: relación con respuestas de estudiantes
-    public function respuestas()
+    public function calificacion()
     {
-        return $this->hasMany(Respuesta_estudiante::class);
+        return $this->hasOne(Calificacion::class, 'intento_id');
     }
+
 }

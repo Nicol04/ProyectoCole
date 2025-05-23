@@ -29,8 +29,8 @@
                         <li>
                             <div class="link font-orange">Mi aula<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-orange">
-                                <li><a href="#">Mis cursos</a></li>
-                                <li><a href="#">Mis estudiantes</a></li>
+                                <li><a href="/panel/cursos">Mis cursos</a></li>
+                                <li><a href="/panel/estudiantes">Mis estudiantes</a></li>
                             </ul>
                         </li>
 
@@ -83,7 +83,7 @@
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <div class="mega-button">
-                                        <a href=""><span>Crear evaluaciones</span></a>
+                                        <a href="/evaluaciones/create"><span>Crear evaluaciones</span></a>
                                         <a href=""><span>Retroalimentación IA</span></a>
                                     </div>
                                 </div>

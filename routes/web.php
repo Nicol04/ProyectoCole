@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
+use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\SesionController;
@@ -46,5 +47,9 @@ Route::put('cursos/sesion/{id}', [SesionController::class, 'update'])->name('ses
 
 Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
 Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos.show');
+
+Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evaluacion.index');
+Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
+Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
 
 });

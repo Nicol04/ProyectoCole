@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\EvaluacionResource\Pages;
 use App\Filament\Admin\Resources\EvaluacionResource\RelationManagers;
+use App\Models\Archivo;
 use App\Models\Evaluacion;
 use App\Models\Sesion;
 use Filament\Forms;
@@ -40,22 +41,20 @@ class EvaluacionResource extends Resource
                                     ->required()
                                     ->reactive()
                                     ->afterStateUpdated(function (callable $set, $state) {
-                                        if (is_string($state)) {
-                                            $extension = pathinfo($state, PATHINFO_EXTENSION);
-                                        } elseif (is_object($state) && method_exists($state, 'getClientOriginalExtension')) {
-                                            $extension = strtolower($state->getClientOriginalExtension());
-                                        } else {
-                                            $extension = null;
-                                        }
+                                        if (!$state) return;
 
-                                        if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
-                                            $set('tipo', 'imagen');
-                                        } elseif ($extension === 'pdf') {
-                                            $set('tipo', 'pdf');
-                                        } else {
-                                            $set('tipo', 'desconocido');
-                                        }
+                                        $archivo = Archivo::create([
+                                            'url' => $state,
+                                            'tipo' => pathinfo($state, PATHINFO_EXTENSION),
+                                            // otros campos que tenga tu tabla
+                                        ]);
+
+                                        $set('archivo_id', $archivo->id);
+                                        $set('tipo', in_array($archivo->tipo, ['jpg', 'jpeg', 'png']) ? 'imagen' : ($archivo->tipo === 'pdf' ? 'pdf' : 'desconocido'));
                                     }),
+                                Forms\Components\Hidden::make('archivo_id')
+                                    ->required()
+                                    ->dehydrated(),
 
                                 Forms\Components\TextInput::make('tipo')
                                     ->label('Tipo de archivo')
@@ -66,6 +65,7 @@ class EvaluacionResource extends Resource
                     ]),
 
                 Forms\Components\Section::make('Sesiones')
+                    ->columns(2)
                     ->description('Selecciona la sesión a la que pertenece esta evaluación.')
                     ->schema([
                         // Select para elegir la sesión
@@ -107,28 +107,36 @@ class EvaluacionResource extends Resource
                             ->disabled()
                             ->dehydrated(false)
                             ->reactive(),
-
-                        // Campo real que guarda el ID del docente (hidden o disabled)
+                        // Campo real que guarda el ID del docente 
                         Forms\Components\TextInput::make('user_id')
                             ->label('Docente ID')
                             ->disabled()
                             ->dehydrated()
                             ->required(),
                     ]),
-                    
-                Forms\Components\TextInput::make('modo')
-                    ->required(),
                 Forms\Components\Toggle::make('es_supervisado')
                     ->required(),
                 Forms\Components\TextInput::make('titulo')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('fecha_creacion')
+                    ->label('Fecha de creación')
+                    ->default(now())
+                    ->disabled()
+                    ->dehydrated()
                     ->required(),
-
                 Forms\Components\TextInput::make('cantidad_preguntas')
+                    ->label('Cantidad de preguntas')
                     ->numeric()
-                    ->default(null),
+                    ->minValue(1)
+                    ->maxValue(20)
+                    ->required(),
+                Forms\Components\TextInput::make('cantidad_intentos')
+                    ->label('Cantidad de intentos')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(10)
+                    ->required(),
             ]);
     }
 
@@ -142,15 +150,14 @@ class EvaluacionResource extends Resource
                 Tables\Columns\TextColumn::make('user_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('modo'),
                 Tables\Columns\IconColumn::make('es_supervisado')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('titulo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('fecha_creacion')
-                    ->date()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('cantidad_preguntas')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('cantidad_intentos')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -159,6 +166,10 @@ class EvaluacionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('fecha_creacion')
+                    ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('archivo_id')
