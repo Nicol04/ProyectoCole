@@ -10,6 +10,7 @@
     <!-- <link rel="stylesheet" href="{{ asset('css/panel/font-awesome.min.css') }}"> -->
     <!--Bootstrap-->
     <link href="{{ asset('css/panel/boostrap.min.css') }}" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!--UI css-->
@@ -30,6 +31,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
 
     @csrf
     <div class="input-container">

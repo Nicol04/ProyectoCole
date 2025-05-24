@@ -3299,6 +3299,8 @@ mainmenu-two .mega-catagory.mega-img {
 	background-image: url('/assets/img/panel/bg/breadcrumb-ner.jpg');
 }
 
+
+
 /*--------Wellcome  video area start-------------*/
 .wellcome-video-area {
 	padding: 70px 0px 80px;
@@ -3436,6 +3438,8 @@ mainmenu-two .mega-catagory.mega-img {
 .image-breadcrumb.style-two {
 	background-image: url('/assets/img/panel/bg/bread-crumb-2.jpg')
 }
+
+
 
 .text-bread-crumb img {
 	width: 100%;
@@ -4124,6 +4128,15 @@ mainmenu-two .mega-catagory.mega-img {
 	z-index: 99;
 	position: relative;
 	background-image: url('/assets/img/panel/bg/breadcrumb-4.jpg');
+	background-size: cover;
+	height: 235px;
+}
+
+.text-bread-crumb.style-prueba {
+	text-align: center;
+	z-index: 99;
+	position: relative;
+	background-image: url('/assets/img/panel/bg/breadcrumb-ner.jpg');
 	background-size: cover;
 	height: 235px;
 }

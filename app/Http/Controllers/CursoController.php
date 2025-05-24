@@ -41,7 +41,11 @@ class CursoController extends Controller
         if (!$aulaCurso) {
             return view('panel.sesiones.index', compact('curso'))->with('error', 'No hay sesiones registradas.');
         }
-        $sesiones = $aulaCurso->sesiones()->orderBy('fecha', 'asc')->paginate(12);
+        //$sesiones = $aulaCurso->sesiones()->orderBy('fecha', 'asc')->paginate(12);
+            $sesiones = $aulaCurso->sesiones()
+        ->orderBy('fecha', 'desc')
+        ->paginate(12);
+
         return view('panel.sesiones.index', compact('curso', 'sesiones', 'aulaCurso'));
     }
 }

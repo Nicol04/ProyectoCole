@@ -12,7 +12,6 @@ class Evaluacion extends Model
     protected $fillable = [
         'sesion_id',
         'user_id',
-        'archivo_id',
         'es_supervisado',
         'titulo',
         'fecha_creacion',
@@ -30,16 +29,12 @@ class Evaluacion extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function preguntas()
-    {
-        return $this->hasMany(Pregunta::class);
-    }
     public function intentos()
     {
         return $this->hasMany(IntentoEvaluacion::class);
     }
-    public function archivo()
+    public function preguntas()
     {
-        return $this->belongsTo(Archivo::class);
+        return $this->hasMany(ExamenPregunta::class);
     }
 }

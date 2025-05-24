@@ -52,12 +52,11 @@
                         @if ($rolId == 2)
                             <!-- Solo Docente -->
                             <a href="{{ route('sesiones.create', ['aula_curso_id' => $aulaCurso->id]) }}"
-   class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
-   title="Agregar sesión">
-   <i class="fas fa-plus"></i>
-   <span class="btn-text-hover ms-2">Agregar sesión</span>
-</a>
-
+                                class="btn btn-circle-agregar d-flex align-items-center justify-content-center ms-3"
+                                title="Agregar sesión">
+                                <i class="fas fa-plus"></i>
+                                <span class="btn-text-hover ms-2">Agregar sesión</span>
+                            </a>
                         @endif
 
                     </div>

@@ -23,144 +23,115 @@
     <!--Breadcrumb area start-->
     <div class="image-breadcrumb style-con"></div>
     <!--Breadcrumb area end-->
-
-    <!--Admission application form area start-->
-<div class="admission-process-area">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="area-heading font-per style-two">Generar evaluación</h1>
-                <p class="heading-para">En este apartado podrás crear tus evaluaciones con IA (Inteligencia artificial)</p>
-            </div>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>¡Ups! Hubo algunos problemas con tus datos:</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 
-        <div class="row justify-content-center">
-            <div class="col-xl-8">
-                <div class="row">
-                    <div class="admission-form contact-page-form">
-                        <div class="contact-page-form">
-                            <h3 class="font-green">Datos de sesiones</h3>
-                        </div>
-                        <form action="">
-                            <!-- elige el curso y el nombre de la sesion que quiere agregar una evaluacion -->
-                            <div class="form-group">
-                                <label for="curso">Curso</label>
-                                <select name="curso_id" class="form-control" id="curso-select" required>
-                                    <option value="">Seleccione un curso</option>
-                                    @foreach($cursos as $curso)
-                                        <option value="{{ $curso->id }}">{{ $curso->curso }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sesion_id">Sesión</label>
-                                <select name="sesion_id" class="form-control" id="sesion-select" required>
-                                    <option value="">Seleccione una sesión</option>
-                                    <!-- Se llenará con JavaScript usando AJAX -->
-                                </select>
-                            </div>
-                        </form>
+    <!-- Generar Evaluación con IA -->
+    <div class="admission-process-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="area-heading font-per style-two">Generar evaluación</h1>
+                    <p class="heading-para">Crea tus evaluaciones automáticamente con ayuda de IA</p>
+                </div>
+            </div>
+            
+        <!-- Fila con animaciones a ambos lados y el formulario en el centro -->
+            <div class="row justify-content-center align-items-center">
+                <!-- Animación izquierda -->
+                <div class="col-lg-2 text-center d-none d-lg-block">
+                    <div class="animated-img">
+                        <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
                     </div>
                 </div>
-
                 <div class="col-xl-8">
-                <div class="row">
-                    <div class="admission-form contact-page-form">
-                        <div class="contact-page-form">
-                            <h3 class="font-green">Evaluaciones</h3>
+                    <form action="{{ route('evaluacion.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
+                        <!-- Datos de la sesión -->
+                        <h3 class="font-green">Datos de la sesión</h3>
+                        <div class="form-group">
+                            <label for="curso_id">Curso</label>
+                            <select name="curso_id" class="form-control" id="curso-select" required>
+                                <option value="">Seleccione un curso</option>
+                                @foreach ($cursos as $curso)
+                                    <option value="{{ $curso->id }}">{{ $curso->curso }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <form action="">
-                            <div class="form-group">
-                                <label for="titulo">Título</label>
-                                <input name="titulo" id="titulo" placeholder="Título" type="text" class="form-control">
-                            </div>
 
-                            <div class="form-group">
-                                <label for="archivo">Archivo (opcional)</label>
-                                <input type="file" name="archivo" id="archivo" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cantidad_preguntas">Cantidad de preguntas</label>
-                                <input name="cantidad_preguntas" id="cantidad_preguntas" type="number" min="1" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cantidad_intentos">Cantidad de intentos</label>
-                                <input name="cantidad_intentos" id="cantidad_intentos" type="number" min="1" class="form-control" required>
-                            </div>
-
-                            <div class="form-group form-check">
-                                <input class="form-check-input" type="checkbox" name="es_supervisado" id="es_supervisado" value="1">
-                                <label class="form-check-label" for="es_supervisado">Supervisado</label>
-                            </div>
-
-                            <input value="Generar evaluación con IA" type="submit" class="btn btn-primary">
-                        </form>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="admission-form contact-page-form">
-                        <div class="con-page-info">
-                            <h3>Evaluación</h3>
+                        <div class="form-group">
+                            <label for="sesion_id">Sesión</label>
+                            <select name="sesion_id" class="form-control" id="sesion-select" required>
+                                <option value="">Seleccione una sesión</option>
+                                <!-- Se llenará con AJAX -->
+                            </select>
                         </div>
-                        <form action="">
-                            <div class="form-group">
-                                <label for="titulo">Título</label>
-                                <input name="titulo" id="titulo" placeholder="Título" type="text" class="form-control">
-                            </div>
 
-                            <div class="form-group">
-                                <label for="archivo">Archivo (opcional)</label>
-                                <input type="file" name="archivo" id="archivo" class="form-control">
-                            </div>
+                        <!-- Datos de la evaluación -->
+                        <h3 class="font-green">Configuración de evaluación</h3>
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            <input type="text" placeholder="Escribe un título" name="titulo" id="titulo" class="form-control" required>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="cantidad_preguntas">Cantidad de preguntas</label>
-                                <input name="cantidad_preguntas" id="cantidad_preguntas" type="number" min="1" class="form-control" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="cantidad_preguntas">Cantidad de preguntas</label>
+                            <input name="cantidad_preguntas" id="cantidad_preguntas" type="number" min="2" max="20" class="form-control" required>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="cantidad_intentos">Cantidad de intentos</label>
-                                <input name="cantidad_intentos" id="cantidad_intentos" type="number" min="1" class="form-control" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="cantidad_intentos">Cantidad de intentos</label>
+                            <input name="cantidad_intentos" id="cantidad_intentos" type="number" min="1" max="10" class="form-control" required>
+                        </div>
 
-                            <div class="form-group form-check">
-                                <input class="form-check-input" type="checkbox" name="es_supervisado" id="es_supervisado" value="1">
-                                <label class="form-check-label" for="es_supervisado">Supervisado</label>
-                            </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" name="es_supervisado" id="es_supervisado" class="form-check-input"
+                                value="1">
+                            <label for="es_supervisado" class="form-check-label">Supervisado</label>
+                        </div>
 
-                            <input value="Generar evaluación con IA" type="submit" class="btn btn-primary">
-                        </form>
-                    </div>
+                        <!-- Opcional: Fecha creación automática -->
+                        <input type="hidden" name="fecha_creacion" value="{{ now() }}">
+
+                        <button type="submit" class="btn btn-primary">Generar evaluación con IA</button>
+                    </form>
                 </div>
-
+                <!-- Animación derecha -->
+            <div class="col-lg-2 text-center d-none d-lg-block">
+                <div class="animated-img">
+                    <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!--Admission Application form area end-->
 
+    <script>
+        document.getElementById('curso-select').addEventListener('change', function() {
+            const cursoId = this.value;
+            const sesionSelect = document.getElementById('sesion-select');
 
-
-<script>
-    document.getElementById('curso-select').addEventListener('change', function () {
-        const cursoId = this.value;
-        const sesionSelect = document.getElementById('sesion-select');
-
-        fetch(`/sesiones/por-curso/${cursoId}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                sesionSelect.innerHTML = '<option value="">Seleccione una sesión</option>';
-                data.forEach(sesion => {
-                    sesionSelect.innerHTML += `<option value="${sesion.id}">${sesion.titulo}</option>`;
+            fetch(`/sesiones/por-curso/${cursoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    sesionSelect.innerHTML = '<option value="">Seleccione una sesión</option>';
+                    data.forEach(sesion => {
+                        sesionSelect.innerHTML +=
+                            `<option value="${sesion.id}">${sesion.titulo}</option>`;
+                    });
                 });
-            });
-    });
-</script>
+        });
+
+    </script>
 
     @include('panel.includes.footer3')
     @include('panel.includes.footer')

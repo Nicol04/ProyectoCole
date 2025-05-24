@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EvaluacionController;
+use App\Http\Controllers\ExamenPreguntaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\SesionController;
@@ -50,6 +51,10 @@ Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos
 
 Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evaluacion.index');
 Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
+Route::post('/evaluaciones', [EvaluacionController::class, 'store'])->name('evaluacion.store');
 Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
+
+Route::get('/evaluacion/{id}/generarexamen', [ExamenPreguntaController::class, 'generarExamen'])->name('evaluaciones.generarExamen');
+Route::get('/formulario_examen',[ExamenPreguntaController::class, 'formulario'])->name('examen.formulario_examen');
 
 });

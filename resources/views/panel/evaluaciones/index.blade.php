@@ -21,9 +21,15 @@
     @endif
 
     <!--Breadcrumb area start-->
-        <div class="image-breadcrumb style-con"></div>
+    <div class="text-bread-crumb d-flex align-items-center style-six sc-page-bc">
+        <div class="container-fluid">
+            <div class="row">
+                <h2>Evaluaciones</h2>
+            </div>
+        </div>
+    </div>
     <!--Breadcrumb area end-->
-
+    
 
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
