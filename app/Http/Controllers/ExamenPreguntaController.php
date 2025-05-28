@@ -34,6 +34,21 @@ class ExamenPreguntaController extends Controller
             'actividades' => $request->input('actividades'),
         ]);
     }
+    public function store(Request $request){
+        $evaluacion_id = $request->input('evaluacion_id');
+        $examen_json = $request->input('jsonFinal');
+        $request->validate([
+            'evaluacion_id' => 'required|integer|exists:evaluacions,id',
+            'jsonFinal' => 'required|json',
+        ]);
 
+        $examenPregunta = new ExamenPregunta();
+        $examenPregunta->evaluacion_id = $evaluacion_id;
+        $examenPregunta->examen_json = $examen_json;
+        $examenPregunta->save();
 
+        return redirect()->back()
+            ->with('mensaje', 'Preguntas guardadas correctamente.')
+            ->with('icono', 'success');
+    }
 }

@@ -62,16 +62,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Respuesta JSON cruda (debug) -->
-            <div class="row justify-content-center mb-4">
-                <div class="col-12 col-xl-12">
-                    <label class="form-label small fw-semibold mb-2 text-secondary">📄 Respuesta JSON crudo:</label>
-                    <pre id="respuesta" class="w-100 mt-3 bg-light text-dark small p-3 rounded border shadow-inner"
-                        style="max-height: 400px; overflow: auto; white-space: pre-wrap; word-break: break-word;"></pre>
-
-                </div>
-            </div>
         </div>
     </div>
     <!-- Admission Application form area end -->
@@ -88,18 +78,15 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('imagen').addEventListener('change', function(e) {
                 const preview = document.getElementById('archivo-preview');
                 const file = e.target.files[0];
 
                 preview.innerHTML = ''; // Limpiar contenido previo
-
                 if (!file) return;
-
                 const fileType = file.type;
-
                 if (fileType.startsWith('image/')) {
                     // Si es imagen
                     const reader = new FileReader();
@@ -132,7 +119,7 @@
             document.getElementById('textoBoton').textContent = modo === 'imagen' ? "Enviar Imagen" : "Enviar Texto";
         }
 
-        // Muestra u oculta el spinner (ES DECIR EL CARGANDO :V) y cambia el texto del botón de envío
+        // Muestra u oculta el spinner
         function mostrarSpinner(mostrar) {
             document.getElementById('spinner').classList.toggle('d-none', !mostrar);
             const modo = document.getElementById('modoEntrada').value;
@@ -150,22 +137,17 @@
                 reader.readAsDataURL(file);
             });
         }
-
-        // Construye el prompt para Gemini según el número de preguntas y el texto fuente (Solo si selecionamos texto pue')
         function construirPrompt(numPreguntas, texto = '') {
             return `**Devuelve únicamente el array JSON** con la estructura exacta: 
-\`\`\`json
+        \`\`\`json
         [
-          {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
-          ...
+            {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
+            ...
         ]
         \`\`\`
-
-**No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
-${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
-        }
-
-        // Llama a la API de Gemini y retorna la respuesta como JSON
+        **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
+        ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
+                }
         async function llamarGemini(data) {
             const url =
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCM1ERzhhDdON5dWNUXbO4MNWgHZqDFp4E";
@@ -178,35 +160,34 @@ ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
             });
             return res.json();
         }
-
-        // Limpia el texto recibido para obtener solo el JSON (elimina markdown)
         function limpiarJsonCrudo(texto) {
             return texto.replace(/```json|```/g, '').trim();
         }
 
-        // Procesa la respuesta de Gemini: muestra el JSON crudo y genera el formulario editable
         function procesarRespuestaGemini(res) {
             const rawText = res?.candidates?.[0]?.content?.parts?.[0]?.text || '';
             document.getElementById('respuesta').textContent = rawText;
 
-            //Esto lo borraremos en un futuro
             const jsonText = limpiarJsonCrudo(rawText);
-
             try {
                 const preguntas = JSON.parse(jsonText);
+
+                if (!Array.isArray(preguntas)) {
+                    throw new Error('La respuesta no es un array.');
+                }
+
                 renderizarFormulario(preguntas);
             } catch (e) {
                 alert("Error al procesar las preguntas generadas. Revisa el JSON.");
+                console.error(e);
             }
         }
 
-        // Envía la imagen o el texto a Gemini según el modo seleccionado
         async function enviarEntrada() {
             const modo = document.getElementById('modoEntrada').value;
             const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
 
             if (modo === 'imagen') {
-                // Modo imagen: valida y convierte la imagen a base64
                 const input = document.getElementById('imagen');
                 const file = input.files[0];
                 if (!file) {
@@ -238,7 +219,6 @@ ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
                     document.getElementById('respuesta').textContent = 'Error: ' + err.message;
                 }
             } else if (modo === 'texto') {
-                // Modo texto: valida y envía el texto
                 const texto = document.getElementById('textoFuente').value.trim();
                 if (!texto) {
                     alert('Por favor escribe el texto.');
@@ -262,89 +242,68 @@ ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
                 }
             }
         }
-
-        /**
-         * Renderiza el formulario editable de preguntas.
-         * Permite editar pregunta, opciones, respuesta correcta y puntuación.
-         * Al final muestra el total de puntuación y permite generar el JSON final.
-         */
         function renderizarFormulario(preguntas) {
             const contenedor = document.getElementById('contenedorFormulario');
             contenedor.innerHTML = '';
 
-            // Construye el HTML del formulario de preguntas
-            let html = `<form id="formularioPreguntas" class="gy-4 bg-white p-4 rounded-3 shadow border" method="POST" action="">
-    @csrf
-`;
+            let html = `<form id="formularioPreguntas" class="gy-4 bg-white p-4 rounded-3 shadow border" method="POST" action="{{ route('examen.guardar') }}">
+        @csrf
+            <input type="hidden" name="evaluacion_id" id="evaluacion_id" value="{{ $evaluacion_id }}">
+            <input type="hidden" name="jsonFinal" id="jsonFinal">
+        
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-secondary">{{ $titulo }}</h5>
+            </div>    
+        `;
             preguntas.forEach((pregunta, index) => {
                 html += `
                 <div id="pregunta_${index}" class="gy-3 p-3 rounded border">
-                  <label class="fw-semibold text-primary">Pregunta:</label>
-                  <input type="text" class="form-control mb-2" name="pregunta_${index}" value="${pregunta.pregunta.replace(/"/g, '&quot;')}" />
+                    <label class="fw-semibold text-primary">Pregunta:</label>
+                    <input type="text" class="form-control mb-2" name="pregunta_${index}" value="${pregunta.pregunta.replace(/"/g, '&quot;')}" />
 
-                  <div class="mb-2">
+                <div class="mb-2">
                     <label class="fw-semibold">Opciones:</label>
                     <input type="text" class="form-control my-1" name="opcion_${index}_a" value="${pregunta.opciones[0].replace(/"/g, '&quot;')}" placeholder="Opción a)" />
                     <input type="text" class="form-control my-1" name="opcion_${index}_b" value="${pregunta.opciones[1].replace(/"/g, '&quot;')}" placeholder="Opción b)" />
                     <input type="text" class="form-control my-1" name="opcion_${index}_c" value="${pregunta.opciones[2].replace(/"/g, '&quot;')}" placeholder="Opción c)" />
-                  </div>
+                </div>
 
-                  <div class="mb-2">
+                <div class="mb-2">
                     <label class="fw-semibold">Respuesta correcta:</label>
                     <select class="form-select" name="respuesta_${index}">
-                      <option value="a" ${pregunta.respuesta.startsWith('a') ? 'selected' : ''}>a)</option>
-                      <option value="b" ${pregunta.respuesta.startsWith('b') ? 'selected' : ''}>b)</option>
-                      <option value="c" ${pregunta.respuesta.startsWith('c') ? 'selected' : ''}>c)</option>
+                    <option value="a" ${pregunta.respuesta.startsWith('a') ? 'selected' : ''}>a)</option>
+                    <option value="b" ${pregunta.respuesta.startsWith('b') ? 'selected' : ''}>b)</option>
+                    <option value="c" ${pregunta.respuesta.startsWith('c') ? 'selected' : ''}>c)</option>
                     </select>
-                  </div>
-
-                  <div class="mb-2">
+                </div>
+                <div class="mb-2">
                     <label class="fw-semibold">Puntuación:</label>
                     <input type="number" class="form-control puntuacion-input" name="puntuacion_${index}" min="1" max="100" value="1" />
-                  </div>
+                </div>
                 </div>
                 <hr class="border-secondary">
                 `;
             });
             html += `
-              <button type="button"
-                      id="generarJsonBtn"
-                      class="mt-3 w-100 btn btn-success fw-bold py-3 rounded">
+            <button type="button"
+                    id="generarJsonBtn"
+                    class="mt-3 w-100 btn btn-success fw-bold py-3 rounded">
                 Generar JSON
-              </button>
-              <button type="submit"
-                      id="enviarJsonBtn"
-                      class="mt-3 w-100 btn btn-primary fw-bold py-3 rounded d-none">
-                Guardar en Laravel
-              </button>
+            </button>
+            <button type="submit"
+                id="enviarJsonBtn"
+                class="mt-3 w-100 btn btn-primary fw-bold py-3 rounded d-none">
+            Publicar Examen
+            </button>
             </form>
             <pre id="jsonGenerado" class="bg-light text-dark small p-3 rounded border mt-3"></pre>
             <div class="alert alert-info mt-3 fw-bold text-center">
-              Total de puntuación: <span id="totalPuntuacion">0</span>
+            Total de puntuación: <span id="totalPuntuacion">0</span>
             </div>
-            <input type="hidden" id="jsonFinal" name="jsonFinal" />
+            
             `;
             contenedor.innerHTML = html;
-
-            // Actualiza el total de puntuación sumando todos los inputs de puntuación
-            function actualizarTotalPuntuacion() {
-                const inputs = document.querySelectorAll('.puntuacion-input');
-                let total = 0;
-                inputs.forEach(input => {
-                    total += parseInt(input.value) || 0;
-                });
-                document.getElementById('totalPuntuacion').textContent = total;
-            }
-
-            // Inicializa el total al cargar el formulario
-            actualizarTotalPuntuacion();
-
-            // Actualiza el total cada vez que cambie una puntuación
-            document.querySelectorAll('.puntuacion-input').forEach(input => {
-                input.addEventListener('input', actualizarTotalPuntuacion);
-            });
-
-            // Al hacer clic en "Generar JSON", muestra el JSON y habilita el botón de enviar
+            
             document.getElementById('generarJsonBtn').addEventListener('click', function() {
                 const form = document.getElementById('formularioPreguntas');
                 const preguntasEditadas = [];
@@ -368,20 +327,28 @@ ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
                 document.getElementById('jsonGenerado').textContent = jsonStr;
                 document.getElementById('jsonFinal').value = jsonStr;
                 actualizarTotalPuntuacion();
-                // Muestra el botón de enviar
                 document.getElementById('enviarJsonBtn').classList.remove('d-none');
+            });
+            function actualizarTotalPuntuacion() {
+                const inputs = document.querySelectorAll('.puntuacion-input');
+                let total = 0;
+                inputs.forEach(input => {
+                    total += parseInt(input.value) || 0;
+                });
+                document.getElementById('totalPuntuacion').textContent = total;
+            }
+
+            actualizarTotalPuntuacion();
+            document.querySelectorAll('.puntuacion-input').forEach(input => {
+                input.addEventListener('input', actualizarTotalPuntuacion);
             });
         }
     function enviarAlturaIframe() {
         const altura = document.body.scrollHeight;
         parent.postMessage({ type: "iframeHeight", height: altura }, "*");
     }
-
-    // Llamar al cargar y al cambiar tamaño
     window.addEventListener("load", enviarAlturaIframe);
     window.addEventListener("resize", enviarAlturaIframe);
-
-    // También si hay cambios dinámicos, por ejemplo con Livewire, AJAX, etc.
     const observer = new MutationObserver(enviarAlturaIframe);
     observer.observe(document.body, { childList: true, subtree: true });
 </script>

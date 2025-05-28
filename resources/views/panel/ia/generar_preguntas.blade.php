@@ -26,7 +26,7 @@
     src="{{ route('examen.formulario_examen', [
         'evaluacion_id' => $evaluacion_id,
         'cantidad_preguntas' => $cantidad_preguntas,
-        'titulo' => urlencode($titulo),
+        'titulo' => $titulo,
         'objetivo' => urlencode($objetivo),
         'actividades' => urlencode($actividades),
     ]) }}"

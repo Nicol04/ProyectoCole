@@ -45,7 +45,12 @@
                                     <button class="btn btn-info" onclick="mostrarAyuda()">?</button>
                                     <button class="btn btn-primary" onclick="activarPantallaCompleta()">🔍 Pantalla completa</button>
                                 </div>
-
+                                <!--
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-info" onclick="mostrarAyuda()">?</button>
+                                    <button class="btn btn-primary" onclick="activarPantallaCompleta()">🔍 Ver en realidad aumentada</button>
+                                </div>
+                            -->
                                 <!-- Modal flotante de ayuda -->
                                 <div id="ayudaModal"
                                     style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%); background:#fff; color:#000; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3); z-index:9999; max-width:90%;">
