@@ -17,8 +17,6 @@ class ClearTemporaryFiles extends Command
     public function handle()
     {
         $now = now();
-
-        // Ruta 2: carpeta 'temp'
         $temp = Storage::disk('public')->files('temp');
 
         foreach ($temp as $file) {

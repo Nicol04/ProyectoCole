@@ -47,8 +47,6 @@ class ExamenPreguntaController extends Controller
         $examenPregunta->examen_json = $examen_json;
         $examenPregunta->save();
 
-        return redirect()->back()
-            ->with('mensaje', 'Preguntas guardadas correctamente.')
-            ->with('icono', 'success');
+        return redirect()->back();
     }
 }

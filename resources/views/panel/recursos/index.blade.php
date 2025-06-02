@@ -69,11 +69,7 @@
                                     @endforeach
                                 @endif
 
-                                @if (!$recursos->isEmpty())
-                                    <div class="col-xl-12 load-more">
-                                        <a href="#" class="kids-care-btn bgc-orange">Load more</a>
-                                    </div>
-                                @endif
+                                
                             </div>
 
                         </div>

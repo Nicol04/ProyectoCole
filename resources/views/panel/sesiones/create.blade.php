@@ -104,9 +104,7 @@
             document.getElementById('dia').value = diaHoy;
         });
     </script>
-
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
 </body>
-
 </html>

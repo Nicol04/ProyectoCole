@@ -15,9 +15,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -133,9 +135,9 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('password')
                             ->password()
                             ->maxLength(10)
-                            ->required(fn (string $context) => $context === 'create')
-                            ->dehydrateStateUsing(fn ($state) => $state ? bcrypt($state) : null)
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn(string $context) => $context === 'create')
+                            ->dehydrateStateUsing(fn($state) => $state ? bcrypt($state) : null)
+                            ->dehydrated(fn($state) => filled($state))
                             ->helperText('Deja vacío para mantener la contraseña actual cuando edites.'),
 
                         Select::make('estado')
@@ -145,12 +147,12 @@ class UserResource extends Resource
                                 'Inactivo' => 'Inactivo',
                             ]),
                     ]),
-                    
+
                 Forms\Components\Section::make('Datos de las aulas')
-                    ->visible(fn (callable $get) => $get('role_id') && (int) $get('role_id') !== 1)
+                    ->visible(fn(callable $get) => $get('role_id') && (int) $get('role_id') !== 1)
                     ->schema([
                         Forms\Components\Repeater::make('usuario_aulas')
-                        
+
                             ->relationship('usuario_aulas')
                             ->columns(3)
                             ->maxItems(1)
@@ -230,12 +232,13 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('persona.nombre')
                     ->sortable()
+                    ->searchable()
                     ->label('Nombres y apellidos'),
                 Tables\Columns\TextColumn::make('role.name')
                     ->label('Rol')
                     ->getStateUsing(function ($record) {
                         return $record->roles->first()?->name ?? 'Sin rol';
-                }),
+                    }),
                 Tables\Columns\ImageColumn::make('avatar.path')
                     ->label('Avatar')
                     ->disk('public')
@@ -251,19 +254,42 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('rol')
+                    ->label('Rol')
+                    ->options(
+                        Role::pluck('name', 'id')->toArray()
+                    )
+                    ->modifyQueryUsing(function ($query, $state) {
+                        if (filled($state['value'])) {
+                            $query->whereHas('roles', function ($q) use ($state) {
+                                $q->where('id', $state['value']);
+                            });
+                        }
+                    }),
+                SelectFilter::make('estado')
+                    ->label('Estado')
+                    ->options([
+                        'Activo' => 'Activo',
+                        'Inactivo' => 'Inactivo',
+                    ])
+                    ->modifyQueryUsing(function (Builder $query, $state) {
+                        if (filled($state['value'])) {
+                            $query->where('estado', $state['value']);
+                        }
+                    }),
             ])
+
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])->headerActions([
-            Action::make('exportar')
-                ->label('Exportar')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->url(route('users.exportarUsuarios'))
-                ->openUrlInNewTab(false)
-                ->color('success'),
+                Action::make('exportar')
+                    ->label('Exportar')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(route('users.exportarUsuarios'))
+                    ->openUrlInNewTab(false)
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -271,7 +297,6 @@ class UserResource extends Resource
                 ]),
             ]);
     }
-
     public static function getRelations(): array
     {
         return [

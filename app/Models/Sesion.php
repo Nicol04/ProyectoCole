@@ -36,8 +36,4 @@ class Sesion extends Model
     {
         return $this->hasMany(Evaluacion::class);
     }
-    public function archivo()
-    {
-        return $this->hasMany(Archivo::class);
-    }
 }

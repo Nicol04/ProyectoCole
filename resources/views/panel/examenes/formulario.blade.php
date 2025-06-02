@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
+
 <body>
 
-<!-- Admission Application form area start -->
     <div class="admission-process-area">
         <div class="container-fluid">
             <div class="row">
@@ -41,7 +42,6 @@
                     <div id="archivo-preview" class="text-center mt-3"></div>
                 </div>
             </div>
-            <!-- Entrada para escribir texto -->
             <div id="entradaTexto" class="row justify-content-center mb-4" style="display: none;">
                 <div class="col-xl-6">
                     <label for="textoFuente" class="form-label text-secondary">Escribe el texto para generar
@@ -49,10 +49,7 @@
                     <textarea id="textoFuente" rows="5" class="form-control form-control-sm" placeholder="Escribe aquí el texto..."></textarea>
                 </div>
             </div>
-
-            <!-- Cantidad de preguntas desde la evaluación -->
             <input type="hidden" id="numPreguntas" value="{{ $cantidad_preguntas }}">
-            <!-- Botón para enviar la imagen o texto -->
             <div class="row justify-content-center mb-4">
                 <div class="col-xl-4 d-flex justify-content-center">
                     <button id="botonEnviar" onclick="enviarEntrada()"
@@ -64,20 +61,20 @@
             </div>
         </div>
     </div>
-    <!-- Admission Application form area end -->
-<main class="container w-75 mx-auto gy-4">
-    <section class="formulario-ia bg-white border border-secondary p-4 rounded-3 shadow-lg gy-3">
-        <div class="mb-3">
-            <label class="form-label small fw-semibold mb-2 text-secondary">📄 Respuesta JSON crudo:</label>
-            <pre id="respuesta"
-                class="bg-light text-dark small p-3 rounded border max-vh-50 overflow-auto text-break shadow-inner"></pre>
-        </div>
+    <main class="container w-75 mx-auto gy-4">
+        <section class="formulario-ia bg-white border border-secondary p-4 rounded-3 shadow-lg gy-3">
+            
 
-        <section id="contenedorFormulario" class="gy-3"></section>
-    </section>
-</main>
+            <div class="mb-3">
+                <label class="form-label small fw-semibold mb-2 text-secondary">📄 Estado del examen:</label>
+                <div id="mensajeExamen" class="alert d-none"></div>
+            </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <section id="contenedorFormulario" class="gy-3"></section>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('imagen').addEventListener('change', function(e) {
@@ -110,7 +107,6 @@
             });
         });
 
-        // Cambia la visibilidad de los campos según el modo seleccionado (imagen o texto)
         function cambiarModoEntrada() {
             const modo = document.getElementById('modoEntrada').value;
             document.getElementById('entradaImagen').style.display = modo === 'imagen' ? '' : 'none';
@@ -119,7 +115,6 @@
             document.getElementById('textoBoton').textContent = modo === 'imagen' ? "Enviar Imagen" : "Enviar Texto";
         }
 
-        // Muestra u oculta el spinner
         function mostrarSpinner(mostrar) {
             document.getElementById('spinner').classList.toggle('d-none', !mostrar);
             const modo = document.getElementById('modoEntrada').value;
@@ -128,7 +123,6 @@
                 (modo === 'imagen' ? "Enviar Imagen" : "Enviar Texto");
         }
 
-        // Convierte un archivo a base64 (ES DECIR QUE TRANSFORMA LA IMAGEN EN CODGIO 01010101) para enviarlo a la API
         function convertirABase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -137,17 +131,18 @@
                 reader.readAsDataURL(file);
             });
         }
+
         function construirPrompt(numPreguntas, texto = '') {
             return `**Devuelve únicamente el array JSON** con la estructura exacta: 
         \`\`\`json
-        [
-            {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
-            ...
-        ]
-        \`\`\`
+            [
+                {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
+                ...
+            ]
+            \`\`\`
         **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
         ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
-                }
+        }
         async function llamarGemini(data) {
             const url =
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCM1ERzhhDdON5dWNUXbO4MNWgHZqDFp4E";
@@ -160,14 +155,14 @@
             });
             return res.json();
         }
+
         function limpiarJsonCrudo(texto) {
             return texto.replace(/```json|```/g, '').trim();
         }
 
         function procesarRespuestaGemini(res) {
+            limpiarMensajeExamen();
             const rawText = res?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            document.getElementById('respuesta').textContent = rawText;
-
             const jsonText = limpiarJsonCrudo(rawText);
             try {
                 const preguntas = JSON.parse(jsonText);
@@ -177,8 +172,9 @@
                 }
 
                 renderizarFormulario(preguntas);
+                mostrarMensajeExamen('exito', '¡Preguntas generadas correctamente! Ahora puedes revisar y publicar el examen.');
             } catch (e) {
-                alert("Error al procesar las preguntas generadas. Revisa el JSON.");
+                mostrarMensajeExamen('error', "Error al procesar las preguntas generadas. Revisa el texto fuente o intenta de nuevo.");
                 console.error(e);
             }
         }
@@ -242,6 +238,7 @@
                 }
             }
         }
+
         function renderizarFormulario(preguntas) {
             const contenedor = document.getElementById('contenedorFormulario');
             contenedor.innerHTML = '';
@@ -285,27 +282,23 @@
                 `;
             });
             html += `
-            <button type="button"
-                    id="generarJsonBtn"
-                    class="mt-3 w-100 btn btn-success fw-bold py-3 rounded">
-                Generar JSON
-            </button>
             <button type="submit"
                 id="enviarJsonBtn"
-                class="mt-3 w-100 btn btn-primary fw-bold py-3 rounded d-none">
-            Publicar Examen
+                class="mt-3 w-100 btn btn-primary fw-bold py-3 rounded">
+                Publicar Examen
             </button>
-            </form>
-            <pre id="jsonGenerado" class="bg-light text-dark small p-3 rounded border mt-3"></pre>
-            <div class="alert alert-info mt-3 fw-bold text-center">
-            Total de puntuación: <span id="totalPuntuacion">0</span>
-            </div>
+</form>
+<div class="alert alert-info mt-3 fw-bold text-center">
+    Total de puntuación: <span id="totalPuntuacion">0</span>
+</div>
             
             `;
             contenedor.innerHTML = html;
-            
-            document.getElementById('generarJsonBtn').addEventListener('click', function() {
-                const form = document.getElementById('formularioPreguntas');
+
+            // Cambia el evento para el submit del formulario:
+            document.getElementById('formularioPreguntas').addEventListener('submit', function(e) {
+                // Generar el JSON antes de enviar
+                const form = e.target;
                 const preguntasEditadas = [];
                 for (let i = 0; i < preguntas.length; i++) {
                     const pregunta = form[`pregunta_${i}`].value;
@@ -324,11 +317,10 @@
                     });
                 }
                 const jsonStr = JSON.stringify(preguntasEditadas, null, 2);
-                document.getElementById('jsonGenerado').textContent = jsonStr;
                 document.getElementById('jsonFinal').value = jsonStr;
-                actualizarTotalPuntuacion();
-                document.getElementById('enviarJsonBtn').classList.remove('d-none');
+                // El formulario se enviará normalmente
             });
+
             function actualizarTotalPuntuacion() {
                 const inputs = document.querySelectorAll('.puntuacion-input');
                 let total = 0;
@@ -343,12 +335,34 @@
                 input.addEventListener('input', actualizarTotalPuntuacion);
             });
         }
-    function enviarAlturaIframe() {
-        const altura = document.body.scrollHeight;
-        parent.postMessage({ type: "iframeHeight", height: altura }, "*");
-    }
-    window.addEventListener("load", enviarAlturaIframe);
-    window.addEventListener("resize", enviarAlturaIframe);
-    const observer = new MutationObserver(enviarAlturaIframe);
-    observer.observe(document.body, { childList: true, subtree: true });
-</script>
+
+        function mostrarMensajeExamen(tipo, mensaje) {
+            const div = document.getElementById('mensajeExamen');
+            div.className = 'alert alert-' + (tipo === 'exito' ? 'success' : 'danger');
+            div.textContent = mensaje;
+            div.classList.remove('d-none');
+        }
+        function limpiarMensajeExamen() {
+            const div = document.getElementById('mensajeExamen');
+            div.className = 'alert d-none';
+            div.textContent = '';
+        }
+
+        function enviarAlturaIframe() {
+            const altura = document.body.scrollHeight;
+            parent.postMessage({
+                type: "iframeHeight",
+                height: altura
+            }, "*");
+        }
+        window.addEventListener("load", enviarAlturaIframe);
+        window.addEventListener("resize", enviarAlturaIframe);
+        const observer = new MutationObserver(enviarAlturaIframe);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    </script>
+</body>
+
+</html>

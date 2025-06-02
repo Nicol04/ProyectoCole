@@ -63,7 +63,7 @@
 
                             <script>
                                 document.getElementById('fecha').addEventListener('change', function() {
-                                    const dias = [ 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+                                    const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
                                     const fechaSeleccionada = new Date(this.value);
                                     const dia = dias[fechaSeleccionada.getDay()];
                                     document.getElementById('dia').value = dia;

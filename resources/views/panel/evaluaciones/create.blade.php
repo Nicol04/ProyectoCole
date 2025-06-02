@@ -43,8 +43,8 @@
                     <p class="heading-para">Crea tus evaluaciones automáticamente con ayuda de IA</p>
                 </div>
             </div>
-            
-        <!-- Fila con animaciones a ambos lados y el formulario en el centro -->
+
+            <!-- Fila con animaciones a ambos lados y el formulario en el centro -->
             <div class="row justify-content-center align-items-center">
                 <!-- Animación izquierda -->
                 <div class="col-lg-2 text-center d-none d-lg-block">
@@ -60,37 +60,49 @@
                         <h3 class="font-green">Datos de la sesión</h3>
                         <div class="form-group">
                             <label for="curso_id">Curso</label>
-                            <select name="curso_id" class="form-control" id="curso-select" required>
+                            <select name="curso_id" class="form-control" id="curso-select" required
+                                @if ($aula_curso_id) disabled @endif>
                                 <option value="">Seleccione un curso</option>
                                 @foreach ($cursos as $curso)
-                                    <option value="{{ $curso->id }}">{{ $curso->curso }}</option>
+                                    <option value="{{ $curso->id }}"
+                                        {{ (old('curso_id') ?? ($curso_id ?? '')) == $curso->id ? 'selected' : '' }}>
+                                        {{ $curso->curso }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="sesion_id">Sesión</label>
-                            <select name="sesion_id" class="form-control" id="sesion-select" required>
+                            <input type="hidden" value="{{ $sesion_id }}" name="sesion_id"></input>
+                            <select name="sesion_id" class="form-control" id="sesion-select" required
+                                @if ($sesion_id) disabled 
+                                
+                                @endif>
                                 <option value="">Seleccione una sesión</option>
-                                <!-- Se llenará con AJAX -->
+                                @if (isset($sesion_id) && isset($sesion_titulo)) 
+                                    <option value="{{ $sesion_id }}" selected>{{ $sesion_titulo }}</option>
+                                @endif
                             </select>
                         </div>
 
-                        <!-- Datos de la evaluación -->
                         <h3 class="font-green">Configuración de evaluación</h3>
                         <div class="form-group">
                             <label for="titulo">Título</label>
-                            <input type="text" placeholder="Escribe un título" name="titulo" id="titulo" class="form-control" required>
+                            <input type="text" placeholder="Escribe un título" name="titulo" id="titulo"
+                                class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label for="cantidad_preguntas">Cantidad de preguntas</label>
-                            <input name="cantidad_preguntas" id="cantidad_preguntas" type="number" min="2" max="20" class="form-control" required>
+                            <input name="cantidad_preguntas" id="cantidad_preguntas" type="number" min="2"
+                                max="20" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label for="cantidad_intentos">Cantidad de intentos</label>
-                            <input name="cantidad_intentos" id="cantidad_intentos" type="number" min="1" max="10" class="form-control" required>
+                            <input name="cantidad_intentos" id="cantidad_intentos" type="number" min="1"
+                                max="10" class="form-control" required>
                         </div>
 
                         <div class="form-group form-check">
@@ -99,42 +111,39 @@
                             <label for="es_supervisado" class="form-check-label">Supervisado</label>
                         </div>
 
-                        <!-- Opcional: Fecha creación automática -->
                         <input type="hidden" name="fecha_creacion" value="{{ now() }}">
 
                         <button type="submit" class="btn btn-primary">Generar evaluación con IA</button>
                     </form>
                 </div>
-                <!-- Animación derecha -->
-            <div class="col-lg-2 text-center d-none d-lg-block">
-                <div class="animated-img">
-                    <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
+                <div class="col-lg-2 text-center d-none d-lg-block">
+                    <div class="animated-img">
+                        <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        document.getElementById('curso-select').addEventListener('change', function() {
-            const cursoId = this.value;
-            const sesionSelect = document.getElementById('sesion-select');
+        <script>
+            document.getElementById('curso-select').addEventListener('change', function() {
+                const cursoId = this.value;
+                const sesionSelect = document.getElementById('sesion-select');
 
-            fetch(`/sesiones/por-curso/${cursoId}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    sesionSelect.innerHTML = '<option value="">Seleccione una sesión</option>';
-                    data.forEach(sesion => {
-                        sesionSelect.innerHTML +=
-                            `<option value="${sesion.id}">${sesion.titulo}</option>`;
+                fetch(`/sesiones/por-curso/${cursoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        sesionSelect.innerHTML = '<option value="">Seleccione una sesión</option>';
+                        data.forEach(sesion => {
+                            sesionSelect.innerHTML +=
+                                `<option value="${sesion.id}">${sesion.titulo}</option>`;
+                        });
                     });
-                });
-        });
+            });
+        </script>
 
-    </script>
-
-    @include('panel.includes.footer3')
-    @include('panel.includes.footer')
+        @include('panel.includes.footer3')
+        @include('panel.includes.footer')
 </body>
 
 </html>

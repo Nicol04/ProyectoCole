@@ -51,6 +51,7 @@ Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos
 
 Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evaluacion.index');
 Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
+Route::get('/evaluaciones/create-sesion', [EvaluacionController::class, 'create_sesion'])->name('evaluacion.create.sesion');
 Route::post('/evaluaciones', [EvaluacionController::class, 'store'])->name('evaluacion.store');
 Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
 

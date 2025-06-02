@@ -10,11 +10,12 @@
                 </div>
                 <div class="accordion-wrapper hide-sm-up">
                     <a href="#" class="mobile-open"><i class="fa fa-bars"></i></a>
-                    
+
                     <!--Mobile Menu start-->
                     <ul id="mobilemenu" class="accordion">
                         <li class="mob-logo"><a href="">
-                                <img src="{{ asset('assets/img/panel/logo.png') }}" alt="" alt="" width="400">
+                                <img src="{{ asset('assets/img/panel/logo.png') }}" alt="" alt=""
+                                    width="400">
                             </a></li>
                         <li><a class="closeme" href="#"><i class="fa fa-times"></i></a></li>
                         <li class="fc-red out-link"><a class="" href="">Hogar</a></li>
@@ -66,25 +67,24 @@
                             <a href="">Hogar</a>
                         </li>
                         <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon2.png') }}"
-                            alt=""><a href="#" >Mi aula<i
-                                class="fa fa-angle-down"></i></a>
-                        <div class="mega-menu">
-                            <div class="mega-catagory">
-                                <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
-                            </div>
-                            <div class="mega-catagory">
-                                <h4><a class="font-per"><span>Mi docente</span></a></h4>
-                                <div class="mega-button">
+                                alt=""><a href="#">Mi aula<i class="fa fa-angle-down"></i></a>
+                            <div class="mega-menu">
+                                <div class="mega-catagory">
+                                    <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
+                                </div>
+                                <div class="mega-catagory">
+                                    <h4><a class="font-per"><span>Mi docente</span></a></h4>
+                                    <div class="mega-button">
+                                    </div>
+                                </div>
+                                <div class="mega-catagory">
+                                    <h4><a class="font-green" href="/panel/estudiantes"><span>Compañeros</span></a></h4>
                                 </div>
                             </div>
-                            <div class="mega-catagory">
-                                <h4><a class="font-green"
-                                    href="/panel/estudiantes"><span>Compañeros</span></a></h4>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
                         <li class="fc-red hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon1.png') }}"
-                                alt=""><a href="#" class="font-red">Paginas<i class="fa fa-angle-down"></i></a>
+                                alt=""><a href="#" class="font-red">Paginas<i
+                                    class="fa fa-angle-down"></i></a>
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <div class="mega-button">
@@ -94,9 +94,8 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="fc-green hav-sub"><img
-                                src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}" alt=""><a
-                                href="">Evaluaciones</a>
+                        <li class="fc-green hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}"
+                                alt=""><a href="">Evaluaciones</a>
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="events.html">Comunicados</a></li>
@@ -104,11 +103,11 @@
                                 alt=""> <a href="/recursos">Recursos</a>
                         </li>
                         <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon7.png') }}"
-                            alt=""><a href="/users/perfil">Perfil</a></li>
+                                alt=""><a href="/users/perfil">Perfil</a></li>
                     </ul>
                 </div>
             </div>
-            
+
             <!--Main menu end-->
             <div class="col-lg-3 col-xl-2">
                 <div class="serch-wrapper float-right hide-sm">
@@ -153,4 +152,3 @@
     </div>
 </section>
 <!--Main menu area end-->
-

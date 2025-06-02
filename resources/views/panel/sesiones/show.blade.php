@@ -87,10 +87,11 @@
                 </div>
             </div>
 
-
-            <!-- Botón solo visible si el usuario es docente (rol_id == 2) -->
             @if (auth()->check() && auth()->user()->roles->first()?->id == 2)
                 <a href="{{ route('sesiones.edit', $sesion->id) }}" class="kids-care-btn bgc-orange">Editar Sesión</a>
+                <a href="{{ route('evaluacion.create.sesion', ['aula_curso_id' => $sesion->aula_curso_id, 'sesion_id' => $sesion->id]) }}" class="kids-care-btn bgc-blue">
+                    Agregar evaluación
+                </a>
             @endif
 
         </div>

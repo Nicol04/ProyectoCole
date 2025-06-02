@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h2>Recursos</h2>
-                    <div class="bread-crumb-line"><span><a href="">About us /</a></span>Infant</div>
+                    <div class="bread-crumb-line"><span><a href="">Recursos</a></span>Infant</div>
                 </div>
             </div>
         </div>

@@ -18,10 +18,6 @@ class Curso extends Model
     {
         return $this->hasMany(Recurso::class);
     }
-    public function archivos()
-    {
-        return $this->hasMany(Archivo::class);
-    }
     public function sesiones()
     {
         return $this->hasMany(Sesion::class);
