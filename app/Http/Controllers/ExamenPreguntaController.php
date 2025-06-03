@@ -62,12 +62,16 @@ class ExamenPreguntaController extends Controller
             'cantidad_preguntas',
             'titulo',
             'preguntas_json',
-            'evaluacion' // <-- agrega esto si quieres usar $evaluacion en la vista
+            'evaluacion'
         ));
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $evaluacion_id = $request->input('evaluacion_id');
         $examen_json = $request->input('jsonFinal');
+        $imagen_url = $request->input('imagen_url');
+        $texto = $request->input('texto');
+
         $request->validate([
             'evaluacion_id' => 'required|integer|exists:evaluacions,id',
             'jsonFinal' => 'required|json',
@@ -77,7 +81,21 @@ class ExamenPreguntaController extends Controller
         $examenPregunta->evaluacion_id = $evaluacion_id;
         $examenPregunta->examen_json = $examen_json;
         $examenPregunta->save();
+        $evaluacion = Evaluacion::findOrFail($evaluacion_id);
 
-        return redirect()->back();
+        if ($imagen_url) {
+            $evaluacion->imagen_url = $imagen_url;
+            $evaluacion->texto = null;
+        }
+        if ($texto) {
+            $evaluacion->texto = $texto;
+            $evaluacion->imagen_url = null;
+        }
+        $evaluacion->save();
+        return response()->view('panel.iframe_redirect', [
+            'url' => route('evaluaciones.examen', ['evaluacion_id' => $evaluacion_id]),
+            'mensaje' => 'Examen guardado correctamente.',
+            'icono' => 'success'
+        ]);
     }
 }

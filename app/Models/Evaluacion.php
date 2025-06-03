@@ -17,6 +17,8 @@ class Evaluacion extends Model
         'fecha_creacion',
         'cantidad_preguntas',
         'cantidad_intentos',
+        'image_url',
+        'texto',
     ];
 
     public function sesion()

@@ -7,7 +7,6 @@
 </head>
 
 <body>
-
     <div class="admission-process-area">
         <div class="container-fluid">
             <div class="row">
@@ -27,7 +26,6 @@
                     </select>
                 </div>
             </div>
-
             <!-- Entrada para subir imagen -->
             <div id="entradaImagen" class="row justify-content-center mb-4">
                 <div class="col-xl-6">
@@ -243,10 +241,11 @@
         @csrf
             <input type="hidden" name="evaluacion_id" id="evaluacion_id" value="{{ $evaluacion_id }}">
             <input type="hidden" name="jsonFinal" id="jsonFinal">
-        
+            <input type="hidden" name="imagen_url" id="imagen_url" value="${window.imageUrl || ''}">            
+            <input type="hidden" name="texto" id="texto" value="${window.textoFuente || ''}">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold text-secondary">{{ $titulo }}</h5>
-            </div>    
+            </div>
         `;
             preguntas.forEach((pregunta, index) => {
                 html += `

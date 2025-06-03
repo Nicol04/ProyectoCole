@@ -75,4 +75,16 @@ class SesionController extends Controller
             ->with('mensaje', 'Sesión actualizada exitosamente')
             ->with('icono', 'success');
     }
+    public function destroy($id)
+    {
+        $sesion = Sesion::findOrFail($id);
+        foreach ($sesion->evaluaciones as $evaluacion) {
+            $evaluacion->preguntas()->delete();
+            $evaluacion->delete();
+        }
+        $sesion->delete();
+        return redirect()->back()
+            ->with('mensaje', 'Sesión y sus evaluaciones eliminadas.')
+            ->with('icono', 'success');
+    }
 }

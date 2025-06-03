@@ -143,11 +143,7 @@ class EvaluacionController extends Controller
     public function destroy($id)
     {
         $evaluacion = Evaluacion::findOrFail($id);
-
-        // Eliminar todas las preguntas relacionadas
         $evaluacion->preguntas()->delete();
-
-        // Luego eliminar la evaluación
         $evaluacion->delete();
 
         return redirect()->back()

@@ -102,78 +102,86 @@
 
 
     <div class="latest-news-area">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="area-heading font-sky style-two">Evaluaciones</h1>
-                <p class="heading-para">En este apartado encontrarás las evaluaciones que has generado</p>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="area-heading font-sky style-two">Evaluaciones</h1>
+                    <p class="heading-para">En este apartado encontrarás las evaluaciones que has generado</p>
+                </div>
             </div>
-        </div>
+            <div class="row justify-content-center no-gutters">
+                <div class="col-xl-8">
+                    <div class="row">
+                        @foreach ($sesion->evaluaciones as $evaluacion)
+                            @php
+                                $numeroImagen = $loop->iteration % 8 ?: 8;
+                            @endphp
+                            <div class="col-md-4 col-xl-4">
+                                <div class="single-news wow flipInY" data-wow-delay=".7s">
+                                    <img src="{{ asset('assets/img/panel/facilities/fac-' . $numeroImagen . '.jpg') }}"
+                                        alt="">
+                                    <div class="news-det">
+                                        <h4>{{ $evaluacion->titulo }}</h4>
+                                        <p>Fecha de creación:
+                                            {{ \Carbon\Carbon::parse($evaluacion->fecha_creacion)->format('d/m/Y') }}
+                                        </p>
+                                        <p>Cantidad de preguntas: {{ $evaluacion->cantidad_preguntas }}</p>
 
-        <div class="row justify-content-center no-gutters">
-            <div class="col-xl-8">
-                <div class="row">
-                    @foreach($sesion->evaluaciones as $evaluacion)
-                        @php
-                            $numeroImagen = ($loop->iteration % 8) ?: 8;
-                        @endphp
-                        <div class="col-md-4 col-xl-4">
-                            <div class="single-news wow flipInY" data-wow-delay=".7s">
-                                <img src="{{ asset('assets/img/panel/facilities/fac-' . $numeroImagen . '.jpg') }}" alt="">
-                                <div class="news-det">
-                                    <h4>{{ $evaluacion->titulo }}</h4>
-                                    <p>Fecha de creación: {{ \Carbon\Carbon::parse($evaluacion->fecha_creacion)->format('d/m/Y') }}</p>
-                                    <p>Cantidad de preguntas: {{ $evaluacion->cantidad_preguntas }}</p>
-                                    
-                                    <p>
-                                        <strong>Modo:</strong>
-                                        @if($evaluacion->es_supervisado)
-                                            <i class="fa fa-eye text-success"></i> Supervisado
-                                        @else
-                                            <i class="fa fa-robot text-primary"></i> No Supervisado
-                                        @endif
-                                    </p>
-                                    <div class="news-meta">
-                                        <a href="{{ route('evaluaciones.examen', ['evaluacion_id' => $evaluacion->id]) }}"><i class="fa fa-angle-right"></i></a>
-                                        <form class="form-eliminar-evaluacion" action="{{ route('evaluaciones.eliminar', $evaluacion->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                <i class="fa fa-trash"></i> Eliminar
-                                            </button>
-                                        </form>
+                                        <p>
+                                            <strong>Modo:</strong>
+                                            @if ($evaluacion->es_supervisado)
+                                                <i class="fa fa-eye text-success"></i> Supervisado
+                                            @else
+                                                <i class="fa fa-robot text-primary"></i> No Supervisado
+                                            @endif
+                                        </p>
+                                        <div class="news-meta">
+                                            <a
+                                                href="{{ route('evaluaciones.examen', ['evaluacion_id' => $evaluacion->id]) }}"><i
+                                                    class="fa fa-angle-right"></i></a>
+                                            @if (auth()->check() && auth()->user()->roles->first()?->id == 2)
+                                                <form class="form-eliminar-evaluacion"
+                                                    action="{{ route('evaluaciones.eliminar', ['evaluacion' => $evaluacion->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                        <i class="fa fa-trash"></i> Eliminar
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    document.querySelectorAll('.form-eliminar-evaluacion').forEach(form => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+    <script>
+        document.querySelectorAll('.form-eliminar-evaluacion').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-            Swal.fire({
-                title: '¿Eliminar evaluación?',
-                text: 'Se eliminarán también todas sus preguntas.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Enviar el formulario
-                }
+                Swal.fire({
+                    title: '¿Eliminar evaluación?',
+                    text: 'Se eliminarán también todas sus preguntas.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
 </body>

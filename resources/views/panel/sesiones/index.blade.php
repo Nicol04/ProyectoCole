@@ -89,15 +89,21 @@
                                 </div>
                                 <div class="details">
                                     <p>{{ Str::limit($sesion->objetivo, 60) }}</p>
-                                    <a href="{{ route('sesiones.show', $sesion->id) }}"
-                                        class="kids-care-btn bgc-orange">Ver detalle</a>
-                                    <form class="form-eliminar-evaluacion" action="{{ route('evaluaciones.eliminar', $evaluacion->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="fa fa-trash"></i> Eliminar
-                                        </button>
-                                    </form>
+                                    <div class="text-center mt-2">
+                                        <a href="{{ route('sesiones.show', $sesion->id) }}"
+                                            class="kids-care-btn bgc-orange d-inline-block mb-1">Ver detalle</a>
+                                        @if (auth()->check() && auth()->user()->roles->first()?->id == 2)
+                                        <form class="form-eliminar-sesion"
+                                            action="{{ route('sesiones.eliminar', ['sesion' => $sesion->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fa fa-trash"></i> Eliminar
+                                            </button>
+                                        </form>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +119,27 @@
     </section>
     @endif
     <!--Class area end-->
+    <script>
+        document.querySelectorAll('.form-eliminar-sesion').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: '¿Eliminar sesión?',
+                    text: 'Se eliminarán también todas sus evaluaciones.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 
     @include('panel.includes.footer3')
     @include('panel.includes.footer')

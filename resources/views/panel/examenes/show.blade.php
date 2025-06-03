@@ -100,13 +100,13 @@
 
     <script>
         window.addEventListener("message", function(event) {
-    if (event.data.type === "iframeHeight") {
-        const iframe = document.getElementById("iframeExamen");
-        if (iframe && event.data.height) {
-            iframe.style.height = event.data.height + "px";
-        }
-    }
-});
+            if (event.data.type === "iframeHeight") {
+                const iframe = document.getElementById("iframeExamen");
+                if (iframe && event.data.height) {
+                    iframe.style.height = event.data.height + "px";
+                }
+            }
+        });
     </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
