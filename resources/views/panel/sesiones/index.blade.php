@@ -91,6 +91,13 @@
                                     <p>{{ Str::limit($sesion->objetivo, 60) }}</p>
                                     <a href="{{ route('sesiones.show', $sesion->id) }}"
                                         class="kids-care-btn bgc-orange">Ver detalle</a>
+                                    <form class="form-eliminar-evaluacion" action="{{ route('evaluaciones.eliminar', $evaluacion->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fa fa-trash"></i> Eliminar
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

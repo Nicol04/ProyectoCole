@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 class ExamenPreguntaController extends Controller
 {
 
+    public function show($evaluacion_id)
+    {
+        $evaluacion = Evaluacion::findOrFail($evaluacion_id);
+        $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
+        $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
+        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json'));
+    }
+
     public function generarExamen($evaluacion_id)
     {
         $evaluacion = Evaluacion::findOrFail($evaluacion_id);
@@ -33,6 +41,29 @@ class ExamenPreguntaController extends Controller
             'objetivo' => $request->input('objetivo'),
             'actividades' => $request->input('actividades'),
         ]);
+    }
+    public function renderizar(Request $request)
+    {
+        $evaluacion_id = $request->input('evaluacion_id');
+        $cantidad_preguntas = $request->input('cantidad_preguntas');
+        $titulo = $request->input('titulo');
+
+        $evaluacion = Evaluacion::with('preguntas')->findOrFail($evaluacion_id);
+        $examenPregunta = $evaluacion->preguntas->first();
+
+        if (!$examenPregunta) {
+            return redirect()->back()->with('error', 'No se encontraron preguntas para esta evaluación.');
+        }
+
+        $preguntas_json = json_decode($examenPregunta->examen_json, true);
+
+        return view('panel.examenes.renderizar', compact(
+            'evaluacion_id',
+            'cantidad_preguntas',
+            'titulo',
+            'preguntas_json',
+            'evaluacion' // <-- agrega esto si quieres usar $evaluacion en la vista
+        ));
     }
     public function store(Request $request){
         $evaluacion_id = $request->input('evaluacion_id');

@@ -63,13 +63,10 @@
     </div>
     <main class="container w-75 mx-auto gy-4">
         <section class="formulario-ia bg-white border border-secondary p-4 rounded-3 shadow-lg gy-3">
-            
-
             <div class="mb-3">
                 <label class="form-label small fw-semibold mb-2 text-secondary">📄 Estado del examen:</label>
                 <div id="mensajeExamen" class="alert d-none"></div>
             </div>
-
             <section id="contenedorFormulario" class="gy-3"></section>
         </section>
     </main>
@@ -81,11 +78,10 @@
                 const preview = document.getElementById('archivo-preview');
                 const file = e.target.files[0];
 
-                preview.innerHTML = ''; // Limpiar contenido previo
+                preview.innerHTML = '';
                 if (!file) return;
                 const fileType = file.type;
                 if (fileType.startsWith('image/')) {
-                    // Si es imagen
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         preview.innerHTML =

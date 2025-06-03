@@ -42,7 +42,7 @@ class SesionController extends Controller
 
     public function show($id)
     {
-        $sesion = Sesion::with('aulaCurso.curso')->findOrFail($id);
+        $sesion = Sesion::with('aulaCurso.curso', 'evaluaciones')->findOrFail($id);
         return view('panel.sesiones.show', compact('sesion'));
     }
     public function edit($id)

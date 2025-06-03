@@ -139,4 +139,20 @@ class EvaluacionController extends Controller
         })->get();
         return response()->json($sesiones);
     }
+
+    public function destroy($id)
+    {
+        $evaluacion = Evaluacion::findOrFail($id);
+
+        // Eliminar todas las preguntas relacionadas
+        $evaluacion->preguntas()->delete();
+
+        // Luego eliminar la evaluación
+        $evaluacion->delete();
+
+        return redirect()->back()
+            ->with('mensaje', 'Evaluación eliminada correctamente.')
+            ->with('icono', 'success');
+    }
+
 }

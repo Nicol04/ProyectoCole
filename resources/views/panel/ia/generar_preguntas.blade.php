@@ -27,9 +27,6 @@
         src="{{ route('examen.formulario_examen', [
             'evaluacion_id' => $evaluacion_id,
             'cantidad_preguntas' => $cantidad_preguntas,
-            'titulo' => $titulo,
-            'objetivo' => urlencode($objetivo),
-            'actividades' => urlencode($actividades),
         ]) }}"
         width="100%" frameborder="0" style="border: none; overflow: hidden;">
     </iframe>
@@ -44,7 +41,6 @@
             }
         });
     </script>
-
 
     <style>
         .sc-page {
