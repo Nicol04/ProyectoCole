@@ -61,9 +61,10 @@ Route::get('/formulario_examen',[ExamenPreguntaController::class, 'formulario'])
 Route::get('/examen/renderizar', [ExamenPreguntaController::class, 'renderizar'])->name('examen.renderizar');
 
 Route::post('/examen/guardar',[ExamenPreguntaController::class, 'store'])->name('examen.guardar');
+Route::put('/examen/{examenPregunta}/actualizar', [ExamenPreguntaController::class, 'update'])->name('examen.actualizar');
 
 Route::get('/evaluacion/{evaluacion_id}/examen', [ExamenPreguntaController::class, 'show'])->name('evaluaciones.examen');
 Route::delete('/evaluacion/{evaluacion}', [EvaluacionController::class, 'destroy'])->name('evaluaciones.eliminar');
 Route::delete('/sesion/{sesion}', [SesionController::class, 'destroy'])->name('sesiones.eliminar');
-
+Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 'edit'])->name('examen.editar');
 });

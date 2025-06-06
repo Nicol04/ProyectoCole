@@ -107,6 +107,12 @@
                 }
             }
         });
+
+        window.addEventListener("message", function(event) {
+            if (event.data.type === "redirect" && event.data.url) {
+                window.location.href = event.data.url;
+            }
+        });
     </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')

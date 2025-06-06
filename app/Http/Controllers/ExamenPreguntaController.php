@@ -57,13 +57,15 @@ class ExamenPreguntaController extends Controller
 
         $preguntas_json = json_decode($examenPregunta->examen_json, true);
 
-        return view('panel.examenes.renderizar', compact(
-            'evaluacion_id',
-            'cantidad_preguntas',
-            'titulo',
-            'preguntas_json',
-            'evaluacion'
-        ));
+        // Cambia aquí: pasa 'evaluacion_id' => $evaluacion_id
+        return view('panel.examenes.renderizar', [
+            'evaluacion_id' => $evaluacion_id,
+            'cantidad_preguntas' => $cantidad_preguntas,
+            'titulo' => $titulo,
+            'preguntas_json' => $preguntas_json,
+            'evaluacion' => $evaluacion,
+            'examenPregunta' => $examenPregunta
+        ]);
     }
     public function store(Request $request)
     {
@@ -95,6 +97,38 @@ class ExamenPreguntaController extends Controller
         return response()->view('panel.iframe_redirect', [
             'url' => route('evaluaciones.examen', ['evaluacion_id' => $evaluacion_id]),
             'mensaje' => 'Examen guardado correctamente.',
+            'icono' => 'success'
+        ]);
+    }
+    public function edit($id, Request $request){
+        $examenPregunta = ExamenPregunta::findOrFail($id);
+        $preguntas_json = json_decode($examenPregunta->examen_json, true);
+        $evaluacion_id = $request->query('evaluacion_id');
+        $evaluacion = Evaluacion::find($evaluacion_id);
+        return view('panel.examenes.edit', compact('examenPregunta', 'preguntas_json', 'evaluacion', 'evaluacion_id'));
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'jsonFinal' => 'required|json',
+            'evaluacion_id' => 'required|integer|exists:evaluacions,id',
+            'cantidad_intentos' => 'required|integer|min:1|max:10',
+        ]);
+
+        $examenPregunta = ExamenPregunta::findOrFail($id);
+        $examenPregunta->examen_json = $request->input('jsonFinal');
+        $examenPregunta->save();
+
+        // Actualiza la cantidad de intentos en la evaluación
+        $evaluacion = Evaluacion::findOrFail($request->input('evaluacion_id'));
+        $evaluacion->cantidad_intentos = $request->input('cantidad_intentos');
+        $evaluacion->save();
+
+        // Redirige al show del examen en la página padre usando iframe_redirect
+        return response()->view('panel.iframe_redirect', [
+            'url' => route('evaluaciones.examen', ['evaluacion_id' => $evaluacion->id]),
+            'mensaje' => 'Examen actualizado correctamente.',
             'icono' => 'success'
         ]);
     }

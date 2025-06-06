@@ -1,4 +1,3 @@
-<!-- filepath: c:\xampp\htdocs\ProyectoCole\resources\views\panel\examenes\renderizar.blade.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,6 +17,8 @@
     </main>
 
     <script>
+        const examenPreguntaId = @json($examenPregunta->id ?? null);
+        const evaluacionId = @json($evaluacion_id ?? null);
         document.addEventListener('DOMContentLoaded', function() {
             renderizarFormulario(@json($preguntas_json));
         });
@@ -74,7 +75,7 @@
 
     html += `
         <div class="text-end mt-4">
-            <a href="" class="btn btn-warning">
+            <a href="/examen/${examenPreguntaId}/editar?evaluacion_id=${evaluacionId}" class="btn btn-warning">
                 <i class="bi bi-pencil-square"></i> Editar
             </a>
         </div>

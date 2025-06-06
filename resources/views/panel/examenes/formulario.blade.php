@@ -70,6 +70,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('imagen').addEventListener('change', function(e) {
@@ -174,41 +175,57 @@
         }
 
         async function enviarEntrada() {
-            const modo = document.getElementById('modoEntrada').value;
-            const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
+    const modo = document.getElementById('modoEntrada').value;
+    const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
 
-            if (modo === 'imagen') {
-                const input = document.getElementById('imagen');
-                const file = input.files[0];
-                if (!file) {
-                    alert('Por favor selecciona una imagen.');
-                    return;
-                }
-                mostrarSpinner(true);
-                try {
-                    const base64 = await convertirABase64(file);
-                    const data = {
-                        contents: [{
-                            parts: [{
-                                    "text": construirPrompt(numPreguntas)
-                                },
-                                {
-                                    inline_data: {
-                                        mime_type: file.type,
-                                        data: base64.split(',')[1]
-                                    }
-                                }
-                            ]
-                        }]
-                    };
-                    const res = await llamarGemini(data);
-                    mostrarSpinner(false);
-                    procesarRespuestaGemini(res);
-                } catch (err) {
-                    mostrarSpinner(false);
-                    document.getElementById('respuesta').textContent = 'Error: ' + err.message;
-                }
+    if (modo === 'imagen') {
+        const input = document.getElementById('imagen');
+        const file = input.files[0];
+        if (!file) {
+            alert('Por favor selecciona una imagen.');
+            return;
+        }
+        mostrarSpinner(true);
+        try {
+            const base64 = await convertirABase64(file);
+
+            // EXTRAER TEXTO DE LA IMAGEN CON OCR
+            const { data: { text: textoExtraido } } = await Tesseract.recognize(
+                file,
+                'spa' // o 'eng' según el idioma
+            );
+
+            if (!textoExtraido.trim()) {
+                mostrarSpinner(false);
+                mostrarMensajeExamen('error', 'No se pudo extraer texto de la imagen.');
+                return;
+            }
+
+            window.imageUrl = base64;
+            window.textoFuente = textoExtraido;
+
+            const data = {
+                contents: [{
+                    parts: [
+                        { "text": construirPrompt(numPreguntas, textoExtraido) },
+                        {
+                            inline_data: {
+                                mime_type: file.type,
+                                data: base64.split(',')[1]
+                            }
+                        }
+                    ]
+                }]
+            };
+            const res = await llamarGemini(data);
+            mostrarSpinner(false);
+            procesarRespuestaGemini(res);
+        } catch (err) {
+            mostrarSpinner(false);
+            document.getElementById('respuesta').textContent = 'Error: ' + err.message;
+        }
             } else if (modo === 'texto') {
+                // Modo texto: valida y envía el texto
                 const texto = document.getElementById('textoFuente').value.trim();
                 if (!texto) {
                     alert('Por favor escribe el texto.');
@@ -217,9 +234,9 @@
                 mostrarSpinner(true);
                 const data = {
                     contents: [{
-                        parts: [{
-                            "text": construirPrompt(numPreguntas, texto)
-                        }]
+                        parts: [
+                            { "text": construirPrompt(numPreguntas, texto) }
+                        ]
                     }]
                 };
                 try {
@@ -241,7 +258,7 @@
         @csrf
             <input type="hidden" name="evaluacion_id" id="evaluacion_id" value="{{ $evaluacion_id }}">
             <input type="hidden" name="jsonFinal" id="jsonFinal">
-            <input type="hidden" name="imagen_url" id="imagen_url" value="${window.imageUrl || ''}">            
+            <input type="hidden" name="image_url" id="image_url" value="${window.imageUrl || ''}">
             <input type="hidden" name="texto" id="texto" value="${window.textoFuente || ''}">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold text-secondary">{{ $titulo }}</h5>

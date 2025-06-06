@@ -40,6 +40,11 @@
                 }
             }
         });
+        window.addEventListener("message", function(event) {
+            if (event.data.type === "redirect" && event.data.url) {
+                window.location.href = event.data.url;
+            }
+        });
     </script>
 
     <style>
