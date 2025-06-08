@@ -1,5 +1,32 @@
 <!--Main menu area start-->
 <section class="main-menu-area border-top">
+
+
+    @if (auth()->check())
+        @php
+            $user = Auth::user();
+            $roleId = $user->roles->first()?->id;
+
+            $aula = $user->aulas()->first();
+
+            $docente = null;
+            if ($aula) {
+                $docente = $aula
+                    ->users()
+                    ->whereHas('roles', function ($query) {
+                        $query->where('name', 'docente');
+                    })
+                    ->first();
+            }
+
+            $nombreDocente = $docente ? $docente->persona->nombre . ' ' . $docente->persona->apellido : 'No asignado';
+            $cursos = $aula ? $aula->cursos : collect();
+        @endphp
+    @endif
+
+
+
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 col-lg-12 col-xl-2">
@@ -29,8 +56,9 @@
                         <li>
                             <div class="link font-orange">Mi aula<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-orange">
-                                <li><a href="#">Mis cursos</a></li>
-                                <li><a href="#">Mi docente</a></li>
+                                <li><a href="/panel/cursos">Mis cursos</a></li>
+                                <li><a href="#">Mi docente</a>
+                                </li>
                                 <li><a href="#">Mis compañeros</a></li>
                             </ul>
                         </li>
@@ -71,10 +99,20 @@
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
+                                    <div class="mega-button">
+                                        <ul>
+                                            @forelse ($cursos as $curso)
+                                                <a href="{{ route('sesiones.index', ['id' => $curso->id]) }}"><span>{{ $curso->curso }}</span></a>
+                                            @empty
+                                                <li>No tienes cursos asignados</li>
+                                            @endforelse
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="mega-catagory">
                                     <h4><a class="font-per"><span>Mi docente</span></a></h4>
                                     <div class="mega-button">
+                                        <a><span>{{ $nombreDocente }}</span></a>
                                     </div>
                                 </div>
                                 <div class="mega-catagory">
