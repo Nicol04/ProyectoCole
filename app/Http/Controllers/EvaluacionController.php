@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Archivo;
 use App\Models\AulaCurso;
+use App\Models\IntentoEvaluacion;
+use App\Models\ExamenPregunta;
+
 use Illuminate\Support\Facades\DB;
 
 class EvaluacionController extends Controller
@@ -149,6 +152,30 @@ class EvaluacionController extends Controller
         return redirect()->back()
             ->with('mensaje', 'Evaluación eliminada correctamente.')
             ->with('icono', 'success');
+    }
+    public function iniciar($evaluacion_id)
+    {
+        $evaluacion = Evaluacion::findOrFail($evaluacion_id);
+        $user = Auth::user();
+        $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+            ->where('user_id', $user->id)
+            ->count();
+        if ($intentosActuales >= $evaluacion->cantidad_intentos) {
+            return redirect()->back()->with('error', 'Ya alcanzaste el número máximo de intentos.');
+        }
+        // Crear nuevo intento
+        $intento = IntentoEvaluacion::create([
+            'evaluacion_id' => $evaluacion->id,
+            'user_id' => $user->id,
+            'fecha_inicio' => now(),
+            'estado' => 'en progreso',
+        ]);
+        // Enviar a vista con el intento_id
+        return redirect()->route('evaluaciones.examen', [
+            'evaluacion_id' => $evaluacion_id,
+            'mostrar_iframe' => 1,
+            'intento_id' => $intento->id
+        ]);
     }
 
 }

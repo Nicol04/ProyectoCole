@@ -11,9 +11,9 @@ class Respuesta_estudiante extends Model
 
     protected $fillable = [
         'user_id',
-        'examen_preguntas_id',
+        'examen_pregunta_id',
         'intento_id',
-        'respuesta_abierta',
+        'respuesta_json',
         'fecha_respuesta',
     ];
 

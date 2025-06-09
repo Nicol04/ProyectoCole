@@ -5,6 +5,7 @@ use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\ExamenPreguntaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecursoController;
+use App\Http\Controllers\RespuestaEstudianteController;
 use App\Http\Controllers\SesionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -67,4 +68,8 @@ Route::get('/evaluacion/{evaluacion_id}/examen', [ExamenPreguntaController::clas
 Route::delete('/evaluacion/{evaluacion}', [EvaluacionController::class, 'destroy'])->name('evaluaciones.eliminar');
 Route::delete('/sesion/{sesion}', [SesionController::class, 'destroy'])->name('sesiones.eliminar');
 Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 'edit'])->name('examen.editar');
+
+Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
+Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');
+Route::post('/respuesta-estudiante', [RespuestaEstudianteController::class, 'store'])->name('respuesta_estudiante.store');
 });

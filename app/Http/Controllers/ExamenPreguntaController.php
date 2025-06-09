@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Archivo;
 use App\Models\Evaluacion;
 use App\Models\ExamenPregunta;
+use App\Models\IntentoEvaluacion;
 use App\Models\Sesion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExamenPreguntaController extends Controller
 {
@@ -16,7 +18,23 @@ class ExamenPreguntaController extends Controller
         $evaluacion = Evaluacion::findOrFail($evaluacion_id);
         $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
         $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
-        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json'));
+        $intentos = null;
+        $ultimoIntento = null;
+
+    if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
+        $user = Auth::user();
+        $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+            ->where('user_id', $user->id)
+            ->count();
+        $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
+
+        // Obtener el último intento
+        $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->first();
+    }
+        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json', 'intentos', 'ultimoIntento'));
     }
 
     public function generarExamen($evaluacion_id)
@@ -67,6 +85,7 @@ class ExamenPreguntaController extends Controller
             'examenPregunta' => $examenPregunta
         ]);
     }
+
     public function store(Request $request)
     {
         $evaluacion_id = $request->input('evaluacion_id');
@@ -131,5 +150,14 @@ class ExamenPreguntaController extends Controller
             'mensaje' => 'Examen actualizado correctamente.',
             'icono' => 'success'
         ]);
+    }
+    public function mostrarExamenEstudiante(Request $request)
+    {
+        $evaluacion_id = $request->query('evaluacion_id');
+        $intento_id = $request->query('intento_id');
+        $evaluacion = \App\Models\Evaluacion::findOrFail($evaluacion_id);
+        $examenPregunta = \App\Models\ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
+        $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
+        return view('panel.examenes.estudiantes', compact('evaluacion', 'preguntas_json', 'intento_id', 'examenPregunta'));
     }
 }
