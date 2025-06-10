@@ -17,6 +17,7 @@ class IntentoEvaluacion extends Model
         'fecha_inicio',
         'fecha_fin',
         'estado',
+        'revision_vista',
     ];
 
     // Relaciones

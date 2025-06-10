@@ -4122,7 +4122,35 @@ mainmenu-two .mega-catagory.mega-img {
 	background: url('/assets/img/panel/bg/menu-bg-4.png');
 	background-repeat: repeat-x;
 }
-
+.badge-intento {
+    background: #f9ff59;
+    color: #432727;
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 2;
+    border: 2px solid #e0e000;
+    padding: 0;
+}
+.badge-intento .num-intento {
+    font-size: 1.3rem;
+    line-height: 1;
+    font-weight: bold;
+}
+.badge-intento .txt-intento {
+    font-size: 0.65rem;
+    font-weight: normal;
+    line-height: 1;
+    margin-top: -2px;
+    letter-spacing: 0.5px;
+}
 .text-bread-crumb.style-six {
 	text-align: center;
 	z-index: 99;

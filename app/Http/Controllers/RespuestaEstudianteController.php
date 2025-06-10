@@ -72,6 +72,11 @@ class RespuestaEstudianteController extends Controller
     }
     public function revision($intento_id)
     {
+        $intento = \App\Models\IntentoEvaluacion::findOrFail($intento_id);
+        if (!$intento->revision_vista) {
+            $intento->revision_vista = true;
+            $intento->save();
+        }
         $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento_id)->firstOrFail();
         $respuestas = json_decode($respuesta->respuesta_json, true);
         return view('panel.examenes.revision', compact('respuestas'));
