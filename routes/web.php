@@ -72,4 +72,5 @@ Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 
 Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
 Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');
 Route::post('/respuesta-estudiante', [RespuestaEstudianteController::class, 'store'])->name('respuesta_estudiante.store');
+Route::get('/examen/revision/{intento_id}', [RespuestaEstudianteController::class, 'revision'])->name('examen.revision');
 });

@@ -121,7 +121,8 @@
                                                                 Examen finalizado.
                                                             </div>
                                                             <a href="{{ route('evaluacion.iniciar', $evaluacion->id) }}"
-                                                                class="btn btn-primary mt-3">
+                                                                class="btn btn-primary mt-3"
+                                                                id="btnNuevoIntento">
                                                                 Hacer nuevo intento
                                                             </a>
                                                         </div>
@@ -157,7 +158,124 @@
                                     </div>
                                 </div>
                             </section>
-                            {{-- Si no hay intentos en progreso ni finalizados, pero quedan intentos --}}
+
+                            {{-- Mostrar historial de intentos del estudiante --}}
+                            @if (isset($intentosConRespuestas) && count($intentosConRespuestas) > 0)
+                                <div class="container my-4">
+                                    <h3 class="mb-3">Historial de intentos</h3>
+                                    <div class="accordion" id="historialIntentosAccordion">
+                                        @foreach ($intentosConRespuestas as $idx => $registro)
+                                            @php
+                                                $respuestas = $registro['respuesta_json']
+                                                    ? json_decode($registro['respuesta_json'], true)
+                                                    : [];
+                                                $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
+                                            @endphp
+                                            <div class="accordion-item mb-2">
+                                                <h2 class="accordion-header" id="heading{{ $idx }}">
+                                                    <button class="accordion-button collapsed" type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapse{{ $idx }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapse{{ $idx }}">
+                                                        Intento #{{ $idx + 1 }} - Fecha:
+                                                        {{ $registro['fecha_respuesta'] ? \Carbon\Carbon::parse($registro['fecha_respuesta'])->format('d/m/Y H:i') : '-' }}
+                                                        - Puntaje: <span class="fw-bold">{{ $puntajeTotal }}</span>
+                                                    </button>
+                                                </h2>
+                                                <div id="collapse{{ $idx }}"
+                                                    class="accordion-collapse collapse"
+                                                    aria-labelledby="heading{{ $idx }}"
+                                                    data-bs-parent="#historialIntentosAccordion">
+                                                    <div class="accordion-body">
+                                                        @if ($respuestas)
+                                                            <form>
+                                                                @foreach ($respuestas as $i => $respuesta)
+                                                                    <div class="mb-3 p-3 border rounded">
+                                                                        <div class="mb-2">
+                                                                            <strong>{{ $i + 1 }}.
+                                                                                {{ $respuesta['pregunta'] }}</strong>
+                                                                            <span
+                                                                                class="badge bg-info text-dark ms-2">Valor:
+                                                                                {{ $respuesta['valor_pregunta'] }}</span>
+                                                                        </div>
+                                                                        @foreach ($respuesta['opciones'] as $key => $opcion)
+                                                                            @php
+                                                                                $letra = chr(97 + $key); // a, b, c...
+                                                                                $esCorrecta =
+                                                                                    $letra ==
+                                                                                    $respuesta['respuesta_correcta'];
+                                                                                $esSeleccionada =
+                                                                                    $letra ==
+                                                                                    $respuesta[
+                                                                                        'respuesta_seleccionada'
+                                                                                    ];
+                                                                                $clase = '';
+                                                                                if ($esSeleccionada && $esCorrecta) {
+                                                                                    $clase =
+                                                                                        'border border-success bg-success bg-opacity-10';
+                                                                                } elseif (
+                                                                                    $esSeleccionada &&
+                                                                                    !$esCorrecta
+                                                                                ) {
+                                                                                    $clase =
+                                                                                        'border border-danger bg-danger bg-opacity-10';
+                                                                                } elseif ($esCorrecta) {
+                                                                                    $clase =
+                                                                                        'border border-success bg-success bg-opacity-10';
+                                                                                }
+                                                                            @endphp
+                                                                            <div
+                                                                                class="form-check mb-1 {{ $clase }}">
+                                                                                <input class="form-check-input"
+                                                                                    type="radio" disabled
+                                                                                    @if ($esSeleccionada) checked @endif>
+                                                                                <label class="form-check-label">
+                                                                                    {{ strtoupper($letra) }})
+                                                                                    {{ $opcion }}
+                                                                                    @if ($esCorrecta)
+                                                                                        <span
+                                                                                            class="badge bg-success ms-2">Correcta</span>
+                                                                                    @endif
+                                                                                    @if ($esSeleccionada && !$esCorrecta)
+                                                                                        <span
+                                                                                            class="badge bg-danger ms-2">Tu
+                                                                                            respuesta</span>
+                                                                                    @elseif($esSeleccionada && $esCorrecta)
+                                                                                        <span
+                                                                                            class="badge bg-success ms-2">Tu
+                                                                                            respuesta</span>
+                                                                                    @endif
+                                                                                </label>
+                                                                            </div>
+                                                                        @endforeach
+                                                                        <div class="mt-2">
+                                                                            <span class="fw-bold">Valor obtenido:
+                                                                            </span>
+                                                                            <span
+                                                                                class="{{ $respuesta['valor_respuesta'] > 0 ? 'text-success' : 'text-danger' }}">
+                                                                                {{ $respuesta['valor_respuesta'] }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                                <div class="alert alert-primary fw-bold text-center">
+                                                                    Puntaje total obtenido: {{ $puntajeTotal }}
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <div class="alert alert-warning">No hay respuestas
+                                                                registradas para este intento.</div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            examen {{-- Si no hay intentos en progreso ni finalizados, pero quedan intentos --}}
                         @elseif(($intentos ?? 0) > 0)
                             <section class="welcome-boxed bol-bol-bg">
                                 <div class="container-fluid">
@@ -166,7 +284,8 @@
                                             <div class="wellcome-area-wrapper ">
                                                 <div class="row">
                                                     <div class="col-md-7 col-lg-5 col-xl-6">
-                                                        <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
+                                                        <div class="wellcome-content wow fadeInUp"
+                                                            data-wow-delay=".5s">
                                                             <h2 class="font-orange area-heading">
                                                                 Cantidad de intentos restantes: {{ $intentos ?? '-' }}
                                                             </h2>
@@ -190,8 +309,10 @@
                                             <div class="wellcome-area-wrapper ">
                                                 <div class="row">
                                                     <div class="col-md-7 col-lg-5 col-xl-6">
-                                                        <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
-                                                            <h2 class="font-orange area-heading display-6 fw-bold mb-3">
+                                                        <div class="wellcome-content wow fadeInUp"
+                                                            data-wow-delay=".5s">
+                                                            <h2
+                                                                class="font-orange area-heading display-6 fw-bold mb-3">
                                                                 Cantidad de intentos restantes: {{ $intentos ?? '-' }}
                                                             </h2>
                                                             <div
@@ -235,6 +356,90 @@
         @endif
     @endif
 
+    {{-- Historial de exámenes finalizados --}}
+    <section class="kids-care-event-area">
+        <div class="container-fluid custom-container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <h2 class="area-heading font-red">Historial de exámenes finalizados</h2>
+                </div>
+            </div>
+            <div class="inner-container">
+                <div class="row justify-content-center">
+                    @php
+                        $imagenes = [
+                            asset('assets/img/panel/event-1.jpg'),
+                            asset('assets/img/panel/event-2.jpg'),
+                            asset('assets/img/panel/event-3.jpg'),
+                            asset('assets/img/panel/event-4.jpg'),
+                        ];
+                    @endphp
+                    @foreach ($intentosConRespuestas as $idx => $registro)
+    @php
+        $respuestas = $registro['respuesta_json']
+            ? json_decode($registro['respuesta_json'], true)
+            : [];
+        $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
+        $examenTitulo = $evaluacion->titulo ?? 'Examen';
+        $fechaFin = $registro['fecha_respuesta']
+            ? \Carbon\Carbon::parse($registro['fecha_respuesta'])->format('d/m/Y H:i')
+            : '-';
+        $img = $imagenes[$idx % count($imagenes)];
+        $calificacion = $registro['calificacion'] ?? null;
+    $estado = $calificacion->estado ?? null;
+    $colorEstado = $estado === 'Aprobado' ? 'bg-success text-white' : 'bg-danger text-white';
+    $textoEstado = $estado ? strtoupper($estado) : 'SIN ESTADO';
+    $puntaje = $calificacion ? "{$calificacion->puntaje_total}/{$calificacion->puntaje_maximo}" : "{$puntajeTotal}";
+    @endphp
+                        @if ($registro['respuesta_json'])
+        <div class="col-sm-6 col-xl-3 d-flex justify-content-center">
+            <div class="single-event wow fadeInUp" data-wow-delay=".5s">
+                <img src="{{ $img }}" alt="">
+                <div class="intro d-flex justify-content-between align-items-center">
+                    <div class="intro-left text-center">
+                        <h3><a href="#">{{ $examenTitulo }}</a></h3>
+                        <span>{{ $fechaFin }}</span>
+                    </div>
+                    <div class="intro-right ms-2">
+                        <span class="age {{ $colorEstado }} px-3 py-1 rounded-pill d-block mb-1">
+                            {{ $textoEstado }}
+                        </span>
+                        <span class="fw-bold d-block text-dark">
+                            Puntaje: {{ $puntaje }}
+                        </span>
+                    </div>
+                </div>
+                <div class="details">
+                    <div class="event-btn">
+                        <a href="javascript:void(0);"
+                            onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['intento']->id]) }}')"
+                            class="kids-care-btn bgc-orange">
+                            Ver revisión del examen
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
+                    @if (count($intentosConRespuestas) == 0)
+                        <div class="col-12">
+                            <div class="alert alert-info text-center">
+                                No tienes exámenes finalizados aún.
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="revisionFullScreen"
+        style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fff; z-index:9999;">
+        <button onclick="cerrarRevision()" class="btn btn-danger m-3 position-absolute"
+            style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
+        <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
+            style="border: none; min-height:100vh; background:#fff;"></iframe>
+    </div>
     <script>
         window.addEventListener("message", function(event) {
             if (event.data.type === "iframeHeight") {
@@ -261,8 +466,37 @@
                 window.location.href = event.data.url;
             }
         });
+        function verRevision(url) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, ver revisión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.body.style.overflow = 'hidden';
+                    document.getElementById('revisionFullScreen').style.display = 'block';
+                    document.getElementById('iframeRevision').src = url;
+                    // Aquí puedes llamar a una función para ocultar el botón de nuevo intento si quieres hacerlo por JS
+                    ocultarBotonNuevoIntento();
+                }
+            });
+        }
+
+        function cerrarRevision() {
+            document.body.style.overflow = '';
+            document.getElementById('revisionFullScreen').style.display = 'none';
+            document.getElementById('iframeRevision').src = '';
+        }
+        function ocultarBotonNuevoIntento() {
+            var btn = document.getElementById('btnNuevoIntento');
+            if (btn) btn.style.display = 'none';
+        }
     </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
 </body>
+
 </html>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Examen Dinámico</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    
+
 </head>
+
 <body class="h-100 overflow-auto px-3 py-3 bg-light text-dark">
     <main class="container w-75 mx-auto gy-4">
         <section class="bg-white border border-secondary p-4 rounded-3 shadow-lg gy-3">
@@ -14,7 +16,7 @@
             <section id="contenedorFormulario" class="gy-3"></section>
         </section>
     </main>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // El examen se pasa desde PHP como JSON
@@ -57,61 +59,71 @@
                     html += `</div>`;
                 });
 
-                html += `<button type="submit" class="btn btn-success w-100 fw-bold py-2">Finalizar</button></form>`;
+                html +=
+                    `<button type="submit" class="btn btn-success w-100 fw-bold py-2">Finalizar</button></form>`;
                 contenedor.innerHTML = html;
 
                 // Ahora sí, agrega el event listener al formulario recién creado
                 const formEl = document.getElementById('formularioPreguntas');
                 formEl.addEventListener('submit', function(e) {
-    e.preventDefault();
-    let score = 0;
-    let respuestasUsuario = [];
-    let todasRespondidas = true;
+                    e.preventDefault();
+                    let score = 0;
+                    let respuestasUsuario = [];
+                    let todasRespondidas = true;
 
-    preguntas.forEach((pregunta, index) => {
-        const letraCorrecta = pregunta.respuesta.trim().toLowerCase();
-        const radios = document.getElementsByName(`respuestas[${index}]`);
-        let seleccionada = null;
-        radios.forEach(radio => {
-            if (radio.checked) seleccionada = radio.value;
-        });
+                    // ...existing code...
+                    preguntas.forEach((pregunta, index) => {
+                        const letraCorrecta = pregunta.respuesta.trim().toLowerCase();
+                        const radios = document.getElementsByName(`respuestas[${index}]`);
+                        let seleccionada = null;
+                        radios.forEach(radio => {
+                            if (radio.checked) seleccionada = radio.value;
+                        });
 
-        if (!seleccionada) {
-            todasRespondidas = false;
-        }
+                        if (!seleccionada) {
+                            todasRespondidas = false;
+                        }
 
-        if (seleccionada === letraCorrecta) {
-            score += pregunta.puntuacion || 1;
-        }
+                        // Valor de la pregunta
+                        const valorPregunta = pregunta.puntuacion || 1;
+                        // Valor de la respuesta (si es correcta, igual al valor de la pregunta, si no, 0)
+                        const valorRespuesta = (seleccionada === letraCorrecta) ? valorPregunta : 0;
 
-        respuestasUsuario.push({
-            pregunta: pregunta.pregunta,
-            opciones: pregunta.opciones,
-            respuesta_correcta: letraCorrecta,
-            respuesta_usuario: seleccionada
-        });
-    });
+                        if (valorRespuesta > 0) {
+                            score += valorRespuesta;
+                        }
 
-    if (!todasRespondidas) {
-        Swal.fire({
-            icon: 'warning',
-            title: '¡Faltan respuestas!',
-            text: 'Por favor, responde todas las preguntas antes de finalizar.',
-            confirmButtonText: 'Entendido'
-        });
-        return;
-    }
+                        respuestasUsuario.push({
+                            pregunta: pregunta.pregunta,
+                            opciones: pregunta.opciones,
+                            respuesta_correcta: letraCorrecta,
+                            respuesta_seleccionada: seleccionada,
+                            valor_pregunta: valorPregunta,
+                            valor_respuesta: valorRespuesta
+                        });
+                    });
+                    // ...existing code...
 
-    // Agrega el JSON de respuestas a un input oculto
-    let inputJson = document.createElement('input');
-    inputJson.type = 'hidden';
-    inputJson.name = 'respuesta_json';
-    inputJson.value = JSON.stringify(respuestasUsuario);
-    formEl.appendChild(inputJson);
+                    if (!todasRespondidas) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '¡Faltan respuestas!',
+                            text: 'Por favor, responde todas las preguntas antes de finalizar.',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return;
+                    }
 
-    // Envía el formulario
-    formEl.submit();
-});
+                    // Agrega el JSON de respuestas a un input oculto
+                    let inputJson = document.createElement('input');
+                    inputJson.type = 'hidden';
+                    inputJson.name = 'respuesta_json';
+                    inputJson.value = JSON.stringify(respuestasUsuario);
+                    formEl.appendChild(inputJson);
+
+                    // Envía el formulario
+                    formEl.submit();
+                });
             }
 
             function mostrarJsonGenerado(json, score) {
@@ -126,14 +138,17 @@
             // Renderiza el formulario al cargar la página
             renderizarFormulario(preguntas);
         });
-        
+
         function sendIframeHeight() {
             const height = document.body.scrollHeight;
-            window.parent.postMessage({ type: "iframeHeight", height: height }, "*");
+            window.parent.postMessage({
+                type: "iframeHeight",
+                height: height
+            }, "*");
         }
         window.onload = sendIframeHeight;
         window.onresize = sendIframeHeight;
-        setTimeout(sendIframeHeight, 500); // Por si hay contenido dinámico
+        setTimeout(sendIframeHeight, 500);
     </script>
 </body>
 </html>

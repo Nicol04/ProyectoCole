@@ -21,20 +21,39 @@ class ExamenPreguntaController extends Controller
         $intentos = null;
         $ultimoIntento = null;
 
-    if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
-        $user = Auth::user();
-        $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
-            ->where('user_id', $user->id)
-            ->count();
-        $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
+        if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
+            $user = Auth::user();
+            $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                ->where('user_id', $user->id)
+                ->count();
+            $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
 
-        // Obtener el último intento
-        $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
-            ->where('user_id', $user->id)
-            ->orderByDesc('created_at')
-            ->first();
-    }
-        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json', 'intentos', 'ultimoIntento'));
+
+            // Obtener el último intento
+            $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                ->where('user_id', $user->id)
+                ->orderByDesc('created_at')
+                ->first();
+
+
+            $intentosConRespuestas = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                ->where('user_id', $user->id)
+                ->orderByDesc('created_at')
+                ->get()
+                ->map(function ($intento) use ($user) {
+                    $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento->id)
+                        ->where('user_id', $user->id)
+                        ->first();
+                        $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
+                    return [
+                        'intento' => $intento,
+                        'respuesta_json' => $respuesta ? $respuesta->respuesta_json : null,
+                        'fecha_respuesta' => $respuesta ? $respuesta->fecha_respuesta : null,
+                        'calificacion' => $calificacion,
+                    ];
+                });
+        }
+        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json', 'intentos', 'ultimoIntento', 'intentosConRespuestas'));
     }
 
     public function generarExamen($evaluacion_id)
@@ -119,14 +138,15 @@ class ExamenPreguntaController extends Controller
             'icono' => 'success'
         ]);
     }
-    public function edit($id, Request $request){
+    public function edit($id, Request $request)
+    {
         $examenPregunta = ExamenPregunta::findOrFail($id);
         $preguntas_json = json_decode($examenPregunta->examen_json, true);
         $evaluacion_id = $request->query('evaluacion_id');
         $evaluacion = Evaluacion::find($evaluacion_id);
         return view('panel.examenes.edit', compact('examenPregunta', 'preguntas_json', 'evaluacion', 'evaluacion_id'));
     }
-    
+
     public function update(Request $request, $id)
     {
         $request->validate([
