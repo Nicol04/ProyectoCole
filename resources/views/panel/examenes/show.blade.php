@@ -356,98 +356,220 @@
             @endif
         @endif
     @endif
-
-    {{-- Historial de exámenes finalizados --}}
-    <section class="kids-care-event-area">
-        <div class="container-fluid custom-container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <h2 class="area-heading font-red">Historial de exámenes finalizados</h2>
+    @if ($roleId == 3)
+        {{-- Historial de exámenes finalizados --}}
+        <section class="kids-care-event-area">
+            <div class="container-fluid custom-container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h2 class="area-heading font-red">Historial de exámenes finalizados</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="inner-container">
-                <div class="row justify-content-center">
-                    @php
-                        $imagenes = [
-                            asset('assets/img/panel/event-1.jpg'),
-                            asset('assets/img/panel/event-2.jpg'),
-                            asset('assets/img/panel/event-3.jpg'),
-                            asset('assets/img/panel/event-4.jpg'),
-                        ];
-                    @endphp
-                    @foreach ($intentosConRespuestas as $idx => $registro)
+                <div class="inner-container">
+                    <div class="row justify-content-center">
                         @php
-                            $respuestas = $registro['respuesta_json']
-                                ? json_decode($registro['respuesta_json'], true)
-                                : [];
-                            $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
-                            $examenTitulo = $evaluacion->titulo ?? 'Examen';
-                            $fechaFin = $registro['fecha_respuesta']
-                                ? \Carbon\Carbon::parse($registro['fecha_respuesta'])->format('d/m/Y H:i')
-                                : '-';
-                            $img = $imagenes[$idx % count($imagenes)];
-                            $calificacion = $registro['calificacion'] ?? null;
-                            $estado = $calificacion->estado ?? null;
-                            $colorEstado = $estado === 'Aprobado' ? 'bg-success text-white' : 'bg-danger text-white';
-                            $textoEstado = $estado ? strtoupper($estado) : 'SIN ESTADO';
-                            $puntaje = $calificacion
-                                ? "{$calificacion->puntaje_total}/{$calificacion->puntaje_maximo}"
-                                : "{$puntajeTotal}";
+                            $imagenes = [
+                                asset('assets/img/panel/event-1.jpg'),
+                                asset('assets/img/panel/event-2.jpg'),
+                                asset('assets/img/panel/event-3.jpg'),
+                                asset('assets/img/panel/event-4.jpg'),
+                            ];
                         @endphp
-                        @if ($registro['respuesta_json'])
-                            <div class="col-sm-6 col-xl-3 d-flex justify-content-center">
-                                <div class="single-event wow fadeInUp position-relative" data-wow-delay=".5s">
-                                    <img src="{{ $img }}" alt="">
-                                    <span
-                                        class="badge-intento position-absolute top-0 start-0 translate-middle-y ms-3 mt-3">
-                                        <span class="num-intento">{{ $loop->iteration }}</span>
-                                        <span class="txt-intento">intento</span>
-                                    </span>
-                                    <div class="intro d-flex justify-content-between align-items-center">
-                                        <div class="intro-left text-center">
-                                            <h3><a href="#">{{ $examenTitulo }}</a></h3>
-                                            <span>{{ $fechaFin }}</span>
+                        @foreach ($intentosConRespuestas as $idx => $registro)
+                            @php
+                                $respuestas = $registro['respuesta_json']
+                                    ? json_decode($registro['respuesta_json'], true)
+                                    : [];
+                                $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
+                                $examenTitulo = $evaluacion->titulo ?? 'Examen';
+                                $fechaFin = $registro['fecha_respuesta']
+                                    ? \Carbon\Carbon::parse($registro['fecha_respuesta'])->format('d/m/Y H:i')
+                                    : '-';
+                                $img = $imagenes[$idx % count($imagenes)];
+                                $calificacion = $registro['calificacion'] ?? null;
+                                $estado = $calificacion->estado ?? null;
+                                $colorEstado =
+                                    $estado === 'Aprobado' ? 'bg-success text-white' : 'bg-danger text-white';
+                                $textoEstado = $estado ? strtoupper($estado) : 'SIN ESTADO';
+                                $puntaje = $calificacion
+                                    ? "{$calificacion->puntaje_total}/{$calificacion->puntaje_maximo}"
+                                    : "{$puntajeTotal}";
+                            @endphp
+                            @if ($registro['respuesta_json'])
+                                <div class="col-sm-6 col-xl-3 d-flex justify-content-center">
+                                    <div class="single-event wow fadeInUp position-relative" data-wow-delay=".5s">
+                                        <img src="{{ $img }}" alt="">
+                                        <span
+                                            class="badge-intento position-absolute top-0 start-0 translate-middle-y ms-3 mt-3">
+                                            <span class="num-intento">{{ $loop->iteration }}</span>
+                                            <span class="txt-intento">intento</span>
+                                        </span>
+                                        <div class="intro d-flex justify-content-between align-items-center">
+                                            <div class="intro-left text-center">
+                                                <h3><a href="#">{{ $examenTitulo }}</a></h3>
+                                                <span>{{ $fechaFin }}</span>
+                                            </div>
+                                            <div class="intro-right ms-2">
+                                                <span
+                                                    class="age {{ $colorEstado }} px-3 py-1 rounded-pill d-block mb-1">
+                                                    {{ $textoEstado }}
+                                                </span>
+                                                <span class="fw-bold d-block text-dark">
+                                                    Puntaje: {{ $puntaje }}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="intro-right ms-2">
-                                            <span class="age {{ $colorEstado }} px-3 py-1 rounded-pill d-block mb-1">
-                                                {{ $textoEstado }}
-                                            </span>
-                                            <span class="fw-bold d-block text-dark">
-                                                Puntaje: {{ $puntaje }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="details">
-                                        <div class="event-btn">
-                                            <a href="javascript:void(0);"
-                                                onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['intento']->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento && $ultimoIntento->revision_vista ? 'true' : 'false' }})"
-                                                class="kids-care-btn bgc-orange">
-                                                Ver revisión del examen
-                                            </a>
+                                        <div class="details">
+                                            <div class="event-btn">
+                                                <a href="javascript:void(0);"
+onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['intento']->id]) }}', {{ $intentos ?? 0 }}, {{ $registro['intento']->revision_vista ? 'true' : 'false' }})"                                                    class="kids-care-btn bgc-orange">
+                                                    Ver revisión del examen
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            @endif
+                        @endforeach
+                        @if (count($intentosConRespuestas) == 0)
+                            <div class="col-12">
+                                <div class="alert alert-info text-center">
+                                    No tienes exámenes finalizados aún.
+                                </div>
                             </div>
                         @endif
-                    @endforeach
-                    @if (count($intentosConRespuestas) == 0)
-                        <div class="col-12">
-                            <div class="alert alert-info text-center">
-                                No tienes exámenes finalizados aún.
-                            </div>
-                        </div>
-                    @endif
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
+    @if ($roleId == 2)
+        <section class="kids-care-event-area">
+            <div class="container-fluid custom-container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <h2 class="area-heading font-red">Historial de estudiantes</h2>
+                    </div>
+                </div>
+                <div class="inner-container">
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle table-historial-estudiantes">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Avatar</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Estado</th>
+                                    <th>Puntaje</th>
+                                    <th>Intentos realizados</th>
+                                    <th>Porcentaje</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($estudiantes as $estudiante)
+                                    @php
+
+                                        $persona = $estudiante->persona;
+                                        $intentos = $estudiante->intentos ?? [];
+                                        $ultimoIntento = $intentos->last();
+                                        $estado = $ultimoIntento ? ucfirst($ultimoIntento->estado) : 'Sin intento';
+                                        $puntaje =
+                                            $ultimoIntento && $ultimoIntento->calificacion
+                                                ? $ultimoIntento->calificacion->puntaje_total
+                                                : 0;
+                                        $puntajeMax =
+                                            $ultimoIntento && $ultimoIntento->calificacion
+                                                ? $ultimoIntento->calificacion->puntaje_maximo
+                                                : 0;
+                                        $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
+                                        $estadoCalificacion =
+                                            $ultimoIntento && $ultimoIntento->calificacion
+                                                ? strtoupper($ultimoIntento->calificacion->estado)
+                                                : 'SIN ESTADO';
+                                        $colorEstado = $estadoCalificacion === 'APROBADO' ? 'bg-success' : 'bg-danger';
+                                    @endphp
+                                    <tr>
+                                        <td>
+                                            <img src="{{ asset('storage/' . ($estudiante->avatar?->path ?? 'avatares/avatar_defecto.png')) }}"
+                                                alt="Avatar del estudiante" class="avatar-img">
+                                        </td>
+                                        <td class="nombre">{{ $persona->nombre ?? '-' }}</td>
+                                        <td class="apellido">{{ $persona->apellido ?? '-' }}</td>
+                                        <td>
+                                            @if ($estado == 'En progreso')
+                                                <span class="badge bg-warning text-dark">{{ $estado }}</span>
+                                            @elseif($estado == 'Finalizado')
+                                                <span class="badge bg-success">{{ $estado }}</span>
+                                            @else
+                                                <span class="badge bg-secondary">{{ $estado }}</span>
+                                            @endif
+                                        </td>
+                                        @php
+                                            $badgeEstado = 'badge ';
+                                            if ($estadoCalificacion === 'APROBADO') {
+                                                $badgeEstado .= 'bg-success text-white';
+                                            } elseif ($estadoCalificacion === 'DESAPROBADO') {
+                                                $badgeEstado .= 'bg-danger text-white';
+                                            } elseif ($estadoCalificacion === 'SIN ESTADO') {
+                                                $badgeEstado .= 'bg-primary text-white';
+                                            } else {
+                                                $badgeEstado .= 'bg-secondary text-white';
+                                            }
+                                        @endphp
+                                        <td>{{ $puntaje }}/{{ $puntajeMax }}</td>
+
+                                        <td>{{ $intentos->count() }}</td>
+                                        <td style="min-width:120px;">
+                                            <div class="progress" style="height: 22px;">
+                                                <div class="progress-bar {{ $colorEstado }}" role="progressbar"
+                                                    style="width: {{ $porcentaje }}%;"
+                                                    aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $porcentaje }}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="{{ $badgeEstado }}">{{ $estadoCalificacion }}</span>
+                                        </td>
+                                        <td>
+                                            @if ($ultimoIntento)
+                                                <a href="javascript:void(0);"
+                                                    onclick="verRevision('{{ route('examen.revision', ['intento_id' => $ultimoIntento->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento->revision_vista ? 'true' : 'false' }})"
+                                                    class="btn btn-sm btn-info" title="Ver revisión">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger ms-1"
+                                                    onclick="confirmarEliminarIntento({{ $ultimoIntento->id }})"
+                                                    title="Eliminar intento">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            @else
+                                                <span class="text-muted">Sin intento</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <div id="revisionFullScreen"
         style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fff; z-index:9999;">
         <button onclick="cerrarRevision()" class="btn btn-danger m-3 position-absolute"
             style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
         <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
-            style="border: none; min-height:100vh; background:#fff;"></iframe>
+            style="border: none; min-height:100vh; background:#fff;">
+        </iframe>
     </div>
+
     <script>
         window.addEventListener("message", function(event) {
             if (event.data.type === "iframeHeight") {
@@ -465,10 +587,8 @@
                 height: height
             }, "*");
         }
-
         window.onload = sendIframeHeight;
         window.onresize = sendIframeHeight;
-
         window.addEventListener("message", function(event) {
             if (event.data.type === "redirect" && event.data.url) {
                 window.location.href = event.data.url;
@@ -476,25 +596,30 @@
         });
 
         function verRevision(url, quedanIntentos, revisionVista) {
-            // Si no quedan intentos o ya vio la revisión, abre directamente
-            if (quedanIntentos <= 0 || revisionVista) {
-                abrirRevision(url);
-                return;
-            }
-            // Si quedan intentos y no ha visto la revisión, pregunta
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, ver revisión',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    abrirRevision(url);
-                }
-            });
+    // Si es docente, abre directamente la revisión
+    @if ($roleId == 2)
+        abrirRevision(url);
+        return;
+    @endif
+
+    // Para estudiantes, sigue la lógica normal
+    if (quedanIntentos <= 0 || revisionVista) {
+        abrirRevision(url);
+        return;
+    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, ver revisión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            abrirRevision(url);
         }
+    });
+}
 
         function abrirRevision(url) {
             document.body.style.overflow = 'hidden';
@@ -512,6 +637,43 @@
         function ocultarBotonNuevoIntento() {
             var btn = document.getElementById('btnNuevoIntento');
             if (btn) btn.style.display = 'none';
+        }
+
+        function confirmarEliminarIntento(intentoId) {
+            Swal.fire({
+                title: '¿Eliminar intento?',
+                text: 'Esta acción eliminará el intento, su calificación y sus respuestas. ¿Deseas continuar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    eliminarIntento(intentoId);
+                }
+            });
+        }
+
+        function eliminarIntento(intentoId) {
+            fetch("{{ url('/intentos') }}/" + intentoId, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Eliminado', data.message, 'success')
+                            .then(() => location.reload());
+                    } else {
+                        Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
+                    }
+                })
+                .catch(() => {
+                    Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
+                });
         }
     </script>
     @include('panel.includes.footer3')

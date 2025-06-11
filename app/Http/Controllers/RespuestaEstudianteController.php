@@ -73,12 +73,24 @@ class RespuestaEstudianteController extends Controller
     public function revision($intento_id)
     {
         $intento = \App\Models\IntentoEvaluacion::findOrFail($intento_id);
-        if (!$intento->revision_vista) {
+        if (Auth::user()->roles->first()?->id == 3 && !$intento->revision_vista) {
             $intento->revision_vista = true;
             $intento->save();
         }
         $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento_id)->firstOrFail();
         $respuestas = json_decode($respuesta->respuesta_json, true);
         return view('panel.examenes.revision', compact('respuestas'));
+    }
+    public function destroy($id)
+    {
+        $intento = \App\Models\IntentoEvaluacion::findOrFail($id);
+        \App\Models\Respuesta_estudiante::where('intento_id', $id)->delete();
+
+        // Elimina calificaciones relacionadas
+        \App\Models\Calificacion::where('intento_id', $id)->delete();
+
+        // Elimina el intento
+        $intento->delete();
+        return response()->json(['success' => true, 'message' => 'Intento eliminado exitosamente']);
     }
 }

@@ -14,27 +14,30 @@ class ExamenPreguntaController extends Controller
 {
 
     public function show($evaluacion_id)
-    {
-        $evaluacion = Evaluacion::findOrFail($evaluacion_id);
-        $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
-        $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
-        $intentos = null;
-        $ultimoIntento = null;
+{
+    $evaluacion = Evaluacion::findOrFail($evaluacion_id);
+    $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
+    $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
+    $intentos = null;
+    $ultimoIntento = null;
+    $intentosConRespuestas = [];
+    $estudiantes = [];
 
-        if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
+    if (Auth::check()) {
+        $roleId = Auth::user()->roles->first()?->id;
+
+        // Para estudiantes
+        if ($roleId == 3) {
             $user = Auth::user();
             $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
                 ->where('user_id', $user->id)
                 ->count();
             $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
 
-
-            // Obtener el último intento
             $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
                 ->where('user_id', $user->id)
                 ->orderByDesc('created_at')
                 ->first();
-
 
             $intentosConRespuestas = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
                 ->where('user_id', $user->id)
@@ -44,7 +47,7 @@ class ExamenPreguntaController extends Controller
                     $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento->id)
                         ->where('user_id', $user->id)
                         ->first();
-                        $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
+                    $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
                     return [
                         'intento' => $intento,
                         'respuesta_json' => $respuesta ? $respuesta->respuesta_json : null,
@@ -53,8 +56,34 @@ class ExamenPreguntaController extends Controller
                     ];
                 });
         }
-        return view('panel.examenes.show', compact('evaluacion', 'preguntas_json', 'intentos', 'ultimoIntento', 'intentosConRespuestas'));
+
+        // Para docentes
+        if ($roleId == 2) {
+            $estudiantes = \App\Models\User::whereHas('roles', function($q){
+                    $q->where('id', 3); // Solo estudiantes
+                })
+                ->with([
+                    'persona',
+                    'avatar',
+                    'intentos' => function($q) use ($evaluacion_id) {
+                        $q->where('evaluacion_id', $evaluacion_id)
+                          ->with('calificacion')
+                          ->orderBy('created_at');
+                    }
+                ])
+                ->get();
+        }
     }
+
+    return view('panel.examenes.show', compact(
+        'evaluacion',
+        'preguntas_json',
+        'intentos',
+        'ultimoIntento',
+        'intentosConRespuestas',
+        'estudiantes' // <-- pásalo a la vista
+    ));
+}
 
     public function generarExamen($evaluacion_id)
     {
