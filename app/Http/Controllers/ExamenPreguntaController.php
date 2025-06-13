@@ -14,76 +14,81 @@ class ExamenPreguntaController extends Controller
 {
 
     public function show($evaluacion_id)
-{
-    $evaluacion = Evaluacion::findOrFail($evaluacion_id);
-    $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
-    $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
-    $intentos = null;
-    $ultimoIntento = null;
-    $intentosConRespuestas = [];
-    $estudiantes = [];
+    {
+        $evaluacion = Evaluacion::findOrFail($evaluacion_id);
+        $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
+        $preguntas_json = $examenPregunta ? json_decode($examenPregunta->examen_json, true) : [];
+        $intentos = null;
+        $ultimoIntento = null;
+        $intentosConRespuestas = [];
+        $estudiantes = [];
+        $intentoEnProceso = null;
+        if (Auth::check()) {
+            $roleId = Auth::user()->roles->first()?->id;
 
-    if (Auth::check()) {
-        $roleId = Auth::user()->roles->first()?->id;
+            // Para estudiantes
+            if ($roleId == 3) {
+                $user = Auth::user();
+                $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                    ->where('user_id', $user->id)
+                    ->count();
+                $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
 
-        // Para estudiantes
-        if ($roleId == 3) {
-            $user = Auth::user();
-            $intentosActuales = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
-                ->where('user_id', $user->id)
-                ->count();
-            $intentos = max(0, $evaluacion->cantidad_intentos - $intentosActuales);
+                $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                    ->where('user_id', $user->id)
+                    ->orderByDesc('created_at')
+                    ->first();
 
-            $ultimoIntento = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
-                ->where('user_id', $user->id)
-                ->orderByDesc('created_at')
-                ->first();
+                $intentosConRespuestas = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                    ->where('user_id', $user->id)
+                    ->orderByDesc('created_at')
+                    ->get()
+                    ->map(function ($intento) use ($user) {
+                        $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento->id)
+                            ->where('user_id', $user->id)
+                            ->first();
+                        $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
+                        return [
+                            'intento' => $intento,
+                            'respuesta_json' => $respuesta ? $respuesta->respuesta_json : null,
+                            'fecha_respuesta' => $respuesta ? $respuesta->fecha_respuesta : null,
+                            'calificacion' => $calificacion,
+                        ];
+                    });
+                $intentoEnProceso = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
+                    ->where('user_id', $user->id)
+                    ->where('estado', 'en progreso')
+                    ->exists();
+            }
 
-            $intentosConRespuestas = IntentoEvaluacion::where('evaluacion_id', $evaluacion_id)
-                ->where('user_id', $user->id)
-                ->orderByDesc('created_at')
-                ->get()
-                ->map(function ($intento) use ($user) {
-                    $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento->id)
-                        ->where('user_id', $user->id)
-                        ->first();
-                    $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
-                    return [
-                        'intento' => $intento,
-                        'respuesta_json' => $respuesta ? $respuesta->respuesta_json : null,
-                        'fecha_respuesta' => $respuesta ? $respuesta->fecha_respuesta : null,
-                        'calificacion' => $calificacion,
-                    ];
-                });
-        }
-
-        // Para docentes
-        if ($roleId == 2) {
-            $estudiantes = \App\Models\User::whereHas('roles', function($q){
+            // Para docentes
+            if ($roleId == 2) {
+                $estudiantes = \App\Models\User::whereHas('roles', function ($q) {
                     $q->where('id', 3); // Solo estudiantes
                 })
-                ->with([
-                    'persona',
-                    'avatar',
-                    'intentos' => function($q) use ($evaluacion_id) {
-                        $q->where('evaluacion_id', $evaluacion_id)
-                          ->with('calificacion')
-                          ->orderBy('created_at');
-                    }
-                ])
-                ->get();
+                    ->with([
+                        'persona',
+                        'avatar',
+                        'intentos' => function ($q) use ($evaluacion_id) {
+                            $q->where('evaluacion_id', $evaluacion_id)
+                                ->with('calificacion')
+                                ->orderBy('created_at');
+                        }
+                    ])
+                    ->get();
+            }
         }
-    }
 
-    return view('panel.examenes.show', compact(
-        'evaluacion',
-        'preguntas_json',
-        'intentos',
-        'ultimoIntento',
-        'intentosConRespuestas',
-        'estudiantes' // <-- pásalo a la vista
-    ));
-}
+        return view('panel.examenes.show', compact(
+            'evaluacion',
+            'preguntas_json',
+            'intentos',
+            'ultimoIntento',
+            'intentosConRespuestas',
+            'estudiantes',
+            'intentoEnProceso'
+        ));
+    }
 
     public function generarExamen($evaluacion_id)
     {
@@ -186,6 +191,7 @@ class ExamenPreguntaController extends Controller
         // Actualiza la cantidad de intentos en la evaluación
         $evaluacion = Evaluacion::findOrFail($request->input('evaluacion_id'));
         $evaluacion->cantidad_intentos = $request->input('cantidad_intentos');
+        $evaluacion->visible = $request->boolean('visible');
         $evaluacion->save();
 
         // Redirige al show del examen en la página padre usando iframe_redirect

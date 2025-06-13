@@ -358,7 +358,8 @@
     @endif
     @if ($roleId == 3)
         {{-- Historial de exámenes finalizados --}}
-        <section class="kids-care-event-area">
+        @if (!$intentoEnProceso)
+        <intentos_evaluacion
             <div class="container-fluid custom-container">
                 <div class="row">
                     <div class="col-xl-12">
@@ -422,7 +423,8 @@
                                         <div class="details">
                                             <div class="event-btn">
                                                 <a href="javascript:void(0);"
-onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['intento']->id]) }}', {{ $intentos ?? 0 }}, {{ $registro['intento']->revision_vista ? 'true' : 'false' }})"                                                    class="kids-care-btn bgc-orange">
+                                                    onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['intento']->id]) }}', {{ $intentos ?? 0 }}, {{ $registro['intento']->revision_vista ? 'true' : 'false' }})"
+                                                    class="kids-care-btn bgc-orange">
                                                     Ver revisión del examen
                                                 </a>
                                             </div>
@@ -442,6 +444,11 @@ onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['in
                 </div>
             </div>
         </section>
+        @else
+        <div class="alert alert-warning text-center my-4">
+            Tienes un examen en proceso. Finalízalo antes de ver tu historial.
+        </div>
+        @endif
     @endif
 
     @if ($roleId == 2)
@@ -475,19 +482,23 @@ onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['in
                                         $persona = $estudiante->persona;
                                         $intentos = $estudiante->intentos ?? [];
                                         $ultimoIntento = $intentos->last();
+                                        $mejorIntento = $intentos->sortByDesc(function($i) {
+                                            return $i->calificacion->puntaje_total ?? 0;
+                                        })->first();
+                                        
                                         $estado = $ultimoIntento ? ucfirst($ultimoIntento->estado) : 'Sin intento';
                                         $puntaje =
-                                            $ultimoIntento && $ultimoIntento->calificacion
-                                                ? $ultimoIntento->calificacion->puntaje_total
+                                            $mejorIntento && $mejorIntento->calificacion
+                                                ? $mejorIntento->calificacion->puntaje_total
                                                 : 0;
                                         $puntajeMax =
-                                            $ultimoIntento && $ultimoIntento->calificacion
-                                                ? $ultimoIntento->calificacion->puntaje_maximo
+                                            $mejorIntento && $mejorIntento->calificacion
+                                                ? $mejorIntento->calificacion->puntaje_maximo
                                                 : 0;
                                         $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
                                         $estadoCalificacion =
-                                            $ultimoIntento && $ultimoIntento->calificacion
-                                                ? strtoupper($ultimoIntento->calificacion->estado)
+                                            $mejorIntento && $mejorIntento->calificacion
+                                                ? strtoupper($mejorIntento->calificacion->estado)
                                                 : 'SIN ESTADO';
                                         $colorEstado = $estadoCalificacion === 'APROBADO' ? 'bg-success' : 'bg-danger';
                                     @endphp
@@ -537,16 +548,20 @@ onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['in
                                         </td>
                                         <td>
                                             @if ($ultimoIntento)
-                                                <a href="javascript:void(0);"
-                                                    onclick="verRevision('{{ route('examen.revision', ['intento_id' => $ultimoIntento->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento->revision_vista ? 'true' : 'false' }})"
-                                                    class="btn btn-sm btn-info" title="Ver revisión">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-danger ms-1"
-                                                    onclick="confirmarEliminarIntento({{ $ultimoIntento->id }})"
-                                                    title="Eliminar intento">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
+                                                @if ($ultimoIntento->estado === 'finalizado')
+                                                    <a href="javascript:void(0);"
+                                                        onclick="verRevision('{{ route('examen.revision', ['intento_id' => $ultimoIntento->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento->revision_vista ? 'true' : 'false' }})"
+                                                        class="btn btn-sm btn-info" title="Ver revisión">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-sm btn-danger ms-1"
+                                                        onclick="confirmarEliminarIntento({{ $ultimoIntento->id }})"
+                                                        title="Eliminar intento">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                @else
+                                                    <span class="text-warning">En proceso...</span>
+                                                @endif
                                             @else
                                                 <span class="text-muted">Sin intento</span>
                                             @endif
@@ -596,30 +611,30 @@ onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['in
         });
 
         function verRevision(url, quedanIntentos, revisionVista) {
-    // Si es docente, abre directamente la revisión
-    @if ($roleId == 2)
-        abrirRevision(url);
-        return;
-    @endif
+            // Si es docente, abre directamente la revisión
+            @if ($roleId == 2)
+                abrirRevision(url);
+                return;
+            @endif
 
-    // Para estudiantes, sigue la lógica normal
-    if (quedanIntentos <= 0 || revisionVista) {
-        abrirRevision(url);
-        return;
-    }
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, ver revisión',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            abrirRevision(url);
+            // Para estudiantes, sigue la lógica normal
+            if (quedanIntentos <= 0 || revisionVista) {
+                abrirRevision(url);
+                return;
+            }
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, ver revisión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    abrirRevision(url);
+                }
+            });
         }
-    });
-}
 
         function abrirRevision(url) {
             document.body.style.overflow = 'hidden';
@@ -642,7 +657,7 @@ onclick="verRevision('{{ route('examen.revision', ['intento_id' => $registro['in
         function confirmarEliminarIntento(intentoId) {
             Swal.fire({
                 title: '¿Eliminar intento?',
-                text: 'Esta acción eliminará el intento, su calificación y sus respuestas. ¿Deseas continuar?',
+                text: 'Esta acción eliminará el ÚLTIMO intento, su calificación y sus respuestas. ¿Deseas continuar?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Sí, eliminar',

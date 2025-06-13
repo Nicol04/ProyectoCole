@@ -13,6 +13,21 @@
     <main class="container w-75 mx-auto gy-4">
         <section class="bg-white border border-secondary p-4 rounded-3 shadow-lg gy-3">
             <h2 class="fs-1 fw-bold text-center text-primary mb-4">Examen</h2>
+            <section class="d-flex flex-column align-items-center justify-content-center my-4">
+
+                @if ($evaluacion->visible)
+                    @if ($evaluacion->imagen_url)
+                        <img src="{{ asset('storage/' . $evaluacion->imagen_url) }}" alt="Imagen de la evaluación"
+                            class="img-fluid mb-3 shadow">
+                    @endif
+                    @if ($evaluacion->texto)
+                        <textarea class="form-control mb-3 mx-auto" rows="5" style="max-width: 500px; min-width: 300px; resize: vertical;"
+                            readonly>{{ $evaluacion->texto }}</textarea>
+                    @endif
+                @else
+                    <div class="alert alert-warning text-center w-100">Suerte en tu examen!</div>
+                @endif
+            </section>
             <section id="contenedorFormulario" class="gy-3"></section>
         </section>
     </main>
@@ -151,4 +166,5 @@
         setTimeout(sendIframeHeight, 500);
     </script>
 </body>
+
 </html>

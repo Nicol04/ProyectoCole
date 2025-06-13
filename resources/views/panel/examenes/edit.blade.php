@@ -14,6 +14,16 @@
                 <label class="form-label small fw-semibold mb-2 text-secondary">📄 Estado del examen:</label>
                 <div id="mensajeExamen" class="alert d-none"></div>
             </div>
+            <section class="d-flex flex-column align-items-center justify-content-center my-4">
+                @if ($evaluacion->imagen_url)
+                    <img src="{{ asset('storage/' . $evaluacion->imagen_url) }}" alt="Imagen de la evaluación"
+                        class="img-fluid mb-3 shadow">
+                @endif
+                @if ($evaluacion->texto)
+                    <textarea class="form-control mb-3 mx-auto" rows="5" style="max-width: 500px; min-width: 300px; resize: vertical;"
+                        readonly>{{ $evaluacion->texto }}</textarea>
+                @endif
+            </section>
             <section id="contenedorFormulario" class="gy-3"></section>
         </section>
     </main>
@@ -49,6 +59,15 @@ let html = '';
                 <input class="form-check-input" type="checkbox" id="es_supervisado" name="es_supervisado" value="1" {{ $evaluacion->es_supervisado ? 'checked' : '' }}>
                 <label class="form-check-label" for="es_supervisado">
                     Supervisado
+                </label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-semibold">¿El material es visible para estudiantes?</label>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="visible" name="visible" value="1" {{ $evaluacion->visible ? 'checked' : '' }}>
+                <label class="form-check-label" for="visible">
+                    Visible para estudiantes
                 </label>
             </div>
         </div>
