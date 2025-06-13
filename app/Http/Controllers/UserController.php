@@ -41,7 +41,20 @@ class UserController extends Controller
     public function editarAvatar($id)
     {
         $user = User::findOrFail($id);
-        $avatars = Avatar_usuarios::all();
+        $rol = $user->roles->first()?->name; // 'estudiante' o 'docente'
+        $genero = $user->persona->genero ?? null; // 'masculino' o 'femenino'
+
+        // Determinar prefijo según rol y género
+        $prefijo = '';
+        if ($rol === 'Estudiante') {
+            $prefijo = ($genero === 'Masculino') ? 'ME' : 'FE';
+        } elseif ($rol === 'Docente') {
+            $prefijo = ($genero === 'Masculino') ? 'MD' : 'FD';
+        }
+
+        // Filtrar avatares por prefijo
+        $avatars = Avatar_usuarios::where('name', 'like', $prefijo . '%')->get();
+
         return view('panel.perfil.edit', compact('user', 'avatars'));
     }
     public function actualizarAvatar(Request $request, $id)

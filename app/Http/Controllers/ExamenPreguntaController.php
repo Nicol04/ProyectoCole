@@ -123,7 +123,6 @@ class ExamenPreguntaController extends Controller
 
         $preguntas_json = json_decode($examenPregunta->examen_json, true);
 
-        // Cambia aquí: pasa 'evaluacion_id' => $evaluacion_id
         return view('panel.examenes.renderizar', [
             'evaluacion_id' => $evaluacion_id,
             'cantidad_preguntas' => $cantidad_preguntas,
@@ -138,8 +137,6 @@ class ExamenPreguntaController extends Controller
     {
         $evaluacion_id = $request->input('evaluacion_id');
         $examen_json = $request->input('jsonFinal');
-        $imagen_url = $request->input('imagen_url');
-        $texto = $request->input('texto');
 
         $request->validate([
             'evaluacion_id' => 'required|integer|exists:evaluacions,id',
@@ -152,15 +149,13 @@ class ExamenPreguntaController extends Controller
         $examenPregunta->save();
         $evaluacion = Evaluacion::findOrFail($evaluacion_id);
 
-        if ($imagen_url) {
-            $evaluacion->imagen_url = $imagen_url;
-            $evaluacion->texto = null;
-        }
-        if ($texto) {
-            $evaluacion->texto = $texto;
-            $evaluacion->imagen_url = null;
+        if ($request->has('visible')) {
+            $evaluacion->visible = $request->boolean('visible');
+        } else {
+            $evaluacion->visible = false;
         }
         $evaluacion->save();
+
         return response()->view('panel.iframe_redirect', [
             'url' => route('evaluaciones.examen', ['evaluacion_id' => $evaluacion_id]),
             'mensaje' => 'Examen guardado correctamente.',

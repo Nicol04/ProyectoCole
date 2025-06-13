@@ -44,26 +44,44 @@
                 </div>
             </div>
             <div class="inner-container">
-                <div class="row">
-                    <div class="teacher-car-start owl-carousel owl-theme">
-                        @foreach ($avatars as $avatar)
-                            <div class="single-teacher item text-center">
-                                <div class="teacher-img position-relative">
-                                    <label class="avatar-label d-block">
-                                        <input type="radio" name="avatar_id" value="{{ $avatar->id }}" class="d-none" required>
-                                        <img src="{{ asset('storage/' . $avatar->path) }}" alt="{{ $avatar->name }}"
-                                            class="avatar-img"
-                                            style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid transparent; cursor: pointer;">
-                                    </label>
-                                </div>
-                                <div class="teacher-detail mt-2">
-                                    <h4 class="mb-0">{{ $avatar->name }}</h4>
-                                    <p class="text-muted">Haz clic para seleccionar</p>
-                                </div>
-                            </div>
-                        @endforeach
+    <div class="row">
+        @if(count($avatars) > 1)
+            <div class="teacher-car-start owl-carousel owl-theme">
+                @foreach ($avatars as $avatar)
+                    <div class="single-teacher item text-center">
+                        <div class="teacher-img position-relative">
+                            <label class="avatar-label d-block">
+                                <input type="radio" name="avatar_id" value="{{ $avatar->id }}" class="d-none" required>
+                                <img src="{{ asset('storage/' . $avatar->path) }}" alt="{{ $avatar->name }}"
+                                    class="avatar-img"
+                                    style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid transparent; cursor: pointer;">
+                            </label>
+                        </div>
+                        <div class="teacher-detail mt-2">
+                            <p class="text-muted">Haz clic para seleccionar</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            @foreach ($avatars as $avatar)
+                <div class="single-teacher item text-center" style="margin: 0 auto;">
+                    <div class="teacher-img position-relative">
+                        <label class="avatar-label d-block">
+                            <input type="radio" name="avatar_id" value="{{ $avatar->id }}" class="d-none" required>
+                            <img src="{{ asset('storage/' . $avatar->path) }}" alt="{{ $avatar->name }}"
+                                class="avatar-img"
+                                style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid transparent; cursor: pointer;">
+                        </label>
+                    </div>
+                    <div class="teacher-detail mt-2">
+                        <p class="text-muted">Haz clic para seleccionar</p>
                     </div>
                 </div>
+            @endforeach
+        @endif
+    </div>
+</div>
 
                 <!-- Botones -->
                 <div class="text-center mt-4 mb-5">
@@ -106,9 +124,7 @@
             });
         });
     });
-</script>
-
-<script>
+    
     $(document).ready(function () {
         var owl = $(".teacher-car-start");
 

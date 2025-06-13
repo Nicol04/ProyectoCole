@@ -7,6 +7,7 @@
 </head>
 
 <body>
+
     <div class="admission-process-area">
         <div class="container-fluid">
             <div class="row">
@@ -69,6 +70,15 @@
         </section>
     </main>
 
+    <form id="formActualizarEvaluacion" action="{{ route('evaluacion.actualizar', $evaluacion_id) }}" method="POST"
+        enctype="multipart/form-data" style="display:none;">
+        @csrf
+        @method('PUT')
+        <input type="file" name="imagen" id="inputImagenForm" style="display:none;">
+        <input type="hidden" name="texto" id="inputTextoForm">
+        <input type="hidden" name="accion" id="inputAccionForm">
+    </form>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script>
@@ -130,11 +140,11 @@
         function construirPrompt(numPreguntas, texto = '') {
             return `**Devuelve únicamente el array JSON** con la estructura exacta: 
         \`\`\`json
-            [
-                {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
-                ...
-            ]
-            \`\`\`
+                [
+                    {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
+                    ...
+                ]
+                \`\`\`
         **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
         ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
         }
@@ -167,63 +177,85 @@
                 }
 
                 renderizarFormulario(preguntas);
-                mostrarMensajeExamen('exito', '¡Preguntas generadas correctamente! Ahora puedes revisar y publicar el examen.');
+                mostrarMensajeExamen('exito',
+                    '¡Preguntas generadas correctamente! Ahora puedes revisar y publicar el examen.');
             } catch (e) {
-                mostrarMensajeExamen('error', "Error al procesar las preguntas generadas. Revisa el texto fuente o intenta de nuevo.");
+                mostrarMensajeExamen('error',
+                    "Error al procesar las preguntas generadas. Revisa el texto fuente o intenta de nuevo.");
                 console.error(e);
             }
         }
 
         async function enviarEntrada() {
-    const modo = document.getElementById('modoEntrada').value;
-    const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
+            const modo = document.getElementById('modoEntrada').value;
+            const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
 
-    if (modo === 'imagen') {
-        const input = document.getElementById('imagen');
-        const file = input.files[0];
-        if (!file) {
-            alert('Por favor selecciona una imagen.');
-            return;
-        }
-        mostrarSpinner(true);
-        try {
-            const base64 = await convertirABase64(file);
+            const form = document.getElementById('formActualizarEvaluacion');
+            const accionInput = document.getElementById('inputAccionForm');
+            const textoInput = document.getElementById('inputTextoForm');
+            const imagenInput = document.getElementById('inputImagenForm');
 
-            // EXTRAER TEXTO DE LA IMAGEN CON OCR
-            const { data: { text: textoExtraido } } = await Tesseract.recognize(
-                file,
-                'spa' // o 'eng' según el idioma
-            );
+            if (modo === 'imagen') {
+                const input = document.getElementById('imagen');
+                const file = input.files[0];
+                if (!file) {
+                    alert('Por favor selecciona una imagen.');
+                    return;
+                }
+                imagenInput.files = input.files;
+                accionInput.value = 'imagen';
+                textoInput.value = '';
+                const formData = new FormData(form);
 
-            if (!textoExtraido.trim()) {
-                mostrarSpinner(false);
-                mostrarMensajeExamen('error', 'No se pudo extraer texto de la imagen.');
-                return;
-            }
+                mostrarSpinner(true);
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData
+                    });
 
-            window.imageUrl = base64;
-            window.textoFuente = textoExtraido;
+                    const base64 = await convertirABase64(file);
 
-            const data = {
-                contents: [{
-                    parts: [
-                        { "text": construirPrompt(numPreguntas, textoExtraido) },
-                        {
-                            inline_data: {
-                                mime_type: file.type,
-                                data: base64.split(',')[1]
-                            }
+                    // EXTRAER TEXTO DE LA IMAGEN CON OCR
+                    const {
+                        data: {
+                            text: textoExtraido
                         }
-                    ]
-                }]
-            };
-            const res = await llamarGemini(data);
-            mostrarSpinner(false);
-            procesarRespuestaGemini(res);
-        } catch (err) {
-            mostrarSpinner(false);
-            document.getElementById('respuesta').textContent = 'Error: ' + err.message;
-        }
+                    } = await Tesseract.recognize(
+                        file,
+                        'spa' // o 'eng' según el idioma
+                    );
+
+                    if (!textoExtraido.trim()) {
+                        mostrarSpinner(false);
+                        mostrarMensajeExamen('error', 'No se pudo extraer texto de la imagen.');
+                        return;
+                    }
+
+                    window.imageUrl = base64;
+                    window.textoFuente = textoExtraido;
+
+                    const data = {
+                        contents: [{
+                            parts: [{
+                                    "text": construirPrompt(numPreguntas, textoExtraido)
+                                },
+                                {
+                                    inline_data: {
+                                        mime_type: file.type,
+                                        data: base64.split(',')[1]
+                                    }
+                                }
+                            ]
+                        }]
+                    };
+                    const res = await llamarGemini(data);
+                    mostrarSpinner(false);
+                    procesarRespuestaGemini(res);
+                } catch (err) {
+                    mostrarSpinner(false);
+                    document.getElementById('respuesta').textContent = 'Error: ' + err.message;
+                }
             } else if (modo === 'texto') {
                 // Modo texto: valida y envía el texto
                 const texto = document.getElementById('textoFuente').value.trim();
@@ -231,12 +263,23 @@
                     alert('Por favor escribe el texto.');
                     return;
                 }
+                accionInput.value = 'texto';
+                textoInput.value = texto;
+                imagenInput.value = '';
+                
+                const formData = new FormData(form);
+                
                 mostrarSpinner(true);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
                 const data = {
                     contents: [{
-                        parts: [
-                            { "text": construirPrompt(numPreguntas, texto) }
-                        ]
+                        parts: [{
+                            "text": construirPrompt(numPreguntas, texto)
+                        }]
                     }]
                 };
                 try {
@@ -258,10 +301,15 @@
         @csrf
             <input type="hidden" name="evaluacion_id" id="evaluacion_id" value="{{ $evaluacion_id }}">
             <input type="hidden" name="jsonFinal" id="jsonFinal">
-            <input type="hidden" name="image_url" id="image_url" value="${window.imageUrl || ''}">
-            <input type="hidden" name="texto" id="texto" value="${window.textoFuente || ''}">
+            
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold text-secondary">{{ $titulo }}</h5>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="visible" name="visible">
+                <label class="form-check-label" for="visible">
+                    Permitir que el estudiante vea el material (imagen o texto)
+                </label>
             </div>
         `;
             preguntas.forEach((pregunta, index) => {
@@ -354,6 +402,7 @@
             div.textContent = mensaje;
             div.classList.remove('d-none');
         }
+
         function limpiarMensajeExamen() {
             const div = document.getElementById('mensajeExamen');
             div.className = 'alert d-none';

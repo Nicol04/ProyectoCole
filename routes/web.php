@@ -54,6 +54,9 @@ Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evalu
 Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
 Route::get('/evaluaciones/create-sesion', [EvaluacionController::class, 'create_sesion'])->name('evaluacion.create.sesion');
 Route::post('/evaluaciones', [EvaluacionController::class, 'store'])->name('evaluacion.store');
+
+Route::put('/evaluacion/{id}/actualizar', [EvaluacionController::class, 'actualizar'])->name('evaluacion.actualizar');
+
 Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
 
 Route::get('/evaluacion/{id}/generarexamen', [ExamenPreguntaController::class, 'generarExamen'])->name('evaluaciones.generarExamen');

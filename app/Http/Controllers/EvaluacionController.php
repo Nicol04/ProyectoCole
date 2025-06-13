@@ -20,6 +20,29 @@ class EvaluacionController extends Controller
     {
         return view('panel.evaluaciones.index');
     }
+    public function actualizar(Request $request, $id)
+    {
+        $evaluacion = Evaluacion::findOrFail($id);
+
+        if ($request->accion === 'imagen' && $request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('evaluaciones', 'public');
+            $evaluacion->imagen_url = $path;
+            $evaluacion->texto = null;
+        } elseif ($request->accion === 'texto') {
+            $evaluacion->texto = $request->input('texto');
+            $evaluacion->imagen_url = null;
+        }
+
+        $evaluacion->save();
+
+        // Devuelve respuesta JSON para AJAX
+        return response()->json([
+            'success' => true,
+            'evaluacion_id' => $evaluacion->id,
+            'imagen_url' => $evaluacion->imagen_url,
+            'texto' => $evaluacion->texto,
+        ]);
+    }
     public function create()
     {
         $user = Auth::user();

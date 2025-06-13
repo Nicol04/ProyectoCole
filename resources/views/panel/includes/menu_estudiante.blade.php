@@ -50,14 +50,14 @@
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
                                 <li><a href="">Mis evaluaciones</a></li>
-                                <li><a href="">Retroalimentación IA</a></li>
+                                <li><a href="">Notas</a></li>
                             </ul>
                         </li>
                         <li>
                             <div class="link font-orange">Mi aula<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-orange">
                                 <li><a href="/panel/cursos">Mis cursos</a></li>
-                                <li><a href="#">Mi docente</a>
+                                <li><a href="">Mi docente</a>
                                 </li>
                                 <li><a href="#">Mis compañeros</a></li>
                             </ul>
@@ -127,7 +127,7 @@
                                 <div class="mega-catagory">
                                     <div class="mega-button">
                                         <a href=""><span>Mis evaluaciones</span></a>
-                                        <a href=""><span>Retroalimentación IA</span></a>
+                                        <a href=""><span>Notas</span></a>
                                     </div>
                                 </div>
                             </div>
