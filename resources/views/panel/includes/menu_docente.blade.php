@@ -60,7 +60,7 @@
                         </li>
 
                         <li>
-                            <div class="link font-per"><a href="">Evaluaciones IA</a></div>
+                            <div class="link font-per"><a href="">Evaluaciones</a></div>
                         </li>
                         <li>
                             <div class="link font-per"><a href="">Comunicados</a></div>

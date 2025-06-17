@@ -28,8 +28,14 @@
 </head>
 <body class="bg-light text-dark">
     @php
-    $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
-@endphp
+        $puntajeTotal = array_sum(array_column($respuestas, 'valor_respuesta'));
+    @endphp
+
+    @if (auth()->check())
+        @php
+            $roleId = auth()->user()->roles->first()?->id;
+        @endphp
+    @endif
 <form>
     @foreach($respuestas as $i => $respuesta)
 
@@ -42,12 +48,14 @@
             <div class="mb-2 d-flex align-items-center">
                 <strong>{{ $i + 1 }}. {{ $respuesta['pregunta'] }}</strong>
                 <span class="badge bg-info text-dark ms-2">Valor: {{ $respuesta['valor_pregunta'] }}</span>
+                @if ($roleId == 3)
                 <button type="button"
                     class="aprendibot-btn ms-3 btn-aprendibot"
                     title="AprendiBot"
                     data-pregunta="{{ $textoPregunta }}">
                     ¿?
                 </button>
+                @endif
             </div>
             @foreach($respuesta['opciones'] as $key => $opcion)
                 @php
@@ -91,33 +99,33 @@
         Puntaje total obtenido: {{ $puntajeTotal }}
     </div>
 </form>
-
-        @include('panel.ia.chat') 
+    @if ($roleId == 3)
+        @include('panel.ia.chat')
+    @endif
 </body>
 </html>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(function() {
-        document.querySelectorAll('.btn-aprendibot').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                // Mostrar el chat si está oculto
-                const chatSection = document.getElementById('draggableChat');
-                const openBtn = document.getElementById('chatOpenBtn');
-                if (chatSection && chatSection.style.display === 'none') {
-                    chatSection.style.display = '';
-                    if (openBtn) openBtn.style.display = 'none';
-                }
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            document.querySelectorAll('.btn-aprendibot').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const chatSection = document.getElementById('draggableChat');
+                    const openBtn = document.getElementById('chatOpenBtn');
+                    if (chatSection && chatSection.style.display === 'none') {
+                        chatSection.style.display = '';
+                        if (openBtn) openBtn.style.display = 'none';
+                    }
 
-                const pregunta = this.getAttribute('data-pregunta');
-                const msgerInput = document.getElementById('msgerInput');
-                const msgerForm = document.getElementById('msgerForm');
-                if (msgerInput && msgerForm) {
-                    msgerInput.value = pregunta;
-                    msgerForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-                }
+                    const pregunta = this.getAttribute('data-pregunta');
+                    const msgerInput = document.getElementById('msgerInput');
+                    const msgerForm = document.getElementById('msgerForm');
+                    if (msgerInput && msgerForm) {
+                        msgerInput.value = pregunta;
+                        msgerForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                    }
+                });
             });
-        });
-    }, 500);
-});
+        }, 500);
+    });
 </script>
