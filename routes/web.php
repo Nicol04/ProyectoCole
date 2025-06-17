@@ -78,4 +78,7 @@ Route::post('/respuesta-estudiante', [RespuestaEstudianteController::class, 'sto
 Route::get('/examen/revision/{intento_id}', [RespuestaEstudianteController::class, 'revision'])->name('examen.revision');
 
 Route::delete('/intentos/{id}', [RespuestaEstudianteController::class, 'destroy'])->name('intentos.destroy');
+
+Route::get('/retroalimentacion', function () {return view('panel.ia.retroalimentacion');})->name('retroalimentacion');
+
 });

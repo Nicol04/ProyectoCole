@@ -78,7 +78,6 @@
                     `<button type="submit" class="btn btn-success w-100 fw-bold py-2">Finalizar</button></form>`;
                 contenedor.innerHTML = html;
 
-                // Ahora sí, agrega el event listener al formulario recién creado
                 const formEl = document.getElementById('formularioPreguntas');
                 formEl.addEventListener('submit', function(e) {
                     e.preventDefault();
@@ -86,7 +85,6 @@
                     let respuestasUsuario = [];
                     let todasRespondidas = true;
 
-                    // ...existing code...
                     preguntas.forEach((pregunta, index) => {
                         const letraCorrecta = pregunta.respuesta.trim().toLowerCase();
                         const radios = document.getElementsByName(`respuestas[${index}]`);

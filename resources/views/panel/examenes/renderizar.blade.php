@@ -50,6 +50,7 @@
             <section id="contenedorFormulario" class="gy-3"></section>
 
         </section>
+        
     </main>
 
     <script>
@@ -128,6 +129,7 @@
         window.onload = ajustarAlturaIframe;
         window.addEventListener('resize', ajustarAlturaIframe);
     </script>
+
 </body>
 
 </html>

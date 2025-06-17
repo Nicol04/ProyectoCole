@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <title>Revisión de Examen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .aprendibot-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #ffc107;
+            color: #212529;
+            font-weight: bold;
+            font-size: 1.5rem;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background 0.2s;
+        }
+        .aprendibot-btn:hover {
+            background: #ff9800;
+            color: #fff;
+        }
+    </style>
 </head>
 <body class="bg-light text-dark">
     @php
@@ -11,10 +32,22 @@
 @endphp
 <form>
     @foreach($respuestas as $i => $respuesta)
+
+@php
+            $letraCorrecta = strtoupper($respuesta['respuesta_correcta']);
+            $opcionCorrecta = $respuesta['opciones'][ord($respuesta['respuesta_correcta']) - 97];
+            $textoPregunta = "{$respuesta['pregunta']} (Respuesta correcta: {$letraCorrecta}) {$opcionCorrecta}";
+        @endphp
         <div class="mb-3 p-3 border rounded">
-            <div class="mb-2">
+            <div class="mb-2 d-flex align-items-center">
                 <strong>{{ $i + 1 }}. {{ $respuesta['pregunta'] }}</strong>
                 <span class="badge bg-info text-dark ms-2">Valor: {{ $respuesta['valor_pregunta'] }}</span>
+                <button type="button"
+                    class="aprendibot-btn ms-3 btn-aprendibot"
+                    title="AprendiBot"
+                    data-pregunta="{{ $textoPregunta }}">
+                    ¿?
+                </button>
             </div>
             @foreach($respuesta['opciones'] as $key => $opcion)
                 @php
@@ -58,5 +91,33 @@
         Puntaje total obtenido: {{ $puntajeTotal }}
     </div>
 </form>
+
+        @include('panel.ia.chat') 
 </body>
 </html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
+        document.querySelectorAll('.btn-aprendibot').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // Mostrar el chat si está oculto
+                const chatSection = document.getElementById('draggableChat');
+                const openBtn = document.getElementById('chatOpenBtn');
+                if (chatSection && chatSection.style.display === 'none') {
+                    chatSection.style.display = '';
+                    if (openBtn) openBtn.style.display = 'none';
+                }
+
+                const pregunta = this.getAttribute('data-pregunta');
+                const msgerInput = document.getElementById('msgerInput');
+                const msgerForm = document.getElementById('msgerForm');
+                if (msgerInput && msgerForm) {
+                    msgerInput.value = pregunta;
+                    msgerForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
+            });
+        });
+    }, 500);
+});
+</script>

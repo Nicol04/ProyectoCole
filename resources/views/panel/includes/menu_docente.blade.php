@@ -47,7 +47,7 @@
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
                                 <li><a href="">Crear evaluaciones</a></li>
-                                <li><a href="">Retroalimentación IA</a></li>
+                                <li><a href="/retroalimentacion">Retroalimentación IA</a></li>
                             </ul>
                         </li>
                         <li>
@@ -118,7 +118,7 @@
                                 <div class="mega-catagory">
                                     <div class="mega-button">
                                         <a href="/evaluaciones/create"><span>Crear evaluaciones</span></a>
-                                        <a href=""><span>Retroalimentación IA</span></a>
+                                        <a href="/retroalimentacion"><span>Retroalimentación IA</span></a>
                                     </div>
                                 </div>
                             </div>

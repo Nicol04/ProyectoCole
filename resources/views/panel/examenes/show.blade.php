@@ -159,7 +159,6 @@
                                     </div>
                                 </div>
                             </section>
-
                         @elseif(($intentos ?? 0) > 0)
                             <section class="welcome-boxed bol-bol-bg">
                                 <div class="container-fluid">
@@ -168,8 +167,7 @@
                                             <div class="wellcome-area-wrapper ">
                                                 <div class="row">
                                                     <div class="col-md-7 col-lg-5 col-xl-6">
-                                                        <div class="wellcome-content wow fadeInUp"
-                                                            data-wow-delay=".5s">
+                                                        <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
                                                             <h2 class="font-orange area-heading">
                                                                 Cantidad de intentos restantes: {{ $intentos ?? '-' }}
                                                             </h2>
@@ -193,10 +191,8 @@
                                             <div class="wellcome-area-wrapper ">
                                                 <div class="row">
                                                     <div class="col-md-7 col-lg-5 col-xl-6">
-                                                        <div class="wellcome-content wow fadeInUp"
-                                                            data-wow-delay=".5s">
-                                                            <h2
-                                                                class="font-orange area-heading display-6 fw-bold mb-3">
+                                                        <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
+                                                            <h2 class="font-orange area-heading display-6 fw-bold mb-3">
                                                                 Cantidad de intentos restantes: {{ $intentos ?? '-' }}
                                                             </h2>
                                                             <div
@@ -242,8 +238,7 @@
     @if ($roleId == 3)
         {{-- Historial de exámenes finalizados --}}
         @if (!$intentoEnProceso)
-        <intentos_evaluacion
-            <div class="container-fluid custom-container">
+            <intentos_evaluacion <div class="container-fluid custom-container">
                 <div class="row">
                     <div class="col-xl-12">
                         <h2 class="area-heading font-red">Historial de exámenes finalizados</h2>
@@ -325,12 +320,12 @@
                         @endif
                     </div>
                 </div>
-            </div>
-        </section>
-        @else
-        <div class="alert alert-warning text-center my-4">
-            Tienes un examen en proceso. Finalízalo antes de ver tu historial.
-        </div>
+                </div>
+                </section>
+            @else
+                <div class="alert alert-warning text-center my-4">
+                    Tienes un examen en proceso. Finalízalo antes de ver tu historial.
+                </div>
         @endif
     @endif
 
@@ -365,10 +360,12 @@
                                         $persona = $estudiante->persona;
                                         $intentos = $estudiante->intentos ?? [];
                                         $ultimoIntento = $intentos->last();
-                                        $mejorIntento = $intentos->sortByDesc(function($i) {
-                                            return $i->calificacion->puntaje_total ?? 0;
-                                        })->first();
-                                        
+                                        $mejorIntento = $intentos
+                                            ->sortByDesc(function ($i) {
+                                                return $i->calificacion->puntaje_total ?? 0;
+                                            })
+                                            ->first();
+
                                         $estado = $ultimoIntento ? ucfirst($ultimoIntento->estado) : 'Sin intento';
                                         $puntaje =
                                             $mejorIntento && $mejorIntento->calificacion
@@ -465,7 +462,9 @@
             style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
         <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
             style="border: none; min-height:100vh; background:#fff;">
+        
         </iframe>
+                               
     </div>
 
     <script>
@@ -576,6 +575,10 @@
     </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
+    {{-- ...existing code... --}}
+    {{-- ...existing code... --}}
+
+
 </body>
 
 </html>
