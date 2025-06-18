@@ -4426,6 +4426,16 @@ mainmenu-two .mega-catagory.mega-img {
 }
 
 
+.btn-excel {
+    background-color: #198754;
+    border-color: #a4ca4b;
+    transition: background 0.2s, border 0.2s;
+}
+.btn-excel:hover, .btn-excel:focus {
+    background-color: #a4ca4b !important;
+    border-color: #117a3a !important;
+}
+
 /*----------------------------------------*/
 /*  1.  Testimonial page css
   /*----------------------------------------*/
@@ -5155,6 +5165,15 @@ ul.sort-by-age li:first-child {
 .tag .bgc-orange {
 	color: #fff;
 }
+
+.tag li.checked a {
+        background: #ffc107 !important; /* Amarillo Bootstrap */
+        color: #fff !important;
+        border-radius: 20px;
+        padding: 5px 18px;
+        font-weight: bold;
+        transition: background 0.2s;
+    }
 
 .sm-img {
 	float: left;

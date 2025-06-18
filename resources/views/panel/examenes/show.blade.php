@@ -332,9 +332,18 @@
     @if ($roleId == 2)
         <section class="kids-care-event-area">
             <div class="container-fluid custom-container">
-                <div class="row">
-                    <div class="col-xl-12">
-                        <h2 class="area-heading font-red">Historial de estudiantes</h2>
+                <div class="row align-items-center mb-3">
+                    <div class="col-1"></div>
+                    <div class="col-10 text-center">
+                        <h2 class="area-heading font-red mb-0">Historial de estudiantes</h2>
+                    </div>
+                    <div class="col-1 d-flex justify-content-end">
+                        <a href="{{ route('reporte.historial.estudiantes', ['evaluacion_id' => $evaluacion->id]) }}"
+                        class="btn btn-success btn-excel d-flex align-items-center justify-content-center"
+                        style="width: 44px; height: 44px; border-radius: 50%;"
+                        title="Descargar historial de estudiantes">
+                            <i class="fas fa-file-excel" style="font-size: 1.3rem;"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="inner-container">
@@ -462,7 +471,7 @@
             style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
         <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
             style="border: none; min-height:100vh; background:#fff;">
-        
+
         </iframe>
     </div>
 
@@ -574,10 +583,6 @@
     </script>
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
-    {{-- ...existing code... --}}
-    {{-- ...existing code... --}}
-
-
 </body>
 
 </html>

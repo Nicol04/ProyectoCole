@@ -16,9 +16,79 @@ use Illuminate\Support\Facades\DB;
 
 class EvaluacionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('panel.evaluaciones.index');
+        $user = Auth::user();
+        $roleId = $user->roles->first()?->id ?? null;
+
+        $evaluacionesEnProgreso = collect();
+        $evaluacionesNoIniciadas = collect();
+
+        if ($roleId == 3) {
+            $userId = $user->id;
+            $aulaIds = $user->aulas->pluck('id');
+            $aulaCursoIds = AulaCurso::whereIn('aula_id', $aulaIds)->pluck('id');
+            $sesionIds = Sesion::whereIn('aula_curso_id', $aulaCursoIds)->pluck('id');
+
+            // FILTRO POR CURSO
+            $cursoId = $request->curso;
+            $evaluacionesQuery = Evaluacion::whereIn('sesion_id', $sesionIds)
+                ->has('preguntas')
+                ->with([
+                    'sesion.aulaCurso.curso',
+                    'intentos' => function ($q) use ($userId) {
+                        $q->where('user_id', $userId);
+                    }
+                ]);
+            if ($cursoId) {
+                $evaluacionesQuery->whereHas('sesion.aulaCurso', function ($q) use ($cursoId) {
+                    $q->where('curso_id', $cursoId);
+                });
+            }
+            $evaluaciones = $evaluacionesQuery->paginate(12)->withQueryString();
+
+            $evaluacionesEnProgreso = collect();
+            $evaluacionesNoIniciadas = collect();
+            // CLASIFICACIÓN POR ESTADO
+            foreach ($evaluaciones as $evaluacion) {
+                $intentos = $evaluacion->intentos;
+                $tieneEnProgreso = $intentos->contains(function($intento) {
+                    return $intento->estado === 'en progreso' && is_null($intento->fecha_fin);
+                });
+
+                if ($tieneEnProgreso) {
+                    $evaluacionesEnProgreso->push($evaluacion);
+                } elseif ($intentos->isEmpty()) {
+                    $evaluacionesNoIniciadas->push($evaluacion);
+                }
+            }
+
+            // FILTRO POR ESTADO
+            $estado = $request->estado;
+            if ($estado == 'sin_intento') {
+                $evaluacionesEnProgreso = collect();
+            } elseif ($estado == 'en_progreso') {
+                $evaluacionesNoIniciadas = collect();
+            }
+
+            // Para el sidebar: cursos con conteo de evaluaciones pendientes
+            $cursos = $user->aulas->flatMap->cursos->unique('id');
+            foreach ($cursos as $curso) {
+                $curso->evaluaciones_count = $evaluaciones->filter(function ($ev) use ($curso) {
+                    return $ev->sesion->aulaCurso->curso->id == $curso->id;
+                })->count();
+            }
+        } else {
+            $cursos = collect();
+        }
+
+        return view('panel.evaluaciones.index', compact(
+            'evaluaciones',
+            'evaluacionesEnProgreso',
+            'evaluacionesNoIniciadas',
+            'roleId',
+            'cursos'
+        ));
     }
     public function actualizar(Request $request, $id)
     {
@@ -200,5 +270,4 @@ class EvaluacionController extends Controller
             'intento_id' => $intento->id
         ]);
     }
-
 }

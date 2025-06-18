@@ -21,7 +21,7 @@ class RecursoController extends Controller
         if ($request->filled('curso')) {
             $recursos->where('curso_id', $request->curso);
         }
-        $recursos = $recursos->get();
+        $recursos = $recursos->paginate(12)->withQueryString();
         $cursos = Curso::withCount('recursos')->get();
         $categorias = Categoria::withCount('recursos')->get();
 

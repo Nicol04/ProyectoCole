@@ -38,6 +38,6 @@ class Evaluacion extends Model
     }
     public function preguntas()
     {
-        return $this->hasMany(ExamenPregunta::class);
+        return $this->hasMany(ExamenPregunta::class, 'evaluacion_id');
     }
 }

@@ -5,9 +5,7 @@
         @php
             $user = Auth::user();
             $roleId = $user->roles->first()?->id;
-
             $aula = $user->aulas()->first();
-
             $docente = null;
             if ($aula) {
                 $docente = $aula
@@ -17,7 +15,6 @@
                     })
                     ->first();
             }
-
             $nombreDocente = $docente ? $docente->persona->nombre . ' ' . $docente->persona->apellido : 'No asignado';
             $cursos = $aula ? $aula->cursos : collect();
         @endphp

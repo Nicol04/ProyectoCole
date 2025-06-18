@@ -5,6 +5,7 @@ use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\ExamenPreguntaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RecursoController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\RespuestaEstudianteController;
 use App\Http\Controllers\SesionController;
 use Illuminate\Support\Facades\Route;
@@ -80,5 +81,9 @@ Route::get('/examen/revision/{intento_id}', [RespuestaEstudianteController::clas
 Route::delete('/intentos/{id}', [RespuestaEstudianteController::class, 'destroy'])->name('intentos.destroy');
 
 Route::get('/retroalimentacion', function () {return view('panel.ia.retroalimentacion');})->name('retroalimentacion');
+
+//REPORTES:
+Route::get('/reporte/historial-estudiantes', [RespuestaEstudianteController::class, 'exportarHistorialEstudiantes'])->name('reporte.historial.estudiantes');
+
 
 });

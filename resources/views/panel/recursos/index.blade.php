@@ -7,7 +7,6 @@
 
 <body>
     <div class="preloader"></div>
-    <div class="preloader"></div> <!-- carga -->
     @if (auth()->check())
         @php
             $roleId = auth()->user()->roles->first()?->id;
@@ -69,7 +68,7 @@
                                     @endforeach
                                 @endif
 
-                                
+
                             </div>
 
                         </div>
@@ -102,10 +101,6 @@
                                         @endforeach
                                     @endif
                                 </div>
-
-                                <div class="col-md-12 load-more">
-                                    <a href="#" class="kids-care-btn bgc-orange">Load more</a>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,16 +108,11 @@
 
                 <!--Shop sidebar area start-->
                 <div class="col-md-10 col-lg-4 col-xl-3">
-                    
                     <div class="shop-search-box">
                         <form method="GET" action="{{ route('recursos.index') }}">
                             <div class="input-group" id="search">
-                                <input 
-                                    name="buscar" 
-                                    class="form-control" 
-                                    placeholder="Buscar por nombre..." 
-                                    type="text" 
-                                    value="{{ request('buscar') }}">
+                                <input name="buscar" class="form-control" placeholder="Buscar por nombre..."
+                                    type="text" value="{{ request('buscar') }}">
                                 <button class="btn btn-default button-search" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -171,11 +161,13 @@
                             @endforeach
                         </ul>
                     </div>
-
-
                 </div>
                 <!--Shop sidebar area end-->
+                <div class="col-12 d-flex justify-content-center mt-4">
+                    {{ $recursos->links() }}
+                </div>
             </div>
+
         </div>
     </section>
     <!--Shop area end-->
