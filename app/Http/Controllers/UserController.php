@@ -7,6 +7,7 @@ use App\Models\Avatar_usuarios;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -70,8 +71,8 @@ class UserController extends Controller
                     'estado' => $mejorIntento->calificacion->estado,
                     'fecha_fin' => $mejorIntento->fecha_fin,
                     'intento_id' => $mejorIntento->id,
-        'intentos' => $intentos->count(),
-        'revision_vista' => $mejorIntento->revision_vista ?? false,
+                    'intentos' => $intentos->count(),
+                    'revision_vista' => $mejorIntento->revision_vista ?? false,
                 ];
             }
         }
@@ -120,10 +121,24 @@ class UserController extends Controller
                 return $fecha >= $fechaInicio && $fecha <= $fechaFin;
             });
         }
+        $calificaciones = array_values($calificaciones);
+
+        // Paginación manual
+        $page = request()->get('page', 1);
+        $perPage = 20;
+        $offset = ($page - 1) * $perPage;
+
+        $calificacionesPaginadas = new LengthAwarePaginator(
+            array_slice($calificaciones, $offset, $perPage),
+            count($calificaciones),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
         return view('panel.estudiantes.show', compact(
-            'estudiante', 
-            'calificaciones', 
-            'cursosContados', 
+            'estudiante',
+            'calificacionesPaginadas',
+            'cursosContados',
             'cursosAula'
         ));
     }

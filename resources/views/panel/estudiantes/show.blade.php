@@ -42,105 +42,214 @@
         <div class="row justify-content-center">
             <!-- Columna principal: Tabla -->
             <div class="col-lg-8 col-xl-9">
-                <div class="inner-container my-4">
-                    <div class="d-flex align-items-center mb-4">
-                        @if ($estudiante->avatar && $estudiante->avatar->path)
-                            <img src="{{ asset('storage/' . $estudiante->avatar->path) }}" alt="Avatar"
-                                class="rounded-circle me-3" style="width: 70px; height: 70px; object-fit: cover;">
-                        @else
-                            <img src="" alt="Avatar" class="rounded-circle me-3"
-                                style="width: 70px; height: 70px; object-fit: cover;">
-                        @endif
-                        <h3 class="mb-0">
-                            Calificaciones de {{ $estudiante->persona->nombre }} {{ $estudiante->persona->apellido }}
-                            @if (auth()->check() && auth()->id() == $estudiante->id)
-                                <span class="text-primary">(yo)</span>
+                <div class="shop-sorting">
+                    <ul class="nav grid-list-button" role="tablist">
+                        <li role="presentation"><a class="active" href="#home" aria-controls="home" role="tab"
+                                data-toggle="tab"><i class="fa fa-th"></i></a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                data-toggle="tab"><i class="fa fa-th-list"></i></a></li>
+                    </ul>
+
+                    <div class="inner-container my-4">
+                        <div class="d-flex align-items-center mb-4">
+                            @if ($estudiante->avatar && $estudiante->avatar->path)
+                                <img src="{{ asset('storage/' . $estudiante->avatar->path) }}" alt="Avatar"
+                                    class="rounded-circle me-3" style="width: 70px; height: 70px; object-fit: cover;">
+                            @else
+                                <img src="" alt="Avatar" class="rounded-circle me-3"
+                                    style="width: 70px; height: 70px; object-fit: cover;">
                             @endif
-                        </h3>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle table-historial-estudiantes shadow-sm rounded">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Curso</th>
-                                    <th>Evaluación</th>
-                                    <th>Puntaje obtenido</th>
-                                    <th>Puntaje máximo</th>
-                                    <th>Porcentaje</th>
-                                    <th>Fecha</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($calificaciones as $calificacion)
-                                    @php
-                                        $puntaje = $calificacion['puntaje_total'];
-                                        $puntajeMax = $calificacion['puntaje_maximo'];
-                                        $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
-                                        $estadoCalificacion = strtoupper($calificacion['estado']);
-                                        $badgeEstado = 'badge ';
-                                        if ($estadoCalificacion === 'APROBADO') {
-                                            $badgeEstado .= 'bg-success text-white';
-                                        } elseif ($estadoCalificacion === 'DESAPROBADO') {
-                                            $badgeEstado .= 'bg-danger text-white';
-                                        } elseif ($estadoCalificacion === 'SIN ESTADO') {
-                                            $badgeEstado .= 'bg-primary text-white';
-                                        } else {
-                                            $badgeEstado .= 'bg-secondary text-white';
-                                        }
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $calificacion['curso'] }}</td>
-                                        <td>{{ $calificacion['evaluacion'] }}</td>
-                                        <td class="text-center fw-bold">{{ $puntaje }}</td>
-                                        <td class="text-center">{{ $puntajeMax }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="fw-bold">{{ $porcentaje }}%</span>
-                                                <div class="progress flex-grow-1"
-                                                    style="height: 18px; min-width: 80px;">
-                                                    <div class="progress-bar 
+                            <h3 class="mb-0">
+                                Calificaciones de {{ $estudiante->persona->nombre }}
+                                {{ $estudiante->persona->apellido }}
+                                @if (auth()->check() && auth()->id() == $estudiante->id)
+                                    <span class="text-primary">(yo)</span>
+                                @endif
+                            </h3>
+                        </div>
+                        <div class="shop-product-area tab-content">
+                            <div role="tabpanel" class="tab-pane fade show active" id="home">
+                                <div class="table-responsive">
+                                    <table
+                                        class="table table-bordered align-middle table-historial-estudiantes shadow-sm rounded">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Curso</th>
+                                                <th>Evaluación</th>
+                                                <th>Puntaje obtenido</th>
+                                                <th>Puntaje máximo</th>
+                                                <th>Porcentaje</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse($calificacionesPaginadas as $calificacion)
+                                                @php
+                                                    $puntaje = $calificacion['puntaje_total'];
+                                                    $puntajeMax = $calificacion['puntaje_maximo'];
+                                                    $porcentaje =
+                                                        $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
+                                                    $estadoCalificacion = strtoupper($calificacion['estado']);
+                                                    $badgeEstado = 'badge ';
+                                                    if ($estadoCalificacion === 'APROBADO') {
+                                                        $badgeEstado .= 'bg-success text-white';
+                                                    } elseif ($estadoCalificacion === 'DESAPROBADO') {
+                                                        $badgeEstado .= 'bg-danger text-white';
+                                                    } elseif ($estadoCalificacion === 'SIN ESTADO') {
+                                                        $badgeEstado .= 'bg-primary text-white';
+                                                    } else {
+                                                        $badgeEstado .= 'bg-secondary text-white';
+                                                    }
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $calificacion['curso'] }}</td>
+                                                    <td>{{ $calificacion['evaluacion'] }}</td>
+                                                    <td class="text-center fw-bold">{{ $puntaje }}</td>
+                                                    <td class="text-center">{{ $puntajeMax }}</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="fw-bold">{{ $porcentaje }}%</span>
+                                                            <div class="progress flex-grow-1"
+                                                                style="height: 18px; min-width: 80px;">
+                                                                <div class="progress-bar 
                                                         @if ($porcentaje >= 70) bg-success 
                                                         @elseif($porcentaje >= 50) bg-warning 
                                                         @else bg-danger @endif"
-                                                        role="progressbar" style="width: {{ $porcentaje }}%;"
-                                                        aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
+                                                                    role="progressbar"
+                                                                    style="width: {{ $porcentaje }}%;"
+                                                                    aria-valuenow="{{ $porcentaje }}"
+                                                                    aria-valuemin="0" aria-valuemax="100">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @if ($calificacion['fecha_fin'])
+                                                            {{ \Carbon\Carbon::parse($calificacion['fecha_fin'])->format('d/m/Y H:i') }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span
+                                                            class="{{ $badgeEstado }}">{{ ucfirst(strtolower($estadoCalificacion)) }}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if (isset($calificacion['intento_id']))
+                                                            <a href="javascript:void(0);"
+                                                                onclick="verRevision('{{ route('examen.revision', ['intento_id' => $calificacion['intento_id']]) }}', {{ $calificacion['intentos'] ?? 0 }}, {{ $calificacion['revision_vista'] ? 'true' : 'false' }})"
+                                                                class="btn btn-sm btn-info" title="Ver revisión">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        @else
+                                                            <span class="text-muted">-</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No hay calificaciones
+                                                        registradas.</td>
+                                                </tr>
+                                            @endforelse
+
+                                        </tbody>
+
+                                    </table>
+                                    <div class="d-flex justify-content-center">
+                                        {{ $calificacionesPaginadas->links() }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade in" id="profile">
+
+
+                                <div class="row">
+                                    @forelse($calificacionesPaginadas as $calificacion)
+                                        @php
+                                            $puntaje = $calificacion['puntaje_total'];
+                                            $puntajeMax = $calificacion['puntaje_maximo'];
+                                            $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
+                                            $estadoCalificacion = strtoupper($calificacion['estado']);
+                                            $badgeEstado = 'badge ';
+                                            if ($estadoCalificacion === 'APROBADO') {
+                                                $badgeEstado .= 'bg-success text-white';
+                                            } elseif ($estadoCalificacion === 'DESAPROBADO') {
+                                                $badgeEstado .= 'bg-danger text-white';
+                                            } elseif ($estadoCalificacion === 'SIN ESTADO') {
+                                                $badgeEstado .= 'bg-primary text-white';
+                                            } else {
+                                                $badgeEstado .= 'bg-secondary text-white';
+                                            }
+                                        @endphp
+                                        <div class="col-12 col-md-6 col-lg-4 mb-4">
+                                            <div class="card shadow-sm h-100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-2">{{ $calificacion['evaluacion'] }}</h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted">
+                                                        {{ $calificacion['curso'] }}</h6>
+                                                    <div class="mb-2">
+                                                        <span class="fw-bold">Puntaje:</span>
+                                                        <span class="fw-bold text-primary">{{ $puntaje }}</span> /
+                                                        <span>{{ $puntajeMax }}</span>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <span class="fw-bold">Porcentaje:</span>
+                                                        <span class="fw-bold">{{ $porcentaje }}%</span>
+                                                        <div class="progress" style="height: 16px;">
+                                                            <div class="progress-bar 
+                                @if ($porcentaje >= 70) bg-success 
+                                @elseif($porcentaje >= 50) bg-warning 
+                                @else bg-danger @endif"
+                                                                role="progressbar" style="width: {{ $porcentaje }}%;"
+                                                                aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <span class="fw-bold">Fecha:</span>
+                                                        @if ($calificacion['fecha_fin'])
+                                                            {{ \Carbon\Carbon::parse($calificacion['fecha_fin'])->format('d/m/Y H:i') }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <span class="fw-bold">Estado:</span>
+                                                        <span
+                                                            class="{{ $badgeEstado }}">{{ ucfirst(strtolower($estadoCalificacion)) }}</span>
                                                     </div>
                                                 </div>
+                                                <div class="card-footer bg-white border-0 text-end">
+                                                    @if (isset($calificacion['intento_id']))
+                                                        <a href="javascript:void(0);"
+                                                            onclick="verRevision('{{ route('examen.revision', ['intento_id' => $calificacion['intento_id']]) }}', {{ $calificacion['intentos'] ?? 0 }}, {{ $calificacion['revision_vista'] ? 'true' : 'false' }})"
+                                                            class="btn btn-sm btn-info" title="Ver revisión">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            @if ($calificacion['fecha_fin'])
-                                                {{ \Carbon\Carbon::parse($calificacion['fecha_fin'])->format('d/m/Y H:i') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <span
-                                                class="{{ $badgeEstado }}">{{ ucfirst(strtolower($estadoCalificacion)) }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            @if (isset($calificacion['intento_id']))
-                                                <a href="javascript:void(0);"
-                                                    onclick="verRevision('{{ route('examen.revision', ['intento_id' => $calificacion['intento_id']]) }}', {{ $calificacion['intentos'] ?? 0 }}, {{ $calificacion['revision_vista'] ? 'true' : 'false' }})"
-                                                    class="btn btn-sm btn-info" title="Ver revisión">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">No hay calificaciones registradas.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                        </div>
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="alert alert-info text-center">
+                                                No hay calificaciones registradas.
+                                            </div>
+                                        </div>
+                                    @endforelse
+
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    {{ $calificacionesPaginadas->links() }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

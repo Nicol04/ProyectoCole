@@ -45,8 +45,7 @@
                         <li>
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
-                                <li><a href="">Mis evaluaciones</a></li>
-                                <li><a href="">Notas</a></li>
+                                <li><a href="{{ route('estudiantes.show', Auth::id()) }}">Mis calificaciones</a></li>
                             </ul>
                         </li>
                         <li>
@@ -125,7 +124,7 @@
                                     <div class="mega-button">
                                         <a href="{{ route('estudiantes.show', Auth::id()) }}"><span>Mis
                                                 calificaciones</span></a>
-                                        <a href=""><span>Notas</span></a>
+                                        <a href=""><span>Mis evaluaciones finalizadas</span></a>
                                     </div>
                                 </div>
                             </div>
