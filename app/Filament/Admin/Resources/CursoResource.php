@@ -54,7 +54,7 @@ class CursoResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn (Aula $record) => $record->grado_seccion)
                     ->searchable()
                     ->preload()
-                    ->placeholder('Selecciona usuarios'),
+                    ->placeholder('Selecciona aulas'),
             ]);
     }
 

@@ -23,6 +23,7 @@ class EvaluacionController extends Controller
 
         $evaluacionesEnProgreso = collect();
         $evaluacionesNoIniciadas = collect();
+        $evaluacionesPendientesCount = $evaluacionesEnProgreso->count() + $evaluacionesNoIniciadas->count();
 
         if ($roleId == 3) {
             $userId = $user->id;
@@ -52,7 +53,7 @@ class EvaluacionController extends Controller
             // CLASIFICACIÓN POR ESTADO
             foreach ($evaluaciones as $evaluacion) {
                 $intentos = $evaluacion->intentos;
-                $tieneEnProgreso = $intentos->contains(function($intento) {
+                $tieneEnProgreso = $intentos->contains(function ($intento) {
                     return $intento->estado === 'en progreso' && is_null($intento->fecha_fin);
                 });
 
@@ -74,9 +75,14 @@ class EvaluacionController extends Controller
             // Para el sidebar: cursos con conteo de evaluaciones pendientes
             $cursos = $user->aulas->flatMap->cursos->unique('id');
             foreach ($cursos as $curso) {
-                $curso->evaluaciones_count = $evaluaciones->filter(function ($ev) use ($curso) {
-                    return $ev->sesion->aulaCurso->curso->id == $curso->id;
-                })->count();
+                $curso->evaluaciones_count =
+                    $evaluacionesEnProgreso->filter(function ($ev) use ($curso) {
+                        return $ev->sesion->aulaCurso->curso->id == $curso->id;
+                    })->count()
+                    +
+                    $evaluacionesNoIniciadas->filter(function ($ev) use ($curso) {
+                        return $ev->sesion->aulaCurso->curso->id == $curso->id;
+                    })->count();
             }
         } else {
             $cursos = collect();
@@ -87,7 +93,8 @@ class EvaluacionController extends Controller
             'evaluacionesEnProgreso',
             'evaluacionesNoIniciadas',
             'roleId',
-            'cursos'
+            'cursos',
+            'evaluacionesPendientesCount'
         ));
     }
     public function actualizar(Request $request, $id)

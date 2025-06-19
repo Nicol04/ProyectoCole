@@ -23,10 +23,6 @@
             $cursos = $aula ? $aula->cursos : collect();
         @endphp
     @endif
-
-
-
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12 col-lg-12 col-xl-2">
@@ -102,7 +98,8 @@
                                     <div class="mega-button">
                                         <ul>
                                             @forelse ($cursos as $curso)
-                                                <a href="{{ route('sesiones.index', ['id' => $curso->id]) }}"><span>{{ $curso->curso }}</span></a>
+                                                <a
+                                                    href="{{ route('sesiones.index', ['id' => $curso->id]) }}"><span>{{ $curso->curso }}</span></a>
                                             @empty
                                                 <li>No tienes cursos asignados</li>
                                             @endforelse
@@ -126,14 +123,23 @@
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <div class="mega-button">
-                                        <a href="{{ route('estudiantes.show', Auth::id()) }}"><span>Mis calificaciones</span></a>
+                                        <a href="{{ route('estudiantes.show', Auth::id()) }}"><span>Mis
+                                                calificaciones</span></a>
                                         <a href=""><span>Notas</span></a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="fc-green hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}"
-                                alt=""><a href="/evaluaciones">Evaluaciones</a>
+                        <li class="fc-green hav-sub">
+                            <img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}" alt="">
+                            <a href="/evaluaciones">
+                                Evaluaciones
+                                @if (isset($evaluacionesPendientesCount) && $evaluacionesPendientesCount > 0)
+                                    <span class="ms-1 text-danger" style="font-weight: bold;">
+                                        ({{ $evaluacionesPendientesCount }})
+                                    </span>
+                                @endif
+                            </a>
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="events.html">Comunicados</a></li>

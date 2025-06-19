@@ -120,7 +120,12 @@ class UserController extends Controller
                 return $fecha >= $fechaInicio && $fecha <= $fechaFin;
             });
         }
-        return view('panel.estudiantes.show', compact('estudiante', 'calificaciones', 'cursosContados', 'cursosAula'));
+        return view('panel.estudiantes.show', compact(
+            'estudiante', 
+            'calificaciones', 
+            'cursosContados', 
+            'cursosAula'
+        ));
     }
 
     public function exportarUsuarios()

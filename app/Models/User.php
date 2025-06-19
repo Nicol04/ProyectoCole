@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
-    
+
     protected $fillable = [
         'name',
         'email',
@@ -65,5 +65,34 @@ class User extends Authenticatable
     {
         return $this->hasMany(Respuesta_estudiante::class);
     }
-    
+    public function getEvaluacionesPendientesCount()
+    {
+        $aulaIds = $this->aulas()->pluck('aulas.id');
+        $aulaCursoIds = \App\Models\AulaCurso::whereIn('aula_id', $aulaIds)->pluck('id');
+        $sesionIds = \App\Models\Sesion::whereIn('aula_curso_id', $aulaCursoIds)->pluck('id');
+        $evaluaciones = \App\Models\Evaluacion::whereIn('sesion_id', $sesionIds)
+            ->has('preguntas')
+            ->with(['intentos' => function ($q) {
+                $q->where('user_id', $this->id);
+            }])
+            ->get();
+
+        $evaluacionesEnProgreso = collect();
+        $evaluacionesNoIniciadas = collect();
+
+        foreach ($evaluaciones as $evaluacion) {
+            $intentos = $evaluacion->intentos;
+            $tieneEnProgreso = $intentos->contains(function ($intento) {
+                return $intento->estado === 'en progreso' && is_null($intento->fecha_fin);
+            });
+
+            if ($tieneEnProgreso) {
+                $evaluacionesEnProgreso->push($evaluacion);
+            } elseif ($intentos->isEmpty()) {
+                $evaluacionesNoIniciadas->push($evaluacion);
+            }
+        }
+
+        return $evaluacionesEnProgreso->count() + $evaluacionesNoIniciadas->count();
+    }
 }
