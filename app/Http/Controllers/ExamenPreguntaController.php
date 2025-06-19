@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archivo;
+use App\Models\Calificacion;
 use App\Models\Evaluacion;
 use App\Models\ExamenPregunta;
 use App\Models\IntentoEvaluacion;
+use App\Models\Respuesta_estudiante;
 use App\Models\Sesion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,10 +46,10 @@ class ExamenPreguntaController extends Controller
                     ->orderByDesc('created_at')
                     ->get()
                     ->map(function ($intento) use ($user) {
-                        $respuesta = \App\Models\Respuesta_estudiante::where('intento_id', $intento->id)
+                        $respuesta = Respuesta_estudiante::where('intento_id', $intento->id)
                             ->where('user_id', $user->id)
                             ->first();
-                        $calificacion = \App\Models\Calificacion::where('intento_id', $intento->id)->first();
+                        $calificacion = Calificacion::where('intento_id', $intento->id)->first();
                         return [
                             'intento' => $intento,
                             'respuesta_json' => $respuesta ? $respuesta->respuesta_json : null,

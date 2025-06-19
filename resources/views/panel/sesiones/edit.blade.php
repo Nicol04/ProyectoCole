@@ -7,7 +7,6 @@
 
 <body>
     <div class="preloader"></div>
-    <div class="preloader"></div> <!-- carga -->
     @if (auth()->check())
         @php
             $roleId = auth()->user()->roles->first()?->id;

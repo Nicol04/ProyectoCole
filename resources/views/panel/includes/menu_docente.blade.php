@@ -121,7 +121,7 @@
                             </div>
                         </li>
                         <li class="fc-green hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}"
-                                alt=""><a href="">Evaluaciones IA</a>
+                                alt=""><a href="">Evaluaciones</a>
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="events.html">Comunicados</a></li>

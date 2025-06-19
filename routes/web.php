@@ -34,7 +34,12 @@ Route::get('/panel/index', function () {
     })->name('index');
 
 Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
+
+//Ruta de los estudiantes
 Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
+//Ruta de informacion de estudiantes
+Route::get('/panel/estudiantes/{id}', [UserController::class, 'show'])->name('estudiantes.show');
+
 Route::get('/users/exportar',[UserController::class,'exportarUsuarios'])->name('users.exportarUsuarios');
 Route::get('/users/perfil',[UserController::class,'perfil'])->name('users.perfil');
 Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->name('users.avatar.edit');

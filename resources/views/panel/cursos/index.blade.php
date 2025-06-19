@@ -5,7 +5,6 @@
 </head>
 <body>
     <div class="preloader"></div>
-    <div class="preloader"></div>
     
     @if(auth()->check())
     @php

@@ -126,7 +126,7 @@
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <div class="mega-button">
-                                        <a href="/evaluaciones"><span>Mis evaluaciones</span></a>
+                                        <a href="{{ route('estudiantes.show', Auth::id()) }}"><span>Mis calificaciones</span></a>
                                         <a href=""><span>Notas</span></a>
                                     </div>
                                 </div>

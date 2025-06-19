@@ -7,18 +7,17 @@
 
 <body>
     <div class="preloader"></div>
-    <div class="preloader"></div> <!-- carga -->
-    @if(auth()->check())
-    @php
-        $roleId = auth()->user()->roles->first()?->id;
-    @endphp
+    @if (auth()->check())
+        @php
+            $roleId = auth()->user()->roles->first()?->id;
+        @endphp
 
-    @if($roleId == 3)
-        @include('panel.includes.menu_estudiante')
-    @elseif($roleId == 2)
-        @include('panel.includes.menu_docente')
+        @if ($roleId == 3)
+            @include('panel.includes.menu_estudiante')
+        @elseif($roleId == 2)
+            @include('panel.includes.menu_docente')
+        @endif
     @endif
-@endif
 
     <!--Estudiantes area start-->
 
@@ -26,14 +25,14 @@
         <div class="container-fluid">
             <div class="row">
                 <h2>Aula </h2> <!-- grado y seccion-->
-                    <div class="bread-crumb-line"><span>
+                <div class="bread-crumb-line"><span>
                         <a href="/panel/cursos">
-                        Mi aula {{ $aula->grado ? $aula->grado : 'Grado no asignado' }} 
-                        {{ $aula->seccion ? $aula->seccion : '' }} </a>
+                            Mi aula {{ $aula->grado ? $aula->grado : 'Grado no asignado' }}
+                            {{ $aula->seccion ? $aula->seccion : '' }} </a>
                     </span>Estudiantes</div>
-                </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!--Estudiantes area end-->
@@ -43,7 +42,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
-                    <h2 class="area-heading font-sky">Estudiantes  del aula {{ $aula->grado ? $aula->grado : 'Grado no asignado' }} {{ $aula->seccion ? $aula->seccion : '' }} </h2>
+                    <h2 class="area-heading font-sky">Estudiantes del aula
+                        {{ $aula->grado ? $aula->grado : 'Grado no asignado' }}
+                        {{ $aula->seccion ? $aula->seccion : '' }} </h2>
                 </div>
             </div>
             <div class="row justify-content-center no-gutters">
@@ -54,13 +55,19 @@
                             <div class="col-8 col-sm-6 col-md-4 col-lg-3">
                                 <div class="sin-staff wow fadeInUp" data-wow-delay=".3s">
                                     <div class="staf-img">
-                                        <img src="{{ asset('storage/' . ($estudiante->avatar?->path ?? 'avatares/avatar_defecto.png')) }}" alt="Avatar del estudiante">
+                                        <img src="{{ asset('storage/' . ($estudiante->avatar?->path ?? 'avatares/avatar_defecto.png')) }}"
+                                            alt="Avatar del estudiante">
                                     </div>
                                     <div class="staf-det">
                                         <h4>{{ $estudiante->persona->nombre }} {{ $estudiante->persona->apellido }}</h4>
-                                        <span style="color: {{ $estudiante->id === Auth::id() ? '#f44336' : '#03a9f4' }}">
+                                        <span
+                                            style="color: {{ $estudiante->id === Auth::id() ? '#f44336' : '#03a9f4' }}">
                                             {{ $estudiante->id === Auth::id() ? 'Yo' : 'Estudiante' }}
                                         </span>
+                                        @if ($roleId != 3)
+                                        <a href="{{ route('estudiantes.show', $estudiante->id) }}"
+                                            class="kids-care-btn bgc-orange">Ver calificaciones</a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -70,9 +77,8 @@
             </div>
         </div>
     </section>
-    <!--Staff style four end-->
-    <!--Countdown for upcoming event end-->
     @include('panel.includes.footer3')
     @include('panel.includes.footer')
 </body>
+
 </html>
