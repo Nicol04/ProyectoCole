@@ -13,6 +13,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CursoResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Curso::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';

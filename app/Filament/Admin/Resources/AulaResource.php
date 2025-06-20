@@ -9,6 +9,7 @@ use App\Filament\Admin\Resources\AulaResource\RelationManagers\UsersRelationMana
 use App\Models\Aula;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AulaResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Aula::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';

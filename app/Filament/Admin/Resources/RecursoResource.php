@@ -7,6 +7,7 @@ use App\Filament\Admin\Resources\RecursoResource\RelationManagers;
 use App\Models\Recurso;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RecursoResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Recurso::class;
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static ?string $navigationGroup = 'Gestión de documentos 3d';

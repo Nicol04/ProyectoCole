@@ -10,6 +10,7 @@
         "bezhansalleh/filament-shield": "^3.3",
         "cloudinary-labs/cloudinary-laravel": "^3.0",
         "filament/filament": "^3.3",
+        "filament/spatie-laravel-translatable-plugin": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "maatwebsite/excel": "*",
