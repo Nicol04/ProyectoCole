@@ -29,16 +29,14 @@ class SesionController extends Controller
 
         $validated['dia'] = $request->input('dia');
 
-        \App\Models\Sesion::create($validated);
+        $sesion = \App\Models\Sesion::create($validated);
 
         $aulaCurso = \App\Models\AulaCurso::find($request->aula_curso_id);
-        $cursoId = $aulaCurso->curso_id;
 
-        return redirect()->route('sesiones.index', ['id' => $cursoId])
-            ->with('mensaje', 'Sesión creada exitosamente')
-            ->with('icono', 'success');
+        return redirect()->route('sesiones.show', $sesion->id)
+        ->with('mensaje', 'Sesión creada exitosamente')
+        ->with('icono', 'success');
     }
-
 
     public function show($id)
     {

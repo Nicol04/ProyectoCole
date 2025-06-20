@@ -338,9 +338,9 @@
                     </div>
                     <div class="col-1 d-flex justify-content-end">
                         <a href="{{ route('reporte.historial.estudiantes', ['evaluacion_id' => $evaluacion->id]) }}"
-                        class="btn btn-success btn-excel d-flex align-items-center justify-content-center"
-                        style="width: 44px; height: 44px; border-radius: 50%;"
-                        title="Descargar historial de estudiantes">
+                            class="btn btn-success btn-excel d-flex align-items-center justify-content-center"
+                            style="width: 44px; height: 44px; border-radius: 50%;"
+                            title="Descargar historial de estudiantes">
                             <i class="fas fa-file-excel" style="font-size: 1.3rem;"></i>
                         </a>
                     </div>
@@ -421,13 +421,19 @@
                                         <td>{{ $puntaje }}/{{ $puntajeMax }}</td>
 
                                         <td>{{ $intentos->count() }}</td>
-                                        <td style="min-width:120px;">
-                                            <div class="progress" style="height: 22px;">
-                                                <div class="progress-bar {{ $colorEstado }}" role="progressbar"
-                                                    style="width: {{ $porcentaje }}%;"
-                                                    aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    {{ $porcentaje }}%
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="fw-bold">{{ $porcentaje }}%</span>
+                                                <div class="progress flex-grow-1"
+                                                    style="height: 18px; min-width: 80px;">
+                                                    <div class="progress-bar 
+                                                        @if ($porcentaje >= 70) bg-success 
+                                                        @elseif($porcentaje >= 50) bg-warning 
+                                                        @else bg-danger @endif"
+                                                        role="progressbar" style="width: {{ $porcentaje }}%;"
+                                                        aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
+                                                        aria-valuemax="100">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>

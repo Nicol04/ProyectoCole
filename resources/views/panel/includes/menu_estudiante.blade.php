@@ -45,7 +45,8 @@
                         <li>
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
-                                <li><a href="{{ route('estudiantes.show', Auth::id()) }}">Mis calificaciones</a></li>
+                                <li><a href="{{ route('estudiantes.show', Auth::id()) }}">Mis evaluaciones</a></li>
+                                <li><a href="">Mi promedio</a></li>
                             </ul>
                         </li>
                         <li>
@@ -124,7 +125,8 @@
                                     <div class="mega-button">
                                         <a href="{{ route('estudiantes.show', Auth::id()) }}"><span>Mis
                                                 calificaciones</span></a>
-                                        <a href=""><span>Mis evaluaciones finalizadas</span></a>
+                                        <a href="{{ route('calificacion.index', Auth::id()) }}"><span>Mi
+                                                promedio</span></a>
                                     </div>
                                 </div>
                             </div>

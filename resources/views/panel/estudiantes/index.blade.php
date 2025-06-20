@@ -65,8 +65,12 @@
                                             {{ $estudiante->id === Auth::id() ? 'Yo' : 'Estudiante' }}
                                         </span>
                                         @if ($roleId != 3)
-                                        <a href="{{ route('estudiantes.show', $estudiante->id) }}"
-                                            class="kids-care-btn bgc-orange">Ver calificaciones</a>
+                                            <a href="{{ route('estudiantes.show', $estudiante->id) }}"
+                                                class="kids-care-btn bgc-orange">Ver calificaciones</a>
+                                            <a href="{{ route('calificacion.index', $estudiante->id) }}"
+                                                class="kids-care-btn bg-green" title="Ver promedio">
+                                                <i class="fas fa-chart-pie"></i>
+                                            </a>
                                         @endif
                                     </div>
                                 </div>

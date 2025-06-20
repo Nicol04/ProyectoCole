@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\CalificacionController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EvaluacionController;
@@ -78,6 +80,9 @@ Route::get('/evaluacion/{evaluacion_id}/examen', [ExamenPreguntaController::clas
 Route::delete('/evaluacion/{evaluacion}', [EvaluacionController::class, 'destroy'])->name('evaluaciones.eliminar');
 Route::delete('/sesion/{sesion}', [SesionController::class, 'destroy'])->name('sesiones.eliminar');
 Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 'edit'])->name('examen.editar');
+
+//Promedio de calificaciones:
+Route::get('/calificaciones/{id}', [CalificacionController::class, 'index'])->name('calificacion.index');
 
 Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
 Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');

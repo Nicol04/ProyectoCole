@@ -105,7 +105,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="area-heading font-sky style-two">Evaluaciones</h1>
-                    <p class="heading-para">En este apartado encontrarás las evaluaciones que has generado</p>
+                    @if ($roleId != 3)
+                        <p class="heading-para">En este apartado encontrarás las evaluaciones que has generado</p>
+                    @endif
                 </div>
             </div>
             <div class="row justify-content-center no-gutters">
