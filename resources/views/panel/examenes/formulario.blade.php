@@ -81,6 +81,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('imagen').addEventListener('change', function(e) {
@@ -140,11 +142,11 @@
         function construirPrompt(numPreguntas, texto = '') {
             return `**Devuelve únicamente el array JSON** con la estructura exacta: 
         \`\`\`json
-                [
-                    {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
-                    ...
-                ]
-                \`\`\`
+                                [
+                                    {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
+                                    ...
+                                ]
+                                \`\`\`
         **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
         ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
         }
@@ -188,7 +190,7 @@
 
         async function enviarEntrada() {
             const modo = document.getElementById('modoEntrada').value;
-            const numPreguntas = parseInt(document.getElementById('numPreguntas').value) || 5;
+            const numPreguntas = parseFloat(document.getElementById('numPreguntas').value) || 5;
 
             const form = document.getElementById('formActualizarEvaluacion');
             const accionInput = document.getElementById('inputAccionForm');
@@ -223,7 +225,7 @@
                         }
                     } = await Tesseract.recognize(
                         file,
-                        'spa' // o 'eng' según el idioma
+                        'spa'
                     );
 
                     if (!textoExtraido.trim()) {
@@ -266,9 +268,9 @@
                 accionInput.value = 'texto';
                 textoInput.value = texto;
                 imagenInput.value = '';
-                
+
                 const formData = new FormData(form);
-                
+
                 mostrarSpinner(true);
                 const response = await fetch(form.action, {
                     method: 'POST',
@@ -296,6 +298,10 @@
         function renderizarFormulario(preguntas) {
             const contenedor = document.getElementById('contenedorFormulario');
             contenedor.innerHTML = '';
+
+            // Calcular la puntuación base para cada pregunta
+            const totalPreguntas = preguntas.length;
+            const puntuacionBase = +(20 / totalPreguntas).toFixed(2);
 
             let html = `<form id="formularioPreguntas" class="gy-4 bg-white p-4 rounded-3 shadow border" method="POST" action="{{ route('examen.guardar') }}">
         @csrf
@@ -335,7 +341,7 @@
                 </div>
                 <div class="mb-2">
                     <label class="fw-semibold">Puntuación:</label>
-                    <input type="number" class="form-control puntuacion-input" name="puntuacion_${index}" min="1" max="100" value="1" />
+                    <input type="number" class="form-control puntuacion-input" name="puntuacion_${index}" value="${puntuacionBase}" step="any" />
                 </div>
                 </div>
                 <hr class="border-secondary">
@@ -368,7 +374,7 @@
                         form[`opcion_${i}_c`].value
                     ];
                     const respuesta = form[`respuesta_${i}`].value;
-                    const puntuacion = parseInt(form[`puntuacion_${i}`].value) || 1;
+                    const puntuacion = parseFloat(form[`puntuacion_${i}`].value) || 1;
                     preguntasEditadas.push({
                         pregunta,
                         opciones,
@@ -376,18 +382,33 @@
                         puntuacion
                     });
                 }
-                const jsonStr = JSON.stringify(preguntasEditadas, null, 2);
-                document.getElementById('jsonFinal').value = jsonStr;
+
+                const totalPuntuacionTexto = document.getElementById('totalPuntuacion').textContent;
+                const totalPuntuacion = parseInt(totalPuntuacionTexto, 10);
+                if (totalPuntuacion !== 20) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Puntuación inválida',
+                        text: 'La puntuación total debe ser exactamente 20.',
+                    });
+                    return;
+                } else {
+                    const jsonStr = JSON.stringify(preguntasEditadas, null, 2);
+                    document.getElementById('jsonFinal').value = jsonStr;
+                }
+
                 // El formulario se enviará normalmente
             });
+
 
             function actualizarTotalPuntuacion() {
                 const inputs = document.querySelectorAll('.puntuacion-input');
                 let total = 0;
                 inputs.forEach(input => {
-                    total += parseInt(input.value) || 0;
+                    total += parseFloat(input.value) || 0;
                 });
-                document.getElementById('totalPuntuacion').textContent = total;
+                document.getElementById('totalPuntuacion').textContent = Math.round(total);
             }
 
             actualizarTotalPuntuacion();

@@ -62,13 +62,13 @@ class CalificacionController extends Controller
             if (isset($porCurso[$nombre]) && $porCurso[$nombre]['cantidad'] > 0) {
                 $promedioPorcentaje = round(array_sum($porCurso[$nombre]['porcentajes']) / $porCurso[$nombre]['cantidad'], 2);
                 // Estado según el porcentaje
-        if ($promedioPorcentaje >= 70) {
-            $estado = 'Aprobado';
-        } elseif ($promedioPorcentaje >= 50) {
-            $estado = 'Intermedio';
-        } else {
-            $estado = 'Desaprobado';
-        }
+                if ($promedioPorcentaje >= 70) {
+                    $estado = 'Aprobado';
+                } elseif ($promedioPorcentaje >= 50) {
+                    $estado = 'Intermedio';
+                } else {
+                    $estado = 'Desaprobado';
+                }
                 $promediosPorCurso[$nombre] = [
                     'promedio_porcentaje' => $promedioPorcentaje,
                     'estado' => $estado,
@@ -107,5 +107,10 @@ class CalificacionController extends Controller
             'promedio',
             'promedioPorcentaje'
         ));
+    }
+    public function show()
+    {
+
+        return view('panel.calificaciones.show');
     }
 }

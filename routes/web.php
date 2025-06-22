@@ -83,6 +83,10 @@ Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 
 
 //Promedio de calificaciones:
 Route::get('/calificaciones/{id}', [CalificacionController::class, 'index'])->name('calificacion.index');
+//Exportar calificaciones de estudiante:
+Route::get('/panel/estudiantes/{id}/exportar', [UserController::class, 'exportarCalificacionesEstudiante'])->name('estudiantes.exportarCalificaciones');
+//Ver calificaciones de todos los estudiantes:
+Route::get('/calificaciones', [CalificacionController::class, 'show'])->name('calificacion.show');
 
 Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
 Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');

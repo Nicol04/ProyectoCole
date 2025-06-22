@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-5">
-                    <a href="#" class="kids-care-btn bg-sky f14">Descargar calificaciones</a>
+                    <a href="{{ route('estudiantes.exportarCalificaciones', $estudiante->id) }}" class="kids-care-btn bg-sky f14">Descargar calificaciones</a>
                 </div>
 
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportCalificacionesEstudiante;
 use App\Exports\ExportUser;
 use App\Models\Avatar_usuarios;
 use App\Models\User;
@@ -181,5 +182,53 @@ class UserController extends Controller
         return redirect()->route('users.perfil')
             ->with('mensaje', 'Avatar actualizado correctamente.')
             ->with('icono', 'success');
+    }
+    public function exportarCalificacionesEstudiante($id)
+    {
+        $estudiante = User::with(['persona', 'avatar'])->findOrFail($id);
+        $aulas = $estudiante->aulas()->pluck('aulas.id');
+        $cursosAula = \App\Models\Curso::whereIn(
+            'id',
+            \App\Models\AulaCurso::whereIn('aula_id', $aulas)->pluck('curso_id')
+        )->get();
+        $aulaCursoIds = \App\Models\AulaCurso::whereIn('aula_id', $aulas)->pluck('id');
+        $sesionIds = \App\Models\Sesion::whereIn('aula_curso_id', $aulaCursoIds)->pluck('id');
+        $evaluaciones = \App\Models\Evaluacion::whereIn('sesion_id', $sesionIds)->get();
+
+        $calificaciones = [];
+        foreach ($evaluaciones as $evaluacion) {
+            $intentos = $evaluacion->intentos()
+                ->where('user_id', $estudiante->id)
+                ->where('estado', 'finalizado')
+                ->with('calificacion')
+                ->get();
+
+            $mejorIntento = $intentos->sortByDesc(function ($intento) {
+                return $intento->calificacion->puntaje_total ?? 0;
+            })->first();
+
+            if ($mejorIntento && $mejorIntento->calificacion) {
+                $calificaciones[] = [
+                    'curso' => $evaluacion->sesion->aulaCurso->curso->curso ?? '',
+                    'evaluacion' => $evaluacion->titulo,
+                    'puntaje_total' => $mejorIntento->calificacion->puntaje_total,
+                    'puntaje_maximo' => $mejorIntento->calificacion->puntaje_maximo,
+                    'porcentaje' => $mejorIntento->calificacion->porcentaje,
+                    'estado' => $mejorIntento->calificacion->estado,
+                    'fecha_fin' => $mejorIntento->fecha_fin,
+                    'intento_id' => $mejorIntento->id,
+                    'intentos' => $intentos->count(),
+                    'revision_vista' => $mejorIntento->revision_vista ?? false,
+                ];
+            }
+        }
+        $titulo = 'Calificaciones del alumno: ' . $estudiante->persona->nombre . ' ' . $estudiante->persona->apellido;
+        $subtitulo = 'Historial de calificaciones';
+        $filename = 'Calificaciones_' . $estudiante->persona->nombre . '_' . $estudiante->persona->apellido . '.xlsx';
+
+        return Excel::download(
+            new ExportCalificacionesEstudiante($calificaciones, $titulo, $subtitulo),
+            $filename
+        );
     }
 }

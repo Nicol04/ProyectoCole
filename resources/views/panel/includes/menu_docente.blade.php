@@ -43,7 +43,7 @@
                         <li>
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
-                                <li><a href="">Crear evaluaciones</a></li>
+                                <li><a href="/evaluaciones/create">Crear evaluaciones</a></li>
                                 <li><a href="/retroalimentacion">Retroalimentación IA</a></li>
                             </ul>
                         </li>
@@ -57,7 +57,7 @@
                         </li>
 
                         <li>
-                            <div class="link font-per"><a href="">Evaluaciones</a></div>
+                            <div class="link font-per"><a href="">Calificaciones</a></div>
                         </li>
                         <li>
                             <div class="link font-per"><a href="">Comunicados</a></div>
@@ -121,7 +121,7 @@
                             </div>
                         </li>
                         <li class="fc-green hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}"
-                                alt=""><a href="">Evaluaciones</a>
+                                alt=""><a href="{{ route('calificacion.show') }}">Calificaciones</a>
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="events.html">Comunicados</a></li>

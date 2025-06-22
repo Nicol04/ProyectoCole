@@ -168,6 +168,7 @@ class EvaluacionController extends Controller
 
         if ($sesion_id) {
             $sesion = Sesion::with('aulaCurso.curso')->find($sesion_id);
+
             if ($sesion) {
                 $sesion_titulo = $sesion->titulo;
                 if ($sesion->aulaCurso && $sesion->aulaCurso->curso) {
@@ -237,9 +238,13 @@ class EvaluacionController extends Controller
     }
     public function getSesionesPorCurso($cursoId)
     {
-        $sesiones = Sesion::whereHas('aulaCurso', function ($query) use ($cursoId) {
-            $query->where('curso_id', $cursoId);
-        })->get();
+        $user = Auth::user();
+        $aulaIds = $user->aulas()->pluck('aulas.id');
+        $sesiones = Sesion::whereHas('aulaCurso', function ($query) use ($cursoId, $aulaIds) {
+            $query->where('curso_id', $cursoId)
+                ->whereIn('aula_id', $aulaIds);
+        })->get(['id', 'titulo']);
+
         return response()->json($sesiones);
     }
 

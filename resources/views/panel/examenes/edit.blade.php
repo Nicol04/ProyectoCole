@@ -37,7 +37,10 @@
         function renderizarFormulario(preguntas) {
             const contenedor = document.getElementById('contenedorFormulario');
             contenedor.innerHTML = '';
-let html = '';
+            // Calcular la puntuación base para cada pregunta
+            const totalPreguntas = preguntas.length;
+            const puntuacionBase = +(20 / totalPreguntas).toFixed(2);
+            let html = '';
             html += `
     <form id="formularioPreguntas" class="gy-4 bg-white p-4 rounded-3 shadow border" method="POST" action="{{ route('examen.actualizar', $examenPregunta->id) }}">
         @csrf
@@ -95,7 +98,7 @@ let html = '';
                 </div>
                 <div class="mb-2">
                     <label class="fw-semibold">Puntuación:</label>
-                    <input type="number" class="form-control puntuacion-input" name="puntuacion_${index}" min="1" max="100" value="${pregunta.puntuacion ?? 1}" />
+                    <input type="number" class="form-control puntuacion-input" name="puntuacion_${index}" value="${puntuacionBase}" step="any" />
                 </div>
             </div>
             <hr class="border-secondary">
@@ -116,37 +119,50 @@ let html = '';
 
             // Lógica para el submit
             document.getElementById('formularioPreguntas').addEventListener('submit', function(e) {
-            // Generar el JSON antes de enviar
-            const form = e.target;
-            const preguntasEditadas = [];
-            for (let i = 0; i < preguntas.length; i++) {
-                const pregunta = form[`pregunta_${i}`].value;
-                const opciones = [
-                    form[`opcion_${i}_a`].value,
-                    form[`opcion_${i}_b`].value,
-                    form[`opcion_${i}_c`].value
-                ];
-                const respuesta = form[`respuesta_${i}`].value;
-                const puntuacion = parseInt(form[`puntuacion_${i}`].value) || 1;
-                preguntasEditadas.push({
-                    pregunta,
-                    opciones,
-                    respuesta,
-                    puntuacion
-                });
-            }
-            const jsonStr = JSON.stringify(preguntasEditadas, null, 2);
-            document.getElementById('jsonFinal').value = jsonStr;
-            // El formulario se enviará normalmente
-        });
+                // Generar el JSON antes de enviar
+                const form = e.target;
+                const preguntasEditadas = [];
+                for (let i = 0; i < preguntas.length; i++) {
+                    const pregunta = form[`pregunta_${i}`].value;
+                    const opciones = [
+                        form[`opcion_${i}_a`].value,
+                        form[`opcion_${i}_b`].value,
+                        form[`opcion_${i}_c`].value
+                    ];
+                    const respuesta = form[`respuesta_${i}`].value;
+                    const puntuacion = parseFloat(form[`puntuacion_${i}`].value) || 1;
+                    preguntasEditadas.push({
+                        pregunta,
+                        opciones,
+                        respuesta,
+                        puntuacion
+                    });
+                }
+
+                const totalPuntuacionTexto = document.getElementById('totalPuntuacion').textContent;
+                const totalPuntuacion = parseInt(totalPuntuacionTexto, 10);
+                if (totalPuntuacion !== 20) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Puntuación inválida',
+                        text: 'La puntuación total debe ser exactamente 20.',
+                    });
+                    return;
+                } else {
+                    const jsonStr = JSON.stringify(preguntasEditadas, null, 2);
+                    document.getElementById('jsonFinal').value = jsonStr;
+                }
+                // El formulario se enviará normalmente
+            });
 
             function actualizarTotalPuntuacion() {
                 const inputs = document.querySelectorAll('.puntuacion-input');
                 let total = 0;
                 inputs.forEach(input => {
-                    total += parseInt(input.value) || 0;
+                    total += parseFloat(input.value) || 0;
                 });
-                document.getElementById('totalPuntuacion').textContent = total;
+                document.getElementById('totalPuntuacion').textContent = Math.round(total);
             }
 
             actualizarTotalPuntuacion();
@@ -165,4 +181,5 @@ let html = '';
         window.addEventListener('resize', ajustarAlturaIframe);
     </script>
 </body>
+
 </html>

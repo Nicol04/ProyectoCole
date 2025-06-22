@@ -115,7 +115,6 @@
                             valor_respuesta: valorRespuesta
                         });
                     });
-                    // ...existing code...
 
                     if (!todasRespondidas) {
                         Swal.fire({
@@ -127,7 +126,6 @@
                         return;
                     }
 
-                    // Agrega el JSON de respuestas a un input oculto
                     let inputJson = document.createElement('input');
                     inputJson.type = 'hidden';
                     inputJson.name = 'respuesta_json';
