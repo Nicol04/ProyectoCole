@@ -44,10 +44,11 @@
             <div class="col-lg-8 col-xl-9">
                 <div class="shop-sorting">
                     <ul class="nav grid-list-button" role="tablist">
-                        <li role="presentation"><a class="active" href="#home" aria-controls="home" role="tab"
-                                data-toggle="tab"><i class="fa fa-th"></i></a></li>
-                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                        <li role="presentation"><a class="active" href="#profile" aria-controls="profile" role="tab"
                                 data-toggle="tab"><i class="fa fa-th-list"></i></a></li>
+                        <li role="presentation"><a href="#home" aria-controls="home" role="tab"
+                                data-toggle="tab"><i class="fa fa-th"></i></a></li>
+                        
                     </ul>
 
                     <div class="inner-container my-4">
@@ -68,7 +69,7 @@
                             </h3>
                         </div>
                         <div class="shop-product-area tab-content">
-                            <div role="tabpanel" class="tab-pane fade show active" id="home">
+                            <div role="tabpanel" class="tab-pane fade show active" id="profile">
                                 <div class="table-responsive">
                                     <table
                                         class="table table-bordered align-middle table-historial-estudiantes shadow-sm rounded">
@@ -163,7 +164,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade in" id="profile">
+                            <div role="tabpanel" class="tab-pane fade in" id="home">
 
 
                                 <div class="row">

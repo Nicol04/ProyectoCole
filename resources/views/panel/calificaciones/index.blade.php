@@ -129,7 +129,16 @@
                             Sin datos
                         </li>
                     </ul>
+                    
                 </div>
+                <div class="sort-area-sin">
+    <h5>Escala de letras</h5>
+    <ul class="sort-by-age">
+        <li><strong>A</strong>: 70% a 100% (Excelente)</li>
+        <li><strong>B</strong>: 50% a 69% (Medio)</li>
+        <li><strong>C</strong>: 0% a 49% (Bajo)</li>
+    </ul>
+</div>
             </div>
             <!--Shop sidebar area end-->
         </div>
@@ -138,35 +147,37 @@
 <!--Shop area end-->
 <div class="table-responsive my-4">
     <table class="table table-sm table-bordered text-center align-middle" style="max-width: 600px; margin: 0 auto;">
-        <thead class="table-light">
+    <thead class="table-light">
+        <tr>
+            <th>Curso</th>
+            <th>Promedio (%)</th>
+            <th>Nota</th> <!-- NUEVA COLUMNA -->
+            <th>Estado</th>
+            <th>Evaluaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($promediosPorCurso as $curso => $datos)
             <tr>
-                <th>Curso</th>
-                <th>Promedio (%)</th>
-                <th>Estado</th>
-                <th>Evaluaciones</th>
+                <td>{{ $curso }}</td>
+                <td>{{ $datos['promedio_porcentaje'] }}%</td>
+                <td><strong>{{ $datos['letra'] }}</strong></td> <!-- MUESTRA LA LETRA -->
+                <td>
+                    @if($datos['estado'] === 'Aprobado')
+                        <span class="badge bg-success">Aprobado</span>
+                    @elseif($datos['estado'] === 'Intermedio')
+                        <span class="badge bg-warning text-dark">Intermedio</span>
+                    @elseif($datos['estado'] === 'Desaprobado')
+                        <span class="badge bg-danger">Desaprobado</span>
+                    @else
+                        <span class="badge bg-secondary">Sin datos</span>
+                    @endif
+                </td>
+                <td>{{ $datos['cantidad'] }}</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach($promediosPorCurso as $curso => $datos)
-                <tr>
-                    <td>{{ $curso }}</td>
-                    <td>{{ $datos['promedio_porcentaje'] }}%</td>
-                    <td>
-                        @if($datos['estado'] === 'Aprobado')
-                            <span class="badge bg-success">Aprobado</span>
-                        @elseif($datos['estado'] === 'Intermedio')
-                            <span class="badge bg-warning text-dark">Intermedio</span>
-                        @elseif($datos['estado'] === 'Desaprobado')
-                            <span class="badge bg-danger">Desaprobado</span>
-                        @else
-                            <span class="badge bg-secondary">Sin datos</span>
-                        @endif
-                    </td>
-                    <td>{{ $datos['cantidad'] }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        @endforeach
+    </tbody>
+</table>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
