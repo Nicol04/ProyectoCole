@@ -40,5 +40,17 @@ class Aula extends Model
             ->with(['persona'])
             ->first();
     }
+    public function actualizarCantidadUsuarios()
+{
+    $año = \App\Models\Año::whereDate('fecha_inicio', '<=', now())
+        ->whereDate('fecha_fin', '>=', now())
+        ->first();
+
+    $this->cantidad_usuarios = $this->users()
+        ->wherePivot('año_id', $año?->id)
+        ->count();
+
+    $this->save();
+}
 
 }

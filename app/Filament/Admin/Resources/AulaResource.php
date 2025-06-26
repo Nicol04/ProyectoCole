@@ -75,12 +75,8 @@ class AulaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -103,7 +99,7 @@ class AulaResource extends Resource
         return [
             'index' => Pages\ListAulas::route('/'),
             'create' => Pages\CreateAula::route('/create'),
-            'edit' => Pages\EditAula::route('/{record}/edit'),
+            'view' => Pages\ViewAula::route('/{record}'),
             'ver-sesiones' => Pages\VerSesiones::route('/{record}/ver-sesiones/{cursoId}'),
             'crear-sesion' => Pages\CrearSesion::route('/{record}/crear-sesion/{cursoId}'),
             'editar-sesion' => Pages\EditarSesion::route('/editar-sesion/{record}'),
