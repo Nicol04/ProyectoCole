@@ -21,6 +21,7 @@ class SesionResource extends Resource
 {
     use Translatable;
     protected static ?string $model = Sesion::class;
+    protected static ?string $navigationLabel = 'Sesiones';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

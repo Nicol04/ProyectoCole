@@ -6,13 +6,15 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\AttachAction;
+use Filament\Tables\Actions\DetachAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UsersRelationManager extends RelationManager
 {
-    protected static string $relationship = 'Users';
+    protected static string $relationship = 'users';
 
     public function form(Form $form): Form
     {
@@ -27,24 +29,17 @@ class UsersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
-            ->columns([
-                Tables\Columns\TextColumn::make('name'),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
+            ->modifyQueryUsing(fn ($query) => $query->with('persona', 'roles')) // 👈 importante
+        ->columns([
+            Tables\Columns\TextColumn::make('name')->label('Usuario'),
+            Tables\Columns\TextColumn::make('persona.nombre')->label('Nombre'),
+            Tables\Columns\TextColumn::make('persona.apellido')->label('Apellido'),
+            Tables\Columns\TextColumn::make('roles.name') // primera coincidencia del plugin Shield
+                ->label('Rol')
+                ->formatStateUsing(fn ($state) => ucfirst($state)), // Muestra "Estudiante", "Docente", etc.
+        ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DetachAction::make(),
             ]);
     }
 }

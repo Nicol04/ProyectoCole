@@ -25,7 +25,7 @@
         <div class="row">
             <div class="col-md-12 col-lg-12 col-xl-2">
                 <div class="logo">
-                    <a href="">
+                    <a href="{{ route('index') }}">
                         <img src="{{ asset('assets/img/panel/logo.png') }}" alt=""alt="" width="400">
                     </a>
                 </div>
@@ -34,12 +34,12 @@
 
                     <!--Mobile Menu start-->
                     <ul id="mobilemenu" class="accordion">
-                        <li class="mob-logo"><a href="">
+                        <li class="mob-logo"><a href="{{ route('index') }}">
                                 <img src="{{ asset('assets/img/panel/logo.png') }}" alt="" alt=""
                                     width="400">
                             </a></li>
                         <li><a class="closeme" href="#"><i class="fa fa-times"></i></a></li>
-                        <li class="fc-red out-link"><a class="" href="">Hogar</a></li>
+                        <li class="fc-red out-link"><a class="{{ route('index') }}" href="">Hogar</a></li>
                         <li>
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
@@ -59,10 +59,10 @@
                         </li>
 
                         <li>
-                            <div class="link font-per"><a href="">Calificaciones</a></div>
+                            <div class="link font-per"><a href="{{ route('calificacion.show') }}">Calificaciones</a></div>
                         </li>
                         <li>
-                            <div class="link font-per"><a href="">Comunicados</a></div>
+                            <div class="link font-per"><a href="{{ route('comunicados.index') }}">Comunicados</a></div>
                         </li>
                         <li>
                             <div class="link font-red"><a href="/recursos">Recursos</a></div>
@@ -72,7 +72,10 @@
                         </li>
                         <li>
                             <div class="top-contact-btn">
-                                <a href="" class="kids-care-btn bg-sky">Cerrar Sesion</a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="kids-care-btn bg-sky">Salir</button>
+                                </form>
                             </div>
                         </li>
 
@@ -87,7 +90,7 @@
                     <ul id="navigation">
                         <li class="fc-orange">
                             <img src="{{ asset('assets/img/panel/icon/menu-icon3.png') }}" alt="">
-                            <a href="">Hogar</a>
+                            <a href="{{ route('index') }}">Hogar</a>
                         </li>
                         <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon2.png') }}"
                                 alt=""><a href="#">Mi aula<i class="fa fa-angle-down"></i></a>

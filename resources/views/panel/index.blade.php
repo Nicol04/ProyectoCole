@@ -30,8 +30,7 @@
                             <div class="slider-text">
                                 <span class="animated"><img src="{{ asset('assets/img/panel/icon/slider-text.png') }}"
                                         alt="" height="120px"></span>
-                                <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para
-                                    aprender</p>
+                                <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para aprender</p>
                             </div>
 
                         </div>
@@ -112,11 +111,14 @@
                         <div class="row">
                             <div class="col-md-7 col-lg-5 col-xl-6">
                                 <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
-                                    <h2 class="font-orange area-heading">WELCOME TO<br>THE KINDERGARTEN!</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
-                                        proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem
-                                        ipsum dolor sit amet,cuculpa qui officiacuculpa qui officiacuculpa qui
-                                        officiaLorem ipsum dolor sit amet</p>
+                                    <h2 class="font-orange area-heading">BIENVENIDOS AL AULA VIRTUAL<br> DEL COLEGIO ANN GOULDEN!</h2>
+                                    <p>Hola estudiantes, padres de familia y docentes, les damos la bienvenida a
+                                        nuestra aula virtual. Aquí encontrarán un espacio para aprender, compartir y
+                                        crecer juntos. Nuestro objetivo es brindarles una educación de calidad, adaptada a
+                                        las necesidades de cada uno de ustedes. A través de esta plataforma, podrán acceder a
+                                        recursos educativos, participar en actividades interactivas y comunicarse con sus
+                                        compañeros y docentes. ¡Esperamos que disfruten de su experiencia en el aula virtual
+                                        y aprovechen al máximo las oportunidades de aprendizaje que les ofrecemos!</p>
                                 </div>
                             </div>
                         </div>
@@ -419,261 +421,6 @@
 
     <!--Gallery area end-->
 
-
-    <!--Features style three start-->
-    <div class="about-kids-three bg-white">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="area-heading font-per style-two">Feature style three</h1>
-                    <p class="heading-para">we promised you that, we always try to take care of your childdren.Early
-                        child care is a very important and often overlooked component of child development</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="order-md-2 col-md-6 col-lg-4 order-lg-1 offset-xl-1 col-xl-4">
-                    <div class="wel3-oneside">
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con ">
-                                <h3>Funny and Happy</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-1.png') }}" alt="">
-                            </div>
-                        </div>
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con">
-                                <h3>Fulfill With Love</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-2.png') }}" alt="">
-                            </div>
-
-                        </div>
-
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con">
-                                <h3>Special Education</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-3.png') }}" alt="">
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="order-md-1 col-md-12 order-lg-2 col-lg-4 col-xl-2">
-                    <div class="animated-img">
-                        <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
-                    </div>
-                </div>
-                <div class="order-md-3 col-md-6 col-lg-4 order-lg-3 col-xl-4">
-                    <div class="wel3-oneside align-left">
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-4.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Personal capacitado</h3>
-                                <p>Contamos con un equipo docente comprometido y apasionado por la enseñanza.</p>
-                            </div>
-                        </div>
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-5.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Fully Equiped</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                        </div>
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-6.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Transportation</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Feature style three end-->
-
-    <!--Latest news three area start-->
-    <section class="latest-news-three">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <h2 class="area-heading st-two font-per">Latest News</h2>
-                    <p class="area-subline ">Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat
-                        non proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem ipsum dolor
-                        sit amet,cuculpa qui officiacuculpa.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc1.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Vestibulum Congue Massa.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-thumbs-up"></i>like</span>
-                                    <p>12</p>
-                                </div>
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-comments"></i>comment</span>
-                                    <p>09</p>
-                                </div>
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-eye"></i>View</span>
-                                    <p>123</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc2.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Vestibulum Congue Massa.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc3.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Phasellus id tempor.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc4.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Aenean vehicula velit.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!--Latest news three area end-->
-
     <!--Countdown for upcoming event start-->
     <section class="up-event-countdown">
         <div class="container-fluid">
@@ -694,7 +441,6 @@
             </div>
         </div>
     </section>
-
     <!--Countdown for upcoming event end-->
     @include('panel.includes.footer2')
     @include('panel.includes.footer')

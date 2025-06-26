@@ -20,8 +20,9 @@ class EvaluacionResource extends Resource
 {
     use Translatable;
     protected static ?string $model = Evaluacion::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Gestión de estudiantes';
+    protected static ?string $navigationLabel = 'Evaluaciones';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
 
     public static function form(Form $form): Form
     {
