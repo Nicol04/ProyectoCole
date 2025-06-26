@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalificacionController;
+use App\Http\Controllers\ComunicadoController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\EvaluacionController;
@@ -99,6 +100,15 @@ Route::get('/retroalimentacion', function () {return view('panel.ia.retroaliment
 
 //REPORTES:
 Route::get('/reporte/historial-estudiantes', [RespuestaEstudianteController::class, 'exportarHistorialEstudiantes'])->name('reporte.historial.estudiantes');
+//Comunicados:
+Route::get('/comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
+Route::get('/comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
+Route::post('/comunicados', [ComunicadoController::class, 'store'])->name('comunicados.store');
+Route::get('/comunicados/{comunicado}/edit', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
+Route::put('/comunicados/{comunicado}', [ComunicadoController::class, 'update'])->name('comunicados.update');
+Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
+Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
+Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
 
 
 });

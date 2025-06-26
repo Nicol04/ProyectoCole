@@ -31,9 +31,6 @@
                                 /</span></a>{{ $estudiante->persona->nombre }} {{ $estudiante->persona->apellido }}
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-5">
-                    <a href="#" class="kids-care-btn bgc-orange f14">Information</a>
-                </div>
             </div>
         </div>
     </section>

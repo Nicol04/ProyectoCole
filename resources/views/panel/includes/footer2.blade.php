@@ -2,7 +2,7 @@
 <section class="footer-widget style-three">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-lg-3">
+            <div class="col-sm-6">
                 <div class="single-widget">
                     <h3 class="font-red">Contacto</h3>
                     <div class="footer-contact">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-lg-3 ">
+            <div class="col-sm-6 ">
                 <div class="single-widget">
                     <h3 class="font-red">Useful Links</h3>
                     <ul class="footer-tab">
@@ -41,45 +41,6 @@
                         <li><a href="#">Healthy Meals</a></li>
                         <li><a href="#">blog</a></li>
                     </ul>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="single-widget">
-                    <h3 class="font-per">Latest Post</h3>
-                    <div class="sin-post">
-                        <img src="{{ asset('assets/img/panel/latest-news/footer-post1.png') }}" alt="">
-                        <div class="post-brif">
-                            <a href="">We have been offering afford
-                                able upbringing.</a>
-                            <p>March 23, 2014</p>
-                        </div>
-                    </div>
-                    <div class="sin-post">
-                        <img src="{{ asset('assets/img/panel/latest-news/footer-post2.png') }}" alt="">
-                        <div class="post-brif">
-                            <a href="">We have been offering afford
-                                able upbringing.</a>
-                            <p>March 23, 2014</p>
-                        </div>
-                    </div>
-                    <div class="sin-post">
-                        <img src="{{ asset('assets/img/panel/latest-news/footer-post3.png') }}" alt="">
-                        <div class="post-brif">
-                            <a href="">We have been offering afford
-                                able upbringing.</a>
-                            <p>March 23, 2014</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="single-widget">
-                    <h3 class="font-sky">Newsletter Signup</h3>
-                    <p>Get latest updates, news, surveys & offers</p>
-                    <div class="footer-newsletter">
-                        <input type="text">
-                        <a href="#"><i class="fa fa-envelope"></i></a>
-                    </div>
                 </div>
             </div>
         </div>

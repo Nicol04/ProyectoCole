@@ -8,11 +8,16 @@
     <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
     <!--Font awesome css-->
     <!-- <link rel="stylesheet" href="{{ asset('css/panel/font-awesome.min.css') }}"> -->
-    <!--Bootstrap-->
+    <!--Bootstrap
     <link href="{{ asset('css/panel/boostrap.min.css') }}" rel="stylesheet">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    
     <!--UI css-->
     <link rel="stylesheet" href="{{ asset('css/panel/jquery-ui.css') }}">
     <!-- Venobox CSS -->
@@ -32,6 +37,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
     @csrf
     <div class="input-container">

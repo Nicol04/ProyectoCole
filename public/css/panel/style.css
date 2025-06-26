@@ -8505,3 +8505,162 @@ ul.sort-by-age li:first-child {
 		font-size: 28px;
 		margin-bottom: 40px;
 	}
+	/*Toast*/
+	.toast-comunicado {
+    animation: fadeInUp 0.3s ease-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.comunicado-link {
+    display: inline-block;
+    padding: 8px 16px;
+    color: #8373ce;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Grandstander', cursive;
+}
+
+.comunicado-link:hover {
+    background-color: #8373ce;
+    color: #fff;
+}
+
+
+/* DISEÑO PARA LA PARTE DE LOS COMUNICADOS */
+.filtro-btn {
+    background-color: #8373ce;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin: 0 6px;
+    border-radius: 25px;
+    font-family: 'Grandstander', cursive;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Color por tipo */
+.filtro-btn[data-filtro="todos"] {
+    background-color: #FF8A65; /* naranja alegre */
+}
+
+.filtro-btn[data-filtro="no-vistos"] {
+    background-color: #4DB6AC; /* turquesa */
+}
+
+.filtro-btn[data-filtro="vistos"] {
+    background-color: #81C784; /* verde pastel */
+}
+
+/* Hover y activo */
+.filtro-btn:hover,
+.filtro-btn.active {
+    background-color: white;
+    border: 2px solid currentColor;
+    color: inherit;
+}
+
+/* Estilo del modal tipo carta */
+.modal-carta {
+    border: none;
+    border-radius: 20px;
+    background-color: transparent;
+    font-family: 'Grandstander', cursive;
+	font-size: 20px;
+    animation: slideDown 0.5s ease;
+    overflow: visible;
+}
+
+
+/* Imagen de la carta */
+.img-carta {
+    max-width: 300px;
+    margin-top: -50px; /* Para que sobresalga del modal */
+    z-index: 2;
+    position: relative;
+}
+
+/* Contenedor del mensaje */
+.contenido-mensaje {
+    background-color: white;
+    max-width: 600px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px 30px; /* Padding arriba aumentado */
+    margin-top: -20px; /* Acerca un poco al borde de la imagen sin pegarlo */
+    position: relative;
+    z-index: 1;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+
+/* Botón cerrar con equis roja */
+.contenido-mensaje .btn-outline-danger {
+    font-size: 1.5rem;
+    padding: 6px 18px;
+    border-radius: 50%;
+    line-height: 1;
+}
+
+/* Animación */
+@keyframes slideDown {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+
+/* Cartas de comunicado */
+.carta-comunicado {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 16px;
+    font-family: 'Grandstander', cursive;
+    background-color: #fffdf7;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding: 15px;
+    overflow: hidden;
+    border-left: 5px solid #8373ce;
+}
+
+.carta-comunicado:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(131, 115, 206, 0.3);
+}
+
+.carta-comunicado .card-title {
+    color: #8373ce;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.carta-comunicado .card-text {
+    color: #333;
+    font-size: 15px;
+}
+
+.carta-comunicado small {
+    font-size: 12px;
+    color: #888;
+}

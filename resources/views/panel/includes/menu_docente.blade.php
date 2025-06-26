@@ -45,6 +45,8 @@
                             <ul class="submenu font-sky">
                                 <li><a href="/evaluaciones/create">Crear evaluaciones</a></li>
                                 <li><a href="/retroalimentacion">Retroalimentación IA</a></li>
+                                <li><a href="{{ route('informativa') }}">Tutorial</a></li>
+                                <li><a href="{{ route('comunicados.create') }}">Crear comunicados</a></li>
                             </ul>
                         </li>
                         <li>
@@ -95,7 +97,8 @@
                                     <div class="mega-button">
                                         <ul>
                                             @forelse ($cursos as $curso)
-                                                <a href="{{ route('sesiones.index', ['id' => $curso->id]) }}"><span>{{ $curso->curso }}</span></a>
+                                                <a
+                                                    href="{{ route('sesiones.index', ['id' => $curso->id]) }}"><span>{{ $curso->curso }}</span></a>
                                             @empty
                                                 <li>No tienes cursos asignados</li>
                                             @endforelse
@@ -116,6 +119,8 @@
                                     <div class="mega-button">
                                         <a href="/evaluaciones/create"><span>Crear evaluaciones</span></a>
                                         <a href="/retroalimentacion"><span>Retroalimentación IA</span></a>
+                                        <a href="{{ route('informativa') }}">Ver tutorial</a>
+                                        <a href="{{ route('comunicados.create') }}">Crear comunicados</a>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +129,7 @@
                                 alt=""><a href="{{ route('calificacion.show') }}">Calificaciones</a>
                         </li>
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
-                                alt=""><a href="events.html">Comunicados</a></li>
+                                alt=""><a href="{{ route('comunicados.index') }}">Comunicados</a></li>
                         <li class="fc-orange hav-sub"> <img src="{{ asset('assets/img/panel/icon/menu-icon6.png') }}"
                                 alt=""> <a href="/recursos">Recursos</a>
                         </li>

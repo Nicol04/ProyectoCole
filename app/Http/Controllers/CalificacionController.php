@@ -147,7 +147,7 @@ class CalificacionController extends Controller
             ->whereHas('roles', fn($q) => $q->where('id', 3))
             ->with(['persona', 'avatar']);
 
-        
+
 
         if (request()->filled('estudiante')) {
             $nombreCompleto = strtolower(request('estudiante'));
@@ -194,7 +194,7 @@ class CalificacionController extends Controller
                     ];
                 }
             }
-            
+
 
             // Filtros adicionales
             if (request()->filled('curso')) {
@@ -226,17 +226,17 @@ class CalificacionController extends Controller
             });
 
             if (request()->filled('buscar')) {
-    $buscar = strtolower(request('buscar'));
+                $buscar = strtolower(request('buscar'));
 
-    $calificaciones = array_filter($calificaciones, function ($c) use ($buscar) {
-        return str_contains(strtolower($c['evaluacion']), $buscar);
-    });
+                $calificaciones = array_filter($calificaciones, function ($c) use ($buscar) {
+                    return str_contains(strtolower($c['evaluacion']), $buscar);
+                });
 
-    // Si no hay coincidencias, saltar al siguiente estudiante
-    if (empty($calificaciones)) {
-        continue;
-    }
-}
+                // Si no hay coincidencias, saltar al siguiente estudiante
+                if (empty($calificaciones)) {
+                    continue;
+                }
+            }
 
             $calificacionesPorEstudiante[$estudiante->id] = array_values($calificaciones);
 
@@ -247,7 +247,6 @@ class CalificacionController extends Controller
                 }
                 $cursosContados[$cursoNombre]++;
             }
-            
         }
 
         $page = request()->get('page', 1);

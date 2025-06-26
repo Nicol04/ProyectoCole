@@ -95,4 +95,14 @@ class User extends Authenticatable
 
         return $evaluacionesEnProgreso->count() + $evaluacionesNoIniciadas->count();
     }
+    public function comunicadosVistos()
+    {
+        return $this->belongsToMany(Comunicado::class, 'comunicado_user')
+            ->withPivot('visto')
+            ->withTimestamps();
+    }
+    public function comunicadoUser()
+    {
+        return $this->hasMany(Comunicado_user::class);
+    }
 }
