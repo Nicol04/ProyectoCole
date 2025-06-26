@@ -8,6 +8,7 @@ use App\Models\Aula;
 use App\Models\Calificacion;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -18,10 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CalificacionResource extends Resource
 {
+    use Translatable;
     protected static ?string $model = Calificacion::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-numbered-list';
     protected static ?string $navigationLabel = 'Calificaciones';
+    protected static ?string $label = 'Calificaciones';
     protected static ?string $navigationGroup = 'Gestión de estudiantes';
     public static function form(Form $form): Form
     {
@@ -119,7 +122,7 @@ class CalificacionResource extends Resource
                     ->label('Filtrar por Aula')
                     ->options(
                         fn() =>
-                        \App\Models\Aula::all()->pluck('grado_seccion', 'id')->prepend('')
+                        \App\Models\Aula::all()->pluck('grado_seccion', 'id')
                     )
                     ->attribute('aula') // Esto es obligatorio si usas modifyQueryUsing
                     ->modifyQueryUsing(function (Builder $query, $state) {
@@ -132,7 +135,6 @@ class CalificacionResource extends Resource
                 SelectFilter::make('estado')
                     ->label('Filtrar por Estado')
                     ->options([
-                        '',
                         'aprobado' => 'Aprobado',
                         'desaprobado' => 'Desaprobado',
                     ])

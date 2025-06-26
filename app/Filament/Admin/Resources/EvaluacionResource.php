@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -22,6 +23,8 @@ class EvaluacionResource extends Resource
     protected static ?string $model = Evaluacion::class;
     protected static ?string $navigationGroup = 'Gestión de estudiantes';
     protected static ?string $navigationLabel = 'Evaluaciones';
+    protected static ?string $label = 'Evaluaciones';
+
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
 
     public static function form(Form $form): Form
@@ -108,37 +111,40 @@ class EvaluacionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('sesion_id')
-                    ->numeric()
+                TextColumn::make('sesion.titulo')
+                    ->label('Título de Sesión')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                TextColumn::make('docente.persona.nombre_completo')
+                    ->label('Nombre del Docente')
+                    ->getStateUsing(function ($record) {
+                        return optional($record->docente->persona)->nombre . ' ' . optional($record->docente->persona)->apellido;
+                    })
+                    ->searchable(['docente.persona.nombre', 'docente.persona.apellido'])
                     ->sortable(),
                 Tables\Columns\IconColumn::make('es_supervisado')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('titulo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('cantidad_preguntas')
+                TextColumn::make('titulo')
+                    ->searchable()
+                    ->label('Título de Evaluación'),
+                TextColumn::make('cantidad_preguntas')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cantidad_intentos')
+                TextColumn::make('cantidad_intentos')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('fecha_creacion')
+                TextColumn::make('fecha_creacion')
                     ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('archivo_id')
-                    ->numeric()
-                    ->sortable(),
             ])
             ->filters([
                 //

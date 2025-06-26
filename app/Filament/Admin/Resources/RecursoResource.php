@@ -19,7 +19,7 @@ class RecursoResource extends Resource
     use Translatable;
     protected static ?string $model = Recurso::class;
     protected static ?string $navigationIcon = 'heroicon-o-folder';
-    protected static ?string $navigationGroup = 'Gestión de documentos 3d';
+    protected static ?string $navigationGroup = 'Gestión de documentos 3D';
     public static function form(Form $form): Form
     {
         return $form

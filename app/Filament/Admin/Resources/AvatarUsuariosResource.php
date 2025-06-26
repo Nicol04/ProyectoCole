@@ -22,7 +22,7 @@ class AvatarUsuariosResource extends Resource
     protected static ?string $model = Avatar_usuarios::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $navigationLabel = 'Avatar'; //NOMBRE O TITULO DEL BOTON
+    protected static ?string $navigationLabel = 'Avatar';
 
     protected static ?string $navigationGroup = 'Gestión de usuarios';
 
