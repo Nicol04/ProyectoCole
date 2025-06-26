@@ -32,109 +32,108 @@ class UsersRelationManager extends RelationManager
     }
 
     public function table(Table $table): Table
-{
-    return $table
-        ->modifyQueryUsing(fn ($query) => $query->with('persona', 'roles'))
-        ->columns([
-            Tables\Columns\TextColumn::make('persona.nombre')->label('Nombre'),
-            Tables\Columns\TextColumn::make('persona.apellido')->label('Apellido'),
-            Tables\Columns\TextColumn::make('roles.name')->label('Rol')
-                ->formatStateUsing(fn ($state) => ucfirst($state)),
-        ])
-        ->headerActions([
-            Action::make('agregarUsuarios')
-                ->label('Agregar Estudiantes o Docente')
-                ->icon('heroicon-m-user-plus')
-                ->form([
-                    Forms\Components\Select::make('user_ids')
-                        ->label('Seleccionar usuarios')
-                        ->multiple()
-                        ->searchable()
-                        ->options(function (RelationManager $livewire) {
-                            $aula = $livewire->getOwnerRecord();
+    {
+        return $table
+            ->modifyQueryUsing(fn($query) => $query->with('persona', 'roles'))
+            ->columns([
+                Tables\Columns\TextColumn::make('persona.nombre')->label('Nombre'),
+                Tables\Columns\TextColumn::make('persona.apellido')->label('Apellido'),
+                Tables\Columns\TextColumn::make('roles.name')->label('Rol')
+                    ->formatStateUsing(fn($state) => ucfirst($state)),
+            ])
+            ->headerActions([
+                Action::make('agregarUsuarios')
+                    ->label('Agregar Estudiantes o Docente')
+                    ->icon('heroicon-m-user-plus')
+                    ->form([
+                        Forms\Components\Select::make('user_ids')
+                            ->label('Seleccionar usuarios')
+                            ->multiple()
+                            ->searchable()
+                            ->options(function (RelationManager $livewire) {
+                                $aula = $livewire->getOwnerRecord();
 
-                            // Verificar si ya hay un docente en el aula
-                            $yaTieneDocente = $aula->users()
-                                ->whereHas('roles', fn ($q) => $q->where('name', 'docente'))
-                                ->exists();
+                                // Verificar si ya hay un docente en el aula
+                                $yaTieneDocente = $aula->users()
+                                    ->whereHas('roles', fn($q) => $q->where('name', 'docente'))
+                                    ->exists();
 
-                            return User::whereDoesntHave('usuario_aulas') // no tiene aulas
-                                ->whereHas('roles', function ($query) use ($yaTieneDocente) {
-                                    $query->whereIn('name', $yaTieneDocente ? ['estudiante'] : ['estudiante', 'docente']);
-                                })
-                                ->with('persona')
-                                ->get()
-                                ->mapWithKeys(fn ($user) => [
-                                    $user->id => "{$user->persona?->nombre} {$user->persona?->apellido}",
-                                ]);
-                        })
-                        ->required(),
-                ])
-                ->action(function (array $data, RelationManager $livewire) {
-                    $aula = $livewire->getOwnerRecord();
+                                return User::whereDoesntHave('usuario_aulas') // no tiene aulas
+                                    ->whereHas('roles', function ($query) use ($yaTieneDocente) {
+                                        $query->whereIn('name', $yaTieneDocente ? ['estudiante'] : ['estudiante', 'docente']);
+                                    })
+                                    ->with('persona')
+                                    ->get()
+                                    ->mapWithKeys(fn($user) => [
+                                        $user->id => "{$user->persona?->nombre} {$user->persona?->apellido}",
+                                    ]);
+                            })
+                            ->required(),
+                    ])
+                    ->action(function (array $data, RelationManager $livewire) {
+                        $aula = $livewire->getOwnerRecord();
 
-                    $año = Año::whereDate('fecha_inicio', '<=', now())
-                        ->whereDate('fecha_fin', '>=', now())
-                        ->first();
+                        $año = Año::whereDate('fecha_inicio', '<=', now())
+                            ->whereDate('fecha_fin', '>=', now())
+                            ->first();
 
-                    if (! $año) {
+                        if (! $año) {
+                            Notification::make()
+                                ->title('No hay un año activo definido.')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+
+                        foreach ($data['user_ids'] as $userId) {
+                            usuario_aula::create([
+                                'user_id' => $userId,
+                                'aula_id' => $aula->id,
+                                'año_id' => $año->id,
+                            ]);
+                        }
+
+                        $aula->actualizarCantidadUsuarios();
+
                         Notification::make()
-                            ->title('No hay un año activo definido.')
-                            ->danger()
+                            ->title('Usuarios vinculados exitosamente.')
+                            ->success()
                             ->send();
-                        return;
-                    }
+                    }),
+            ])
+            ->actions([
+                Action::make('desvincular')
+                    ->label('Desvincular')
+                    ->color('danger')
+                    ->icon('heroicon-m-trash')
+                    ->requiresConfirmation()
+                    ->action(function ($record, RelationManager $livewire) {
+                        $aula = $livewire->getOwnerRecord();
 
-                    foreach ($data['user_ids'] as $userId) {
-                        usuario_aula::create([
-                            'user_id' => $userId,
-                            'aula_id' => $aula->id,
-                            'año_id' => $año->id,
-                        ]);
-                    }
+                        $año = Año::whereDate('fecha_inicio', '<=', now())
+                            ->whereDate('fecha_fin', '>=', now())
+                            ->first();
 
-                    $aula->actualizarCantidadUsuarios();
+                        if (! $año) {
+                            Notification::make()
+                                ->title('No hay un año activo definido.')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
 
-                    Notification::make()
-                        ->title('Usuarios vinculados exitosamente.')
-                        ->success()
-                        ->send();
-                }),
-        ])
-        ->actions([
-            Action::make('desvincular')
-                ->label('Desvincular')
-                ->color('danger')
-                ->icon('heroicon-m-trash')
-                ->requiresConfirmation()
-                ->action(function ($record, RelationManager $livewire) {
-                    $aula = $livewire->getOwnerRecord();
+                        usuario_aula::where('user_id', $record->id)
+                            ->where('aula_id', $aula->id)
+                            ->where('año_id', $año->id)
+                            ->delete();
 
-                    $año = Año::whereDate('fecha_inicio', '<=', now())
-                        ->whereDate('fecha_fin', '>=', now())
-                        ->first();
+                        $aula->actualizarCantidadUsuarios();
 
-                    if (! $año) {
                         Notification::make()
-                            ->title('No hay un año activo definido.')
-                            ->danger()
+                            ->title('Usuario desvinculado correctamente.')
+                            ->success()
                             ->send();
-                        return;
-                    }
-
-                    usuario_aula::where('user_id', $record->id)
-                        ->where('aula_id', $aula->id)
-                        ->where('año_id', $año->id)
-                        ->delete();
-
-                    $aula->actualizarCantidadUsuarios();
-
-                    Notification::make()
-                        ->title('Usuario desvinculado correctamente.')
-                        ->success()
-                        ->send();
-                }),
-        ]);
-}
-
+                    }),
+            ]);
+    }
 }
