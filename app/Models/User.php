@@ -17,6 +17,7 @@ class User extends Authenticatable
         'email',
         'password',
         'estado',
+        'password_plano',
     ];
 
     protected $hidden = [

@@ -20,4 +20,5 @@ class CreateUser extends CreateRecord
             }
         }
     }
+    
 }

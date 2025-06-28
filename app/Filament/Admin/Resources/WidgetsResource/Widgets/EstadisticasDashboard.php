@@ -18,6 +18,9 @@ use App\Filament\Admin\Resources\AvatarUsuariosResource;
 use App\Filament\Admin\Resources\RecursoResource;
 use App\Filament\Admin\Resources\CategoriaResource;
 use App\Filament\Admin\Resources\CalificacionResource;
+use App\Filament\Admin\Resources\EvaluacionResource;
+use App\Models\Evaluacion;
+
 class EstadisticasDashboard extends BaseWidget
 {
     protected function getStats(): array
@@ -31,6 +34,7 @@ class EstadisticasDashboard extends BaseWidget
         $cantidadCategorias = Categoria::count();
         $cantidadAvatares = Avatar_usuarios::count();
         $cantidadCalificaciones = Calificacion::count();
+        $cantidadEvaluaciones = Evaluacion::count();
         return [
             Stat::make('Usuarios', $cantidadUsuarios)
                 ->description('Total registrados')
@@ -79,7 +83,7 @@ class EstadisticasDashboard extends BaseWidget
 
             Stat::make('Recursos', $cantidadRecursos)
                 ->description('Material educativo')
-                ->color('pink')
+                ->color('gray')
                 ->icon('heroicon-o-document-text')
                 ->extraAttributes([
                     'onclick' => "window.location.href='" . RecursoResource::getUrl() . "'",
@@ -88,7 +92,7 @@ class EstadisticasDashboard extends BaseWidget
 
             Stat::make('Categorías', $cantidadCategorias)
                 ->description('Organización de recursos')
-                ->color('purple')
+                ->color('success')
                 ->icon('heroicon-o-tag')
                 ->extraAttributes([
                     'onclick' => "window.location.href='" . CategoriaResource::getUrl() . "'",
@@ -96,15 +100,25 @@ class EstadisticasDashboard extends BaseWidget
                 ]),
             Stat::make('Avatares registrados', $cantidadAvatares)
                 ->description('Personalizados por los usuarios')
-                ->color('pink')
+                ->color('info')
                 ->icon('heroicon-o-face-smile')
                 ->extraAttributes([
                     'onclick' => "window.location.href='" . AvatarUsuariosResource::getUrl() . "'",
                     'style' => 'cursor: default;',
                 ]),
+
+            Stat::make('Evaluaciones', $cantidadEvaluaciones)
+                ->description('Total de evaluaciones')
+                ->color('success')
+                ->icon('heroicon-o-users')
+                ->extraAttributes([
+                    'onclick' => "window.location.href='" . EvaluacionResource::getUrl() . "'",
+                    'style' => 'cursor: pointer;',
+                ]),
+                
             Stat::make('Calificaciones', $cantidadCalificaciones)
                 ->description('Total de calificaciones registradas')
-                ->color('yellow')
+                ->color('warning')
                 ->icon('heroicon-o-star')
                 ->extraAttributes([
                     'onclick' => "window.location.href='" . CalificacionResource::getUrl() . "'",

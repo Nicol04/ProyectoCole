@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class PersonaResource extends Resource
 {
@@ -37,7 +38,7 @@ class PersonaResource extends Resource
                     ->required()
                     ->maxLength(8)
                     ->minLength(8)
-                    ->rules(['regex:/^[0-9]{8}$/']) // solo 8 dígitos numéricos
+                    ->rules(['regex:/^[0-9]{8}$/'])
                     ->validationMessages([
                         'regex' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
                     ]),
@@ -55,15 +56,26 @@ class PersonaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+
+                if ($user->hasRole('admin')) {
+                    // Si es admin, excluye admin y super_admin
+                    $query->whereHas('user', function ($userQuery) {
+                        $userQuery->whereDoesntHave('roles', function ($q) {
+                            $q->whereIn('name', ['admin', 'super_admin']);
+                        });
+                    });
+                } elseif ($user->hasRole('super_admin')) {
+                    $query->whereHas('user', function ($userQuery) {
+                    // Si es super_admin, excluye solo a otros super_admin
+                    $userQuery->whereDoesntHave('roles', function ($q) {
+                        $q->where('name', 'super_admin');
+                        });
+                    });
+                }
+            })
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('apellido')
@@ -79,12 +91,6 @@ class PersonaResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

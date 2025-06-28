@@ -23,7 +23,7 @@ class AvatarUsuariosResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationLabel = 'Avatar';
-
+    protected static ?string $label = 'Avatares';
     protected static ?string $navigationGroup = 'Gestión de usuarios';
 
     public static function form(Form $form): Form

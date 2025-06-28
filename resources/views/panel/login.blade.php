@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="{{ asset('assets/style/style_login.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logo_colegio.png') }}">
+
 </head>
-<body> 
+<body>
     <div class="login-container">
         <div class="container">
             <a href="/panel/index">

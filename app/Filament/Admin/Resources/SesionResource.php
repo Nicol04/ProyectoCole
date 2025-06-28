@@ -22,7 +22,7 @@ class SesionResource extends Resource
     use Translatable;
     protected static ?string $model = Sesion::class;
     protected static ?string $navigationLabel = 'Sesiones';
-
+    protected static ?string $label = 'Sesiones';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

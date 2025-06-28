@@ -28,6 +28,14 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
+
+            if ($user->estado === 'Inactivo') {
+                Auth::logout();
+                return redirect()->route('login')
+                    ->with('mensaje', 'Tu cuenta está inactiva. Contacta con un administrador.')
+                    ->with('icono', 'error');
+            }
+
             if ($user->hasRole($selectedRole)) {
                 return redirect()->route('index')
                     ->with('mensaje', 'Inicio de sesión exitoso!')
@@ -39,9 +47,11 @@ class LoginController extends Controller
                     ->with('icono', 'error');
             }
         }
+
         return back()->with('mensaje', 'Credenciales incorrectas.')
             ->with('icono', 'error');
     }
+
 
     public function showLoginForm()
     {

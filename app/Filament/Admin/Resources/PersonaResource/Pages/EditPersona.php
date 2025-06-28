@@ -12,8 +12,10 @@ class EditPersona extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return [];
+    }
+    public static function canDelete($record): bool
+    {
+        return false;
     }
 }

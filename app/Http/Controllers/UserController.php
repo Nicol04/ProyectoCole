@@ -159,8 +159,8 @@ class UserController extends Controller
     public function editarAvatar($id)
     {
         $user = User::findOrFail($id);
-        $rol = $user->roles->first()?->name; // 'estudiante' o 'docente'
-        $genero = $user->persona->genero ?? null; // 'masculino' o 'femenino'
+        $rol = $user->roles->first()?->name;
+        $genero = $user->persona->genero ?? null;
         $prefijo = '';
         if ($rol === 'Estudiante') {
             $prefijo = ($genero === 'Masculino') ? 'ME' : 'FE';
