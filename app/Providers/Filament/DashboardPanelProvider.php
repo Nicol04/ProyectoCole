@@ -30,7 +30,7 @@ class DashboardPanelProvider extends PanelProvider
             ->brandName('AprendiBot')
             ->id('dashboard')
             ->path('dashboard')
-            ->login(\Filament\Pages\Auth\Login::class) // -> This line will fix the issue
+            ->login(\Filament\Pages\Auth\Login::class)
             ->favicon(asset('assets/img/logo_colegio.png'))
             ->colors([
                 'primary' => '#03a9f4',

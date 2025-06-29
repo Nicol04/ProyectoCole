@@ -53,7 +53,7 @@ Route::get('cursos/sesion/create', [SesionController::class, 'create'])->name('s
 Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
 Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
 Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');
-Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');
+//Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');
 Route::put('cursos/sesion/{id}', [SesionController::class, 'update'])->name('sesiones.update');
 
 Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');

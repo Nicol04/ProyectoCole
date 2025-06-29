@@ -47,22 +47,22 @@ class CrearSesion extends Page
         return [
             Forms\Components\TextInput::make('titulo')->required(),
             DatePicker::make('fecha')
-                    ->label('Fecha de sesión')
-                    ->required()
-                    ->reactive()
-                    ->afterStateUpdated(function (\Filament\Forms\Set $set, $state) {
-                        if ($state) {
-                            $fecha = \Carbon\Carbon::parse($state)->locale('es');
-                            $dia = ucfirst($fecha->isoFormat('dddd'));
-                            $set('dia', $dia);
-                        }
-                    }),
+                ->label('Fecha de sesión')
+                ->required()
+                ->reactive()
+                ->afterStateUpdated(function (\Filament\Forms\Set $set, $state) {
+                    if ($state) {
+                        $fecha = \Carbon\Carbon::parse($state)->locale('es');
+                        $dia = ucfirst($fecha->isoFormat('dddd'));
+                        $set('dia', $dia);
+                    }
+                }),
 
-                TextInput::make('dia')
-                    ->label('Día')
-                    ->readOnly()
-                    ->reactive()
-                    ->dehydrated(),
+            TextInput::make('dia')
+                ->label('Día')
+                ->readOnly()
+                ->reactive()
+                ->dehydrated(),
             Forms\Components\Textarea::make('objetivo')->required(),
             Forms\Components\Textarea::make('actividades')->required(),
         ];
@@ -85,9 +85,8 @@ class CrearSesion extends Page
             ->send();
 
         return redirect()->route('filament.dashboard.resources.aulas.ver-sesiones', [
-    'record' => $this->aula->id,
-    'cursoId' => $this->curso->id,
-]);
-
+            'record' => $this->aula->id,
+            'cursoId' => $this->curso->id,
+        ]);
     }
 }

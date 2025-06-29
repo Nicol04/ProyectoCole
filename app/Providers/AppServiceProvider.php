@@ -34,40 +34,39 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('es');
         CarbonImmutable::setLocale('es');
         Paginator::useBootstrapFive();
-    Carbon::setLocale('es');
-    CarbonImmutable::setLocale('es');
+        Carbon::setLocale('es');
+        CarbonImmutable::setLocale('es');
 
-    usuario_aula::observe(UsuarioAulaObserver::class);
+        usuario_aula::observe(UsuarioAulaObserver::class);
 
-    // Cargar datos compartidos para el menú del estudiante
-    View::composer('panel.includes.menu_estudiante', function ($view) {
-        $evaluacionesPendientesCount = 0;
-        $comunicadosNoVistos = [];
+        // Cargar datos compartidos para el menú del estudiante
+        View::composer('panel.includes.menu_estudiante', function ($view) {
+            $evaluacionesPendientesCount = 0;
+            $comunicadosNoVistos = [];
 
-        if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
-            $user = Auth::user();
-            $aula = $user->aulas()->first();
+            if (Auth::check() && Auth::user()->roles->first()?->id == 3) {
+                $user = Auth::user();
+                $aula = $user->aulas()->first();
 
-            // Evaluaciones pendientes
-            $evaluacionesPendientesCount = $user->getEvaluacionesPendientesCount();
+                // Evaluaciones pendientes
+                $evaluacionesPendientesCount = $user->getEvaluacionesPendientesCount();
 
-            // Comunicados no vistos
-            if ($aula) {
-                $comunicadosNoVistos = Comunicado::where('aula_id', $aula->id)
-                    ->whereDoesntHave('vistosPor', function ($query) use ($user) {
-                        $query->where('user_id', $user->id)->where('visto', true);
-                    })
-                    ->orderBy('created_at', 'desc')
-                    ->take(5)
-                    ->get();
+                // Comunicados no vistos
+                if ($aula) {
+                    $comunicadosNoVistos = Comunicado::where('aula_id', $aula->id)
+                        ->whereDoesntHave('vistosPor', function ($query) use ($user) {
+                            $query->where('user_id', $user->id)->where('visto', true);
+                        })
+                        ->orderBy('created_at', 'desc')
+                        ->take(5)
+                        ->get();
+                }
             }
-        }
 
-        $view->with([
-            'evaluacionesPendientesCount' => $evaluacionesPendientesCount,
-            'comunicadosNoVistos' => $comunicadosNoVistos
-        ]);
-    });
-        
+            $view->with([
+                'evaluacionesPendientesCount' => $evaluacionesPendientesCount,
+                'comunicadosNoVistos' => $comunicadosNoVistos
+            ]);
+        });
     }
 }
