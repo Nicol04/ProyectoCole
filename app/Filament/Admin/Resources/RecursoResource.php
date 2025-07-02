@@ -67,7 +67,8 @@ class RecursoResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('descripcion')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(30),
                 Tables\Columns\TextColumn::make('categoria.nombre')
                     ->label('Categoría')
                     ->searchable(),

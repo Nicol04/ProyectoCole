@@ -32,6 +32,7 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'Administrar usuarios';
     protected static ?string $navigationGroup = 'Gestión de usuarios';
     protected static ?string $label = 'Usuario';
+    
     public static function form(Form $form): Form
     {
         return $form

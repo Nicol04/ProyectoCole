@@ -220,11 +220,11 @@
                             @if (Auth::check() && Auth::user()->avatar)
                                 <img src="{{ asset('storage/' . Auth::user()->avatar->path) }}" alt="Avatar"
                                     class="avatar-img avatar-elevated"
-                                    style="width: 80px; height: 80px; border-radius: 50%;">
+                                    style="height: 70px; width: 60px; border-radius: 50%; object-fit: cover;">
                             @else
                                 <img src="{{ asset('assets/img/user.png') }}" alt="Avatar por defecto"
                                     class="avatar-img avatar-elevated"
-                                    style="width: 80px; height: 80px; border-radius: 50%;">
+                                    style="height: 70px; width: 60px; border-radius: 50%; object-fit: cover;">
                             @endif
                         </button>
 

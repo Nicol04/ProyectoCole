@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\EvaluacionResource\Pages;
 use App\Filament\Admin\Resources\EvaluacionResource\RelationManagers;
+use App\Exports\HistorialEstudiantesExport;
 use App\Models\Archivo;
 use App\Models\Evaluacion;
 use App\Models\Sesion;
@@ -16,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EvaluacionResource extends Resource
 {
@@ -151,6 +153,14 @@ class EvaluacionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('exportarHistorial')
+                    ->label('Exportar excel')
+                    ->icon('heroicon-o-table-cells')
+                    ->action(function ($record) {
+                        return Excel::download(new HistorialEstudiantesExport($record->id), 'historial_estudiantes.xlsx');
+                    })
+                    ->requiresConfirmation()
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

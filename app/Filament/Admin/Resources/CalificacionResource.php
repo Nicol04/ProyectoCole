@@ -36,8 +36,6 @@ class CalificacionResource extends Resource
                 Forms\Components\TextInput::make('puntaje_total')
                     ->required()
                     ->numeric(),
-                Forms\Components\Textarea::make('retroalimentacion')
-                    ->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('fecha')
                     ->required(),
                 Forms\Components\TextInput::make('puntaje_maximo')
@@ -95,7 +93,29 @@ class CalificacionResource extends Resource
 
                 TextColumn::make('puntaje_total')
                     ->label('Puntaje')
-                    ->sortable(),
+                    ->sortable()
+                    ->getStateUsing(fn($record) => intval($record->puntaje_total)),
+
+                TextColumn::make('nota')
+                    ->label('Nota')
+                    ->getStateUsing(function ($record) {
+                        $puntaje = intval($record->puntaje_total);
+                        $notaMaxima = intval($record->puntaje_maximo);
+
+                        if ($notaMaxima == 20) {
+                            if ($puntaje >= 19) {
+                                return 'AD';
+                            } elseif ($puntaje >= 14) {
+                                return 'A';
+                            } elseif ($puntaje >= 10) {
+                                return 'B';
+                            } else {
+                                return 'C';
+                            }
+                        }
+
+                        return '-'; // En caso de que la nota máxima no sea 20
+                    }),
 
                 TextColumn::make('estado')
                     ->label('Estado')

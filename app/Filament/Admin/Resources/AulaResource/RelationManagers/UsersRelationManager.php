@@ -20,6 +20,10 @@ use Filament\Tables\Actions\Action;
 class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
+    
+    protected static ?string $title = 'Usuarios del Aula';
+    protected static ?string $modelLabel = 'Usuario';
+    protected static ?string $pluralModelLabel = 'Usuarios';
 
     public function form(Form $form): Form
     {
