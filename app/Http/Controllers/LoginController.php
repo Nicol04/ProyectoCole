@@ -38,7 +38,7 @@ class LoginController extends Controller
 
             if ($user->hasRole($selectedRole)) {
                 return redirect()->route('index')
-                    ->with('mensaje', 'Inicio de sesión exitoso!')
+                    ->with('mensaje', 'Inicio de sesión exitoso, Bienvenido a tu aula virtual!')
                     ->with('icono', 'success');
             } else {
                 Auth::logout();

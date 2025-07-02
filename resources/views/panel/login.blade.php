@@ -36,7 +36,7 @@
                 </div>
                 <div class="input-container">
                     <i class="fa fa-lock"></i>
-                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <input type="password" name="password" placeholder="Contraseña" required autofocus maxlength="30" required>
                     <i class="fa fa-eye" id="togglePassword"></i>
                 </div>
                 <div class="roles">

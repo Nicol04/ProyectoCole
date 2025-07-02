@@ -142,12 +142,12 @@
         function construirPrompt(numPreguntas, texto = '') {
             return `**Devuelve únicamente el array JSON** con la estructura exacta: 
         \`\`\`json
-                                [
-                                    {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
-                                    ...
-                                ]
-                                \`\`\`
-        **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
+                                    [
+                                        {"pregunta":"¿...?","opciones":["a)...","b)...","c)..."],"respuesta":"b) ..."},
+                                        ...
+                                    ]
+                                    \`\`\`
+        **No incluyas** texto previo ni posterior, **no** uses markdown ni ningún otro formato: **solo** el JSON. Extrae la información y organízala de la manera que consideres más adecuada. A partir de ese contenido, elabora ${numPreguntas} preguntas de opción múltiple estrictamente basadas en el texto. Cada pregunta debe incluir tres posibles respuestas, de las cuales solo una será la correcta. Alterna las respuestas correctas de opcion para que no sean las mismas en cada pregunta. Convierte cada pregunta en un objeto JSON donde la clave principal sea "pregunta" y el valor sea el texto de la pregunta. Dentro de cada objeto, incluye una clave "opciones" cuyo valor sea un array de strings con las tres opciones de respuesta, y una clave "respuesta" que contenga la letra de la opción correcta.
         ${texto ? `\nTexto fuente:\n${texto}\n` : ''}`;
         }
         async function llamarGemini(data) {
