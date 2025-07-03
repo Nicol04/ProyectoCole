@@ -32,7 +32,7 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'Administrar usuarios';
     protected static ?string $navigationGroup = 'Gestión de usuarios';
     protected static ?string $label = 'Usuario';
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -75,8 +75,10 @@ class UserResource extends Resource
                                     ->maxLength(8)
                                     ->minLength(8)
                                     ->rules(['regex:/^[0-9]{8}$/'])
+                                    ->unique(ignoreRecord: true)
                                     ->validationMessages([
                                         'regex' => 'El DNI debe contener exactamente 8 dígitos numéricos.',
+                                        'unique' => 'El DNI ya está registrado en el sistema.',
                                     ]),
                                 Radio::make('genero')
                                     ->options([
@@ -139,6 +141,7 @@ class UserResource extends Resource
                         TextInput::make('email')
                             ->email()
                             ->maxLength(40)
+                            ->unique(ignoreRecord: true)
                             ->required(function (callable $get) {
                                 $roleId = $get('role_id');
                                 if (!$roleId) return false;

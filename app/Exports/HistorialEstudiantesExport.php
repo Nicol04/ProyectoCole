@@ -13,19 +13,21 @@ class HistorialEstudiantesExport extends BaseExport implements FromCollection, W
     public function __construct($evaluacionId)
     {
         $this->evaluacionId = $evaluacionId;
+        $evaluacion = \App\Models\Evaluacion::find($this->evaluacionId);
+        $nombreEvaluacion = $evaluacion ? $evaluacion->titulo : 'Sin nombre de evaluación';
         parent::__construct(
             titulo: 'Colegio Ann Goulden',
-            subtitulo: 'Historial de estudiantes',
-            ultimaColumna: 'J',
+            subtitulo: 'Historial de estudiantes - ' . $nombreEvaluacion, 
+            ultimaColumna: 'H',
             colorSubtitulo: '9ca3ac'
         );
-        $this->columnasCentradas = ['E', 'F', 'G', 'H', 'I'];
+        $this->columnasCentradas = ['E', 'F', 'G', 'H'];
     }
     public function collection()
     {
         return User::role('Estudiante')->with([
             'persona',
-            'intentos' => function($q) {
+            'intentos' => function ($q) {
                 $q->where('evaluacion_id', $this->evaluacionId)->with(['calificacion', 'evaluacion.sesion']);
             }
         ])->get()->map(function ($user) {
@@ -41,7 +43,6 @@ class HistorialEstudiantesExport extends BaseExport implements FromCollection, W
             $puntajeMax = $mejorIntento && $mejorIntento->calificacion ? $mejorIntento->calificacion->puntaje_maximo : 0;
             $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
             $estadoCalificacion = $mejorIntento && $mejorIntento->calificacion ? strtoupper($mejorIntento->calificacion->estado) : 'SIN ESTADO';
-            $nombreSesion = $mejorIntento && $mejorIntento->evaluacion && $mejorIntento->evaluacion->sesion ? $mejorIntento->evaluacion->sesion->titulo : '-';
 
             return [
                 'nombre' => $persona->nombre ?? '-',
@@ -51,7 +52,6 @@ class HistorialEstudiantesExport extends BaseExport implements FromCollection, W
                 'intentos' => $intentos->count(),
                 'porcentaje' => $porcentaje . '%',
                 'estado_calificacion' => $estadoCalificacion,
-                'nombre_sesion' => $nombreSesion,
             ];
         });
     }
@@ -66,7 +66,6 @@ class HistorialEstudiantesExport extends BaseExport implements FromCollection, W
             'Intentos realizados',
             'Porcentaje',
             'Estado calificación',
-            'Nombre de sesión',
         ];
     }
 

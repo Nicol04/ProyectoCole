@@ -60,11 +60,12 @@
                                 <div class="staf-img mb-4 mt-4">
                                     @if ($user->avatar && $user->avatar->path)
                                         <img src="{{ asset('storage/' . $user->avatar->path) }}"
-                                            class="rounded-circle shadow" style="width: 220px; height: 220px;"
+                                            class="rounded-circle shadow" style="height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid transparent; cursor: pointer;"
                                             alt="Avatar de {{ $user->name }}">
+                                        
                                     @else
                                         <img src="{{ asset('assets/img/panel/staff/staff-8.png') }}"
-                                            class="rounded-circle shadow" style="width: 220px; height: 220px;"
+                                            class="rounded-circle shadow" style="height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid transparent; cursor: pointer;"
                                             alt="Avatar por defecto">
                                     @endif
                                 </div>

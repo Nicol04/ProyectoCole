@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class RecursoResource extends Resource
 {
@@ -44,17 +45,26 @@ class RecursoResource extends Resource
                     ->label('Imagen del recurso'),
                 Forms\Components\FileUpload::make('archivo')
                     ->label('Archivo 3D')
+                    ->disk('cloudinary')
+                    ->directory('temp')
                     ->acceptedFileTypes([
                         'model/gltf-binary',
                         'application/octet-stream',
+                        'model/gltf+json',
+                        'text/plain',
                         '.glb', '.gltf', '.obj'
                     ])
                     ->disk('public')
+                    ->maxSize(10000)
                     ->directory('temp')
                     ->visibility('private')
                     ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->enableDownload()
-                    ->helperText('Si no subes un archivo nuevo, se conservará el actual.'),
+                    ->helperText('Si no subes un archivo nuevo, se conservará el actual.')
+                    ->deleteUploadedFileUsing(function ($file) {
+                        // Elimina el archivo anterior si se sube uno nuevo
+                        Storage::disk('public')->delete($file);
+                    }),
             ]);
     }
 
