@@ -56,9 +56,8 @@
                                 <div class="fet-icon">
                                     <img src="{{ asset('assets/img/panel/icon/feature-icon-1.png') }}" alt="">
                                 </div>
-                                <h3>Happy Environment</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
-                                    proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officia</p>
+                                <h3>Formación en valores</h3>
+                                <p>Creemos que la educación va más allá del aula. Por eso, integramos en cada actividad la práctica de valores que forman personas íntegras, solidarias y conscientes de su entorno. </p>
                             </div>
                         </div>
                         <!--Single Features-->
@@ -68,9 +67,8 @@
                                     <img src="{{ asset('assets/img/panel/icon/feature-icon-2.png') }}" alt="">
                                 </div>
 
-                                <h3>Active Learning</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
-                                    proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officia</p>
+                                <h3>Pensamiento crítico</h3>
+                                <p>Preparamos a nuestros estudiantes para enfrentar el mundo con criterio propio. Les enseñamos a cuestionar, investigar, comparar y argumentar.</p>
 
                             </div>
                         </div>
@@ -80,9 +78,8 @@
                                 <div class="fet-icon">
                                     <img src="{{ asset('assets/img/panel/icon/feature-icon-3.png') }}" alt="">
                                 </div>
-                                <h3>Creative Lessons</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
-                                    proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officia</p>
+                                <h3>Metodologías Innovadoras</h3>
+                                <p>Implementamos estrategias activas que convierten el aprendizaje en una experiencia dinámica: proyectos colaborativos. </p>
                             </div>
                         </div>
                     </div>
@@ -101,11 +98,10 @@
                         <div class="row">
                             <div class="col-md-7 col-lg-5 col-xl-6">
                                 <div class="wellcome-content wow fadeInUp" data-wow-delay=".5s">
-                                    <h2 class="font-orange area-heading">WELCOME TO<br>THE KINDERGARTEN!</h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non
-                                        proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem
-                                        ipsum dolor sit amet,cuculpa qui officiacuculpa qui officiacuculpa qui
-                                        officiaLorem ipsum dolor sit amet</p>
+                                    <h2 class="font-orange area-heading">BIENVENIDOS A<br>SU AULA VIRTUAL</h2>
+                                    <p>El <strong>Colegio Ann Goulden</strong> te da la bienvenida a su Aula Virtual, 
+                                        un entorno digital seguro e innovador, donde podrás acceder a tus clases, 
+                                        materiales, tareas y mucho más. ¡Aprender nunca fue tan accesible y emocionante!</p>
                                 </div>
                             </div>
                         </div>
@@ -168,9 +164,8 @@
                             <img src="{{ asset('assets/img/panel/icon/ex-icon4.png') }}" alt="">
                         </div>
                         <div class="ex-detail">
-                            <h5>Health Meals</h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat non proident,
-                                sunt in </p>
+                            <h5>Salud y bienestar emocional</h5>
+                            <p>Desde una alimentación equilibrada hasta programas deportivos y recreativos, educamos a nuestros estudiantes para que desarrollen estilos de vida activos y saludables. </p>
                         </div>
                     </div>
                 </div>
@@ -265,10 +260,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
-                    <h2 class="area-heading font-w st-two">Exclusive Photo Gallery</h2>
-                    <p class="area-subline font-w">Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat
-                        cupidatat non proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem
-                        ipsum dolor sit amet,cuculpa qui officiacuculpa.</p>
+                    <h2 class="area-heading font-w st-two">Galería de fotos de la institución</h2>
+                    <p class="area-subline font-w">Cada imagen cuenta una historia… Aquí encontrarás 
+                        recuerdos especiales de nuestras actividades, celebraciones, y del día a 
+                        día junto a nuestros docentes, estudiantes y la directora del colegio. 
+                        ¡Gracias por ser parte de esta gran familia!</p>
                 </div>
             </div>
             <div class="inner-container">
@@ -283,12 +279,12 @@
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="1">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-1.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_1.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-1.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_1.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>School</h4>
                                 <p>By: kidzcare Theme</p>
@@ -298,12 +294,12 @@
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="2">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-2.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_2.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-2.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_2.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Kindergarten</h4>
                                 <p>By: kidzcare Theme</p>
@@ -313,12 +309,12 @@
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="3">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-3.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_3.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-3.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_3.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Picnics Gallery</h4>
                                 <p>By: kidzcare Theme</p>
@@ -328,12 +324,12 @@
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="1">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-4.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_4.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-4.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_4.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>School</h4>
                                 <p>By: kidzcare Theme</p>
@@ -343,12 +339,12 @@
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="2">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-5.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_5.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-5.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_5.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
                                 <h4>Kindergarten</h4>
                                 <p>By: kidzcare Theme</p>
@@ -498,168 +494,6 @@
         </div>
     </div>
     <!--Feature style three end-->
-
-    <!--Latest news three area start-->
-    <section class="latest-news-three">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <h2 class="area-heading st-two font-per">Latest News</h2>
-                    <p class="area-subline ">Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat
-                        non proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem ipsum dolor
-                        sit amet,cuculpa qui officiacuculpa.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc1.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Vestibulum Congue Massa.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-thumbs-up"></i>like</span>
-                                    <p>12</p>
-                                </div>
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-comments"></i>comment</span>
-                                    <p>09</p>
-                                </div>
-                                <div class="sin-lnc">
-                                    <span><i class="fa fa-eye"></i>View</span>
-                                    <p>123</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc2.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Vestibulum Congue Massa.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc3.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Phasellus id tempor.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-xl-3">
-                    <div class="sin-lat-n3">
-                        <img src="{{ asset('assets/img/panel/latest-news/lnc4.png') }}" alt="">
-                        <div class="ln3-cont">
-                            <h5>Aenean vehicula velit.</h5>
-                            <div class="aut-date">
-                                <a href=""><span><i class="fa fa-user"></i>Jone Doe</span></a>
-                                <a href=""><span><i class="fa fa-calendar" aria-hidden="true"></i>March
-                                        21</span></a>
-                            </div>
-                            <p>Lorem ipsum dolor sit consectetur Excepteur sint occaecat cupidatat non proident, sunt in
-                                cuculpa qui officiacuculpa</p>
-                            <a href="#" class="kids-care-btn bgc-orange" style="">Read More</a>
-                            <div class="lnc-meta">
-                                <div class="sin-lnc">
-                                    <a href="#">
-                                        <span><i class="fa fa-thumbs-up"></i>like</span>
-                                        <p>12</p>
-
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-comments"></i>comment</span>
-                                        <p>09</p>
-                                    </a>
-                                </div>
-                                <div class="sin-lnc">
-                                    <a href="">
-                                        <span><i class="fa fa-eye"></i>View</span>
-                                        <p>123</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--Latest news three area end-->
 
     <!--Countdown for upcoming event start-->
     <section class="up-event-countdown">
