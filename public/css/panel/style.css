@@ -1668,7 +1668,11 @@ button:focus {
 	margin-bottom: 30px;
 	position: relative;
 }
-
+.sin-gallery img {
+    width: 100%;
+    height: 200px; /* Ajusta el tamaño deseado */
+    object-fit: cover; /* Recorta la imagen para que se ajuste al contenedor */
+}
 .sin-gallery .gallery-overlay {
 	position: absolute;
 	top: 0px;

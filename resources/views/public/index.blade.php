@@ -270,10 +270,10 @@
             <div class="inner-container">
                 <ul class="filter-menu filters">
                     <!-- For filtering controls add -->
-                    <li class="filtr-active filtr" data-filter="all">All</li>
-                    <li class=" filtr" data-filter="1">School</li>
-                    <li class="filtr" data-filter="2">Kindergarten</li>
-                    <li class=" filtr" data-filter="3">Picnic</li>
+                    <li class="filtr-active filtr" data-filter="all">Todos</li>
+                    <li class=" filtr" data-filter="1">Colegio</li>
+                    <li class="filtr" data-filter="2">Docentes</li>
+                    <li class=" filtr" data-filter="3">Actividades</li>
                 </ul>
                 <div class="row filtr-container">
                     <!--Single gallery start-->
@@ -286,8 +286,8 @@
                             <div class="gallery-content">
                                 <a href="{{ asset('assets/img/panel/gallery/gal_1.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>School</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Colegio</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
@@ -301,28 +301,28 @@
                             <div class="gallery-content">
                                 <a href="{{ asset('assets/img/panel/gallery/gal_2.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>Kindergarten</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Docentes</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="3">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal_3.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_3.jpeg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal_3.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_3.jpeg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>Picnics Gallery</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Actividades</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
                     <!--Single gallery start-->
-                    <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="1">
+                    <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="3">
                         <div class="sin-gallery">
                             <img src="{{ asset('assets/img/panel/gallery/gal_4.jpg') }}" alt="">
                             <div class="gallery-overlay">
@@ -331,8 +331,8 @@
                             <div class="gallery-content">
                                 <a href="{{ asset('assets/img/panel/gallery/gal_4.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>School</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Actividades</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
@@ -346,53 +346,53 @@
                             <div class="gallery-content">
                                 <a href="{{ asset('assets/img/panel/gallery/gal_5.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>Kindergarten</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Docentes</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="3">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-6.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_6.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-6.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_6.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>Picnics Gallery</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Actividades</h4>
+                                <p>Por: Colegio Ann Goulden</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Single gallery start-->
+                    <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="3">
+                        <div class="sin-gallery">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_7.jpg') }}" alt="">
+                            <div class="gallery-overlay">
+                                <div class="bg"></div>
+                            </div>
+                            <div class="gallery-content">
+                                <a href="{{ asset('assets/img/panel/gallery/gal_7.jpg') }}" class="venobox vbox-item"
+                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
+                                <h4>Actividades</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
                     <!--Single gallery start-->
                     <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="1">
                         <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-7.jpg') }}" alt="">
+                            <img src="{{ asset('assets/img/panel/gallery/gal_8.jpg') }}" alt="">
                             <div class="gallery-overlay">
                                 <div class="bg"></div>
                             </div>
                             <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-7.jpg') }}" class="venobox vbox-item"
+                                <a href="{{ asset('assets/img/panel/gallery/gal_8.jpg') }}" class="venobox vbox-item"
                                     data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>School</h4>
-                                <p>By: kidzcare Theme</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Single gallery start-->
-                    <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 filtr-item" data-category="2">
-                        <div class="sin-gallery">
-                            <img src="{{ asset('assets/img/panel/gallery/gal-8.jpg') }}" alt="">
-                            <div class="gallery-overlay">
-                                <div class="bg"></div>
-                            </div>
-                            <div class="gallery-content">
-                                <a href="{{ asset('assets/img/panel/gallery/gal-8.jpg') }}" class="venobox vbox-item"
-                                    data-gall="gallery1"><i class="fa fa-search"></i></a>
-                                <h4>Kindergarten</h4>
-                                <p>By: kidzcare Theme</p>
+                                <h4>Colegio</h4>
+                                <p>Por: Colegio Ann Goulden</p>
                             </div>
                         </div>
                     </div>
@@ -402,118 +402,6 @@
         </div>
     </section>
     <!--Gallery area end-->
-
-
-    <!--Features style three start-->
-    <div class="about-kids-three bg-white">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="area-heading font-per style-two">Feature style three</h1>
-                    <p class="heading-para">we promised you that, we always try to take care of your childdren.Early
-                        child care is a very important and often overlooked component of child development</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="order-md-2 col-md-6 col-lg-4 order-lg-1 offset-xl-1 col-xl-4">
-                    <div class="wel3-oneside">
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con ">
-                                <h3>Funny and Happy</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-1.png') }}" alt="">
-                            </div>
-                        </div>
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con">
-                                <h3>Fulfill With Love</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-2.png') }}" alt="">
-                            </div>
-
-                        </div>
-
-                        <div class="wel3-sin wow fadeInLeft" data-wow-delay=".5s">
-                            <div class="sin-wel-3-con">
-                                <h3>Special Education</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-3.png') }}" alt="">
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="order-md-1 col-md-12 order-lg-2 col-lg-4 col-xl-2">
-                    <div class="animated-img">
-                        <img src="{{ asset('assets/img/panel/bg/kiddy-animation.gif') }}" alt="">
-                    </div>
-                </div>
-                <div class="order-md-3 col-md-6 col-lg-4 order-lg-3 col-xl-4">
-                    <div class="wel3-oneside align-left">
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-4.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Personal capacitado</h3>
-                                <p>Contamos con un equipo docente comprometido y apasionado por la enseñanza.</p>
-                            </div>
-                        </div>
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-5.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Fully Equiped</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                        </div>
-
-                        <div class="wel3-sin wow fadeInRight" data-wow-delay=".5s">
-                            <div class="wel3-icon">
-                                <img src="{{ asset('assets/img/panel/icon/wel-three-6.png') }}" alt="">
-                            </div>
-                            <div class="sin-wel-3-con">
-                                <h3>Transportation</h3>
-                                <p>We are group of teachers who really love childrens and enjoy every moment.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Feature style three end-->
-
-    <!--Countdown for upcoming event start-->
-    <section class="up-event-countdown">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-6">
-                    <h2><span>yahoo!</span> iT’s holiday tours!</h2>
-                    <div class="count-down">
-                        <div data-countdown="2020/03/11"></div>
-                    </div>
-                    <a href="#" class="kids-care-btn bg-red">BOOK YOUR SEAT</a>
-                </div>
-                <div class="col-xl-6">
-                    <div class="up-event-img">
-                        <img src="{{ asset('assets/img/panel/bg/count-down-child.png') }}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!--Countdown for upcoming event end-->
     @include('panel.includes.footer2')
