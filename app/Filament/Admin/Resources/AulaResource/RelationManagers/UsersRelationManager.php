@@ -20,7 +20,7 @@ use Filament\Tables\Actions\Action;
 class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
-    
+
     protected static ?string $title = 'Usuarios del Aula';
     protected static ?string $modelLabel = 'Usuario';
     protected static ?string $pluralModelLabel = 'Usuarios';
@@ -138,6 +138,11 @@ class UsersRelationManager extends RelationManager
                             ->success()
                             ->send();
                     }),
+                Action::make('exportarCalificaciones')
+                    ->label('Exportar Calificaciones')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn($record) => route('estudiantes.exportarCalificaciones', ['id' => $record->id]))
+                    ->visible(fn($record) => !$record->roles->pluck('name')->contains('docente')),
             ]);
     }
 }

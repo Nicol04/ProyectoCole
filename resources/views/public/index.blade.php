@@ -153,8 +153,8 @@
                         </div>
                         <div class="ex-detail">
                             <h5>Ambiente seguro y estimulante</h5>
-                            <p>Nuestra infraestructura está diseñada para proporcionar un espacio donde los niños pueden
-                                explorar y aprender con confianza.</p>
+                            <p>Nuestra infraestructura está diseñada para brindar a los niños 
+                                aprendizaje con confianza.</p>
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
                         </div>
                         <div class="ex-detail">
                             <h5>Salud y bienestar emocional</h5>
-                            <p>Desde una alimentación equilibrada hasta programas deportivos y recreativos, educamos a nuestros estudiantes para que desarrollen estilos de vida activos y saludables. </p>
+                            <p>Educamos a nuestros estudiantes para que desarrollen estilos de vida activos y saludables. </p>
                         </div>
                     </div>
                 </div>
@@ -179,10 +179,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-12">
-                    <h2 class="area-heading font-red st-two">FIRST DAY AT SCHOOL !</h2>
-                    <p class="area-subline">Lorem ipsum dolor sit amet, consectetur Excepteur sint occaecat cupidatat
-                        non proident, sunt in cuculpa qui officiacuculpa qui officiacuculpa qui officiaLorem ipsum dolor
-                        sit amet,cuculpa qui officiacuculpa.</p>
+                    <h2 class="area-heading font-red st-two">BIENVENIDOS A ANN GOULDEN !</h2>
+                    <p class="area-subline">En nuestra institución, creemos firmemente que 
+                        cada estudiante tiene un gran potencial por descubrir. A través del 
+                        compromiso, la disciplina y el amor por el aprendizaje, podemos 
+                        construir juntos un mejor futuro.
+                    ¡Nunca dejen de aprender, de soñar y de dar lo mejor de ustedes!</p>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -192,9 +194,9 @@
                         <div class="col-xl-12 item">
                             <div class="sin-pop-tes color-per">
                                 <div class="con-part">
-                                    <h6>Active Learning</h6>
-                                    <p>Lorem ipsum dolor sit amsectet urExcepteur sint occaecat cupidatat non proident,
-                                        sunt in cuculpa qu officiaulpa qui officiacuculpa qui officiaLorem ipsum dolor
+                                    <h6>Mensaje</h6>
+                                    <p>Ustedes son el presente que construye el futuro, y estamos 
+                                        orgullosos de acompañarlos en este proceso. Saludos a todos los estudiantes.
                                     </p>
                                 </div>
                                 <div class="img-part">
@@ -202,7 +204,7 @@
                                         <img src="{{ asset('assets/img/panel/icon/tes-c3.png') }}" alt="">
                                     </div>
                                     <div class="pt-intro">
-                                        <h6 class="font-green">Leonardo Cordova Lopez</h6>
+                                        <h6 class="font-green">Felix Harle Silupú Ramírez</h6>
                                         <p>Subdirector</p>
                                     </div>
                                 </div>
@@ -212,14 +214,14 @@
                         <div class="col-xl-12 item">
                             <div class="sin-pop-tes color-red">
                                 <div class="con-part">
-                                    <h6>Active Learning</h6>
+                                    <h6>Mensaje</h6>
                                     <p>IE Ann Goulden se destaca por su enfoque en la formación integral de los
                                         estudiantes, incorporando valores como el respeto, la responsabilidad y la
                                         solidaridad. </p>
                                 </div>
                                 <div class="img-part">
                                     <div class="pt-img">
-                                        <img src="{{ asset('assets/img/panel/icon/tes-c2.png') }}" alt="">
+                                        <img src="{{ asset('assets/img/panel/icon/directora.png') }}" alt="">
                                     </div>
                                     <div class="pt-intro">
                                         <h6 class="font-green">Maricarmen Julliana Ruiz Falero</h6>
@@ -232,9 +234,10 @@
                         <div class="col-xl-12 item">
                             <div class="sin-pop-tes">
                                 <div class="con-part">
-                                    <h6>Active Learning</h6>
-                                    <p>Lorem ipsum dolor sit amsectet urExcepteur sint occaecat cupidatat non proident,
-                                        sunt in cuculpa qu officiaulpa qui officiacuculpa qui officiaLorem ipsum dolor
+                                    <h6>Mensaje</h6>
+                                    <p>Nunca olviden que la educación es la herramienta más 
+                                        poderosa para transformar sus vidas.
+                                        Aprovechen cada oportunidad para aprender y crecer. 
                                     </p>
                                 </div>
                                 <div class="img-part">
@@ -242,8 +245,8 @@
                                         <img src="{{ asset('assets/img/panel/icon/tes-c1.png') }}" alt="">
                                     </div>
                                     <div class="pt-intro">
-                                        <h6 class="font-green">Claudia María Montalbán Mena</h6>
-                                        <p>Líderes docentes</p>
+                                        <h6 class="font-green">Feliscar Elizabeth Arellano Siancas</h6>
+                                        <p>Subdirectora</p>
                                     </div>
                                 </div>
                             </div>
