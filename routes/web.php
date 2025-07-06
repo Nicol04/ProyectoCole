@@ -110,5 +110,4 @@ Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destro
 Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
 Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
 
-
 });

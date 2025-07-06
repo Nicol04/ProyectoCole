@@ -212,7 +212,7 @@
         const msgerInput = document.getElementById("msgerInput");
         window.msgerChat = document.getElementById("msgerChat"); // Para uso en utilidades
         const chatHistory = new ChatHistory(5);
-        const gemini = new GeminiAPI('AIzaSyCM1ERzhhDdON5dWNUXbO4MNWgHZqDFp4E');
+        const gemini = new GeminiAPI('{{ config('services.gemini.api_key') }}');
 
         msgerForm.addEventListener("submit", async event => {
             event.preventDefault();

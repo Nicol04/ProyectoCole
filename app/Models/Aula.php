@@ -17,8 +17,8 @@ class Aula extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'usuario_aulas')
-        ->withTimestamps()
-        ->withPivot('año_id');
+            ->withTimestamps()
+            ->withPivot('año_id');
     }
 
     public function sesiones()
@@ -41,16 +41,15 @@ class Aula extends Model
             ->first();
     }
     public function actualizarCantidadUsuarios()
-{
-    $año = \App\Models\Año::whereDate('fecha_inicio', '<=', now())
-        ->whereDate('fecha_fin', '>=', now())
-        ->first();
+    {
+        $año = \App\Models\Año::whereDate('fecha_inicio', '<=', now())
+            ->whereDate('fecha_fin', '>=', now())
+            ->first();
 
-    $this->cantidad_usuarios = $this->users()
-        ->wherePivot('año_id', $año?->id)
-        ->count();
+        $this->cantidad_usuarios = $this->users()
+            ->wherePivot('año_id', $año?->id)
+            ->count();
 
-    $this->save();
-}
-
+        $this->save();
+    }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('url');
-            $table->string('public_id')->nullable(); // si usas Cloudinary
+            $table->string('public_id')->nullable();
             $table->timestamps();
         });
     }

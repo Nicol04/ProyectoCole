@@ -152,7 +152,7 @@
         }
         async function llamarGemini(data) {
             const url =
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCM1ERzhhDdON5dWNUXbO4MNWgHZqDFp4E";
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={{ config('services.gemini.api_key') }}";
             const res = await fetch(url, {
                 method: "POST",
                 headers: {
