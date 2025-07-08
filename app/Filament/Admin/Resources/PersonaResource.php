@@ -4,7 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\PersonaResource\Pages;
 use App\Filament\Admin\Resources\PersonaResource\RelationManagers;
-use App\Models\Persona;
+use App\Models\persona;
 use Filament\Forms;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Form;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class PersonaResource extends Resource
 {
     use Translatable;
-    protected static ?string $model = Persona::class;
+    protected static ?string $model = persona::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Gestión de usuarios';

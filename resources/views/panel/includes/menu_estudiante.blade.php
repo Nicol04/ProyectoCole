@@ -1,7 +1,5 @@
 <!--Main menu area start-->
 <section class="main-menu-area border-top">
-
-
     @if (auth()->check())
         @php
             $user = Auth::user();
@@ -53,25 +51,25 @@
                         <li>
                             <div class="link font-orange">Mi aula<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-orange">
-                                <li><a href="/panel/cursos">Mis cursos</a></li>
+                                <li><a href="{{ route('panel.cursos') }}">Mis cursos</a></li>
                                 <li><a>Mi docente</a>
                                     <a><span>{{ $nombreDocente }}</span></a>
                                 </li>
-                                <li><a href="/panel/estudiantes">Mis compañeros</a></li>
+                                <li><a href="{{ route('estudiantes.index') }}">Mis compañeros</a></li>
                             </ul>
                         </li>
 
                         <li>
-                            <div class="link font-per"><a href="/evaluaciones">Evaluaciones</a></div>
+                            <div class="link font-per"><a href="{{ route('evaluacion.index') }}">Evaluaciones</a></div>
                         </li>
                         <li>
                             <div class="link font-per"><a href="{{ route('comunicados.index') }}">Comunicados</a></div>
                         </li>
                         <li>
-                            <div class="link font-red"><a href="/recursos">Recursos</a></div>
+                            <div class="link font-red"><a href="{{ route('recursos.index') }}">Recursos</a></div>
                         </li>
                         <li>
-                            <div class="link font-per"><a href="/users/perfil">Perfil</a></div>
+                            <div class="link font-per"><a href="{{ route('users.perfil') }}">Perfil</a></div>
                         </li>
                         <li>
                             <div class="top-contact-btn">
@@ -99,7 +97,7 @@
                                 alt=""><a href="#">Mi aula<i class="fa fa-angle-down"></i></a>
                             <div class="mega-menu">
                                 <div class="mega-catagory">
-                                    <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
+                                    <h4><a href="{{ route('panel.cursos') }}"><span>Mis cursos</span></a></h4>
                                     <div class="mega-button">
                                         <ul>
                                             @forelse ($cursos as $curso)
@@ -118,7 +116,7 @@
                                     </div>
                                 </div>
                                 <div class="mega-catagory">
-                                    <h4><a class="font-green" href="/panel/estudiantes"><span>Compañeros</span></a></h4>
+                                    <h4><a class="font-green" href="{{ route('estudiantes.index') }}"><span>Compañeros</span></a></h4>
                                 </div>
                             </div>
                         </li>
@@ -139,7 +137,7 @@
                         </li>
                         <li class="fc-green hav-sub">
                             <img src="{{ asset('assets/img/panel/icon/menu-icon4.png') }}" alt="">
-                            <a href="/evaluaciones">
+                            <a href="{{ route('evaluacion.index') }}">
                                 Evaluaciones
                                 @if (isset($evaluacionesPendientesCount) && $evaluacionesPendientesCount > 0)
                                     <span class="ms-1 text-danger" style="font-weight: bold;">
@@ -200,10 +198,10 @@
                     </li>
 
                     <li class="fc-orange hav-sub"> <img src="{{ asset('assets/img/panel/icon/menu-icon6.png') }}"
-                            alt=""> <a href="/recursos">Recursos</a>
+                            alt=""> <a href="{{ route('recursos.index') }}">Recursos</a>
                     </li>
                     <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon7.png') }}"
-                            alt=""><a href="/users/perfil">Perfil</a></li>
+                            alt=""><a href="{{ route('users.perfil') }}">Perfil</a></li>
                 </ul>
             </div>
         </div>
@@ -231,7 +229,7 @@
                         <!-- Menú desplegable -->
                         <div class="dropdown-menu dropdown-menu-right text-center">
                             <span class="dropdown-item-text">
-                                <a href="/users/perfil" class="link-red">
+                                <a href="{{ route('users.perfil') }}" class="link-red">
                                     <i class="fa-solid fa-user me-1"></i> {{ Auth::user()->name }}
                                 </a>
                             </span>

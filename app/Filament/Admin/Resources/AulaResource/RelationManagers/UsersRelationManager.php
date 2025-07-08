@@ -40,10 +40,30 @@ class UsersRelationManager extends RelationManager
         return $table
             ->modifyQueryUsing(fn($query) => $query->with('persona', 'roles'))
             ->columns([
-                Tables\Columns\TextColumn::make('persona.nombre')->label('Nombre'),
-                Tables\Columns\TextColumn::make('persona.apellido')->label('Apellido'),
+                Tables\Columns\TextColumn::make('persona.nombre')
+                    ->label('Nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('persona.apellido')
+                    ->label('Apellido')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')->label('Rol')
                     ->formatStateUsing(fn($state) => ucfirst($state)),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('rol')
+                    ->label('Filtrar por Rol')
+                    ->options([
+                        'estudiante' => 'Estudiante',
+                        'docente' => 'Docente',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        if (isset($data['value']) && $data['value'] !== '') {
+                            return $query->whereHas('roles', function ($q) use ($data) {
+                                $q->where('name', $data['value']);
+                            });
+                        }
+                        return $query;
+                    })
             ])
             ->headerActions([
                 Action::make('agregarUsuarios')

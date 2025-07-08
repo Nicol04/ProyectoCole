@@ -43,8 +43,8 @@
                         <li>
                             <div class="link font-sky">Paginas<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-sky">
-                                <li><a href="/evaluaciones/create">Crear evaluaciones</a></li>
-                                <li><a href="/retroalimentacion">Retroalimentación IA</a></li>
+                                <li><a href="{{ route('evaluacion.create') }}">Crear evaluaciones</a></li>
+                                <li><a href="{{ route('retroalimentacion') }}">Retroalimentación IA</a></li>
                                 <li><a href="{{ route('informativa') }}">Tutorial</a></li>
                                 <li><a href="{{ route('comunicados.create') }}">Crear comunicados</a></li>
                             </ul>
@@ -52,9 +52,9 @@
                         <li>
                             <div class="link font-orange">Mi aula<i class="fa fa-chevron-down"></i></div>
                             <ul class="submenu font-orange">
-                                <li><a href="/panel/cursos">Mis cursos</a>
+                                <li><a href="{{ route('panel.cursos') }}">Mis cursos</a>
                                 </li>
-                                <li><a href="/panel/estudiantes">Mis estudiantes</a></li>
+                                <li><a href="{{ route('estudiantes.index') }}">Mis estudiantes</a></li>
                             </ul>
                         </li>
 
@@ -65,10 +65,10 @@
                             <div class="link font-per"><a href="{{ route('comunicados.index') }}">Comunicados</a></div>
                         </li>
                         <li>
-                            <div class="link font-red"><a href="/recursos">Recursos</a></div>
+                            <div class="link font-red"><a href="{{ route('recursos.index') }}">Recursos</a></div>
                         </li>
                         <li>
-                            <div class="link font-per"><a href="/users/perfil">Perfil</a></div>
+                            <div class="link font-per"><a href="{{ route('users.perfil') }}">Perfil</a></div>
                         </li>
                         <li>
                             <div class="top-contact-btn">
@@ -96,7 +96,7 @@
                                 alt=""><a href="#">Mi aula<i class="fa fa-angle-down"></i></a>
                             <div class="mega-menu">
                                 <div class="mega-catagory">
-                                    <h4><a href="/panel/cursos"><span>Mis cursos</span></a></h4>
+                                    <h4><a href="{{ route('panel.cursos') }}"><span>Mis cursos</span></a></h4>
                                     <div class="mega-button">
                                         <ul>
                                             @forelse ($cursos as $curso)
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="mega-catagory">
-                                    <h4><a class="font-green" href="/panel/estudiantes"><span>Mis estudiantes</span></a>
+                                    <h4><a class="font-green" href="{{ route('estudiantes.index') }}"><span>Mis estudiantes</span></a>
                                     </h4>
                                 </div>
                             </div>
@@ -120,8 +120,8 @@
                             <div class="mega-menu">
                                 <div class="mega-catagory">
                                     <div class="mega-button">
-                                        <a href="/evaluaciones/create"><span>Crear evaluaciones</span></a>
-                                        <a href="/retroalimentacion"><span>Retroalimentación IA</span></a>
+                                        <a href="{{ route('evaluacion.create') }}"><span>Crear evaluaciones</span></a>
+                                        <a href="{{ route('retroalimentacion') }}"><span>Retroalimentación IA</span></a>
                                         <a href="{{ route('informativa') }}">Ver tutorial</a>
                                         <a href="{{ route('comunicados.create') }}">Crear comunicados</a>
                                     </div>
@@ -134,10 +134,10 @@
                         <li class="fc-per"><img src="{{ asset('assets/img/panel/icon/menu-icon5.png') }}"
                                 alt=""><a href="{{ route('comunicados.index') }}">Comunicados</a></li>
                         <li class="fc-orange hav-sub"> <img src="{{ asset('assets/img/panel/icon/menu-icon6.png') }}"
-                                alt=""> <a href="/recursos">Recursos</a>
+                                alt=""> <a href="{{ route('recursos.index') }}">Recursos</a>
                         </li>
                         <li class="fc-sky hav-sub"><img src="{{ asset('assets/img/panel/icon/menu-icon7.png') }}"
-                                alt=""><a href="/users/perfil">Perfil</a></li>
+                                alt=""><a href="{{ route('users.perfil') }}">Perfil</a></li>
                     </ul>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                             <!-- Menú desplegable -->
                             <div class="dropdown-menu dropdown-menu-right text-center">
                                 <span class="dropdown-item-text">
-                                    <a href="/users/perfil" class="link-red">
+                                    <a href="{{ route('users.perfil') }}" class="link-red">
                                         <i class="fa-solid fa-user me-1"></i> {{ Auth::user()->name }}
                                     </a>
                                 </span>

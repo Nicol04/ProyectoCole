@@ -22,7 +22,6 @@
     <!-- Slides start -->
     <div class="slider-wrapper">
         <div class="homepage-s  owl-carousel owl-theme">
-
             <div class="item bg-10">
                 <div class="container">
                     <div class="row">
@@ -33,7 +32,6 @@
                                 <p class="animated "style="color:rgb(243, 251, 92);">Estamos bendecidos y listos para
                                     aprender</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -232,7 +230,7 @@
                                 </div>
                                 <div class="img-part">
                                     <div class="pt-img">
-                                        <img src="{{ asset('assets/img/panel/icon/tes-c2.png') }}" alt="">
+                                        <img src="{{ asset('assets/img/panel/icon/directora.png') }}" alt="">
                                     </div>
                                     <div class="pt-intro">
                                         <h6 class="font-green">Maricarmen Julliana Ruiz Falero</h6>
@@ -253,7 +251,7 @@
                                 </div>
                                 <div class="img-part">
                                     <div class="pt-img">
-                                        <img src="{{ asset('assets/img/panel/icon/directora.png') }}" alt="">
+                                        <img src="{{ asset('assets/img/panel/icon/tes-c1.png') }}" alt="">
                                     </div>
                                     <div class="pt-intro">
                                         <h6 class="font-green">Feliscar Elizabeth Arellano Siancas</h6>

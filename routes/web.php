@@ -13,6 +13,7 @@ use App\Http\Controllers\RespuestaEstudianteController;
 use App\Http\Controllers\SesionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use Livewire\Livewire;
 
 // parte informativa
 Route::get('/', function () {
@@ -110,4 +111,14 @@ Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destro
 Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
 Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
 
+});
+
+
+
+Livewire::setScriptRoute(function ($handle) {
+return Route::get('/ProyectoCole/public/livewire/livewire.js', $handle);
+});
+
+Livewire::setUpdateRoute(function ($handle) {
+return Route::post('/ProyectoCole/public/livewire/update', $handle);
 });
