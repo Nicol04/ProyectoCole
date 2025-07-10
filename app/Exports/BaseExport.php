@@ -124,7 +124,7 @@ abstract class BaseExport implements WithCustomStartCell, WithEvents, WithDrawin
                 ]);
                 $ultimaFila = $sheet->getHighestRow();
                 for ($fila = 9; $fila <= $ultimaFila; $fila++) {
-                    $sheet->getRowDimension($fila)->setRowHeight(50);
+                    $sheet->getRowDimension($fila)->setRowHeight(20);
                 }
                 // ** Protección de la hoja **
                 $sheet->getProtection()->setSheet(true); // Habilitar protección en toda la hoja

@@ -26,7 +26,7 @@
             <div class="row">
                 <h2>Aula </h2> <!-- grado y seccion-->
                 <div class="bread-crumb-line"><span>
-                        <a href="/panel/cursos">
+                        <a href="{{ route('panel.cursos') }}">
                             Mi aula {{ $aula->grado ? $aula->grado : 'Grado no asignado' }}
                             {{ $aula->seccion ? $aula->seccion : '' }} </a>
                     </span>Estudiantes</div>

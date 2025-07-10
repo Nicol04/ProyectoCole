@@ -110,7 +110,8 @@ Route::put('/comunicados/{comunicado}', [ComunicadoController::class, 'update'])
 Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
 Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
 Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
-
+//Reporte de usuarios por aula
+Route::get('/aulas/{aulaId}/exportar-usuarios', [UserController::class, 'exportarUsuariosPorAula'])->name('aulas.exportarUsuarios');
 });
 
 

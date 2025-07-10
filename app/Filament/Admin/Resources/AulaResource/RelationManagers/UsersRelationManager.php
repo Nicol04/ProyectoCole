@@ -124,6 +124,11 @@ class UsersRelationManager extends RelationManager
                             ->success()
                             ->send();
                     }),
+                Action::make('exportarPorAula')
+                    ->label('Exportar Usuarios por Aula')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn(RelationManager $livewire) => route('aulas.exportarUsuarios', ['aulaId' => $livewire->getOwnerRecord()->id]))
+                    ->color('success'),
             ])
             ->actions([
                 Action::make('desvincular')
