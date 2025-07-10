@@ -317,8 +317,8 @@ class UserResource extends Resource
                     ->visible(fn() => Auth::user()?->hasRole(['admin', 'super_admin']))
                     ->copyable()
                     ->copyMessage('Contraseña copiada')
-                    ->copyMessageDuration(1500),
-
+                    ->copyMessageDuration(1500)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\ImageColumn::make('avatar.path')
                     ->label('Avatar')
                     ->disk('public')

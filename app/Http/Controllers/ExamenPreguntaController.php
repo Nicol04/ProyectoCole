@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class ExamenPreguntaController extends Controller
 {
 
-    public function show($evaluacion_id)
+    public function show($evaluacion_id, Request $request)
     {
         $evaluacion = Evaluacion::findOrFail($evaluacion_id);
         $examenPregunta = ExamenPregunta::where('evaluacion_id', $evaluacion_id)->first();
@@ -25,6 +25,7 @@ class ExamenPreguntaController extends Controller
         $intentosConRespuestas = [];
         $estudiantes = [];
         $intentoEnProceso = null;
+
         if (Auth::check()) {
             $roleId = Auth::user()->roles->first()?->id;
 
@@ -63,21 +64,54 @@ class ExamenPreguntaController extends Controller
                     ->exists();
             }
 
-            // Para docentes
+            // Para docentes - Con filtros, búsqueda y paginación
             if ($roleId == 2) {
-                $estudiantes = \App\Models\User::whereHas('roles', function ($q) {
-                    $q->where('id', 3); // Solo estudiantes
-                })
-                    ->with([
-                        'persona',
-                        'avatar',
-                        'intentos' => function ($q) use ($evaluacion_id) {
+                // Obtener parámetros de búsqueda y filtros
+                $search = $request->get('search');
+                $estadoFiltro = $request->get('estado_filtro');
+
+                // Obtener el aula asignada al docente
+                $user = Auth::user();
+                $aula = $user->aulas()->first(); // Asumiendo que el docente tiene una relación con aulas
+                $estudiantes = collect();
+
+                if ($aula) {
+                    // Query base para estudiantes del aula
+                    $estudiantesQuery = $aula->users()
+                        ->whereHas('roles', function ($q) {
+                            $q->where('id', 3); // Solo estudiantes
+                        })
+                        ->with([
+                            'persona',
+                            'avatar',
+                            'intentos' => function ($q) use ($evaluacion_id) {
+                                $q->where('evaluacion_id', $evaluacion_id)
+                                    ->with('calificacion')
+                                    ->orderBy('created_at');
+                            }
+                        ]);
+
+                    // Aplicar filtro de búsqueda por nombre o apellido
+                    if ($search) {
+                        $estudiantesQuery->whereHas('persona', function ($q) use ($search) {
+                            $q->where('nombre', 'LIKE', "%{$search}%")
+                                ->orWhere('apellido', 'LIKE', "%{$search}%");
+                        });
+                    }
+
+                    // Aplicar filtro por estado de calificación
+                    if ($estadoFiltro && in_array($estadoFiltro, ['APROBADO', 'DESAPROBADO'])) {
+                        $estudiantesQuery->whereHas('intentos', function ($q) use ($evaluacion_id, $estadoFiltro) {
                             $q->where('evaluacion_id', $evaluacion_id)
-                                ->with('calificacion')
-                                ->orderBy('created_at');
-                        }
-                    ])
-                    ->get();
+                                ->whereHas('calificacion', function ($subQ) use ($estadoFiltro) {
+                                    $subQ->where('estado', $estadoFiltro);
+                                });
+                        });
+                    }
+
+                    // Paginación de los estudiantes
+                    $estudiantes = $estudiantesQuery->paginate(10)->appends($request->query());
+                }
             }
         }
 

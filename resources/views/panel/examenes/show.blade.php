@@ -345,6 +345,73 @@
                         </a>
                     </div>
                 </div>
+                <!-- Filtros y buscador -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <form method="GET" action="{{ request()->url() }}"
+                            class="d-flex gap-3 align-items-end flex-wrap">
+                            <div class="flex-grow-1" style="min-width: 250px;">
+                                <label for="search" class="form-label fw-bold">Buscar estudiante:</label>
+                                <input type="text" class="form-control" id="search" name="search"
+                                    placeholder="Buscar por nombre o apellido..." value="{{ request('search') }}">
+                            </div>
+                            <div style="min-width: 200px;">
+                                <label for="estado_filtro" class="form-label fw-bold">Filtrar por estado:</label>
+                                <select class="form-select" id="estado_filtro" name="estado_filtro">
+                                    <option value="">Todos los estados</option>
+                                    <option value="APROBADO"
+                                        {{ request('estado_filtro') == 'APROBADO' ? 'selected' : '' }}>
+                                        Aprobado
+                                    </option>
+                                    <option value="DESAPROBADO"
+                                        {{ request('estado_filtro') == 'DESAPROBADO' ? 'selected' : '' }}>
+                                        Desaprobado
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                            <div>
+                                <a href="{{ request()->url() }}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Limpiar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Información de resultados -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <small class="text-muted">
+                                    Mostrando {{ $estudiantes->firstItem() ?? 0 }} -
+                                    {{ $estudiantes->lastItem() ?? 0 }}
+                                    de {{ $estudiantes->total() }} estudiantes
+                                </small>
+                            </div>
+                            @if (request('search') || request('estado_filtro'))
+                                <div class="mt-2 mt-md-0">
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-filter"></i> Filtros aplicados:
+                                        @if (request('search'))
+                                            Búsqueda: "{{ request('search') }}"
+                                        @endif
+                                        @if (request('estado_filtro'))
+                                            @if (request('search'))
+                                                |
+                                            @endif
+                                            Estado: {{ request('estado_filtro') }}
+                                        @endif
+                                    </span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
                 <div class="inner-container">
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle table-historial-estudiantes">
@@ -362,232 +429,261 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($estudiantes as $estudiante)
-                                    @php
+    @forelse ($estudiantes as $estudiante)
+        @php
+            $persona = $estudiante->persona;
+            $intentos = $estudiante->intentos ?? [];
+            $ultimoIntento = $intentos->last();
+            $mejorIntento = $intentos
+                ->sortByDesc(function ($i) {
+                    return $i->calificacion->puntaje_total ?? 0;
+                })
+                ->first();
 
-                                        $persona = $estudiante->persona;
-                                        $intentos = $estudiante->intentos ?? [];
-                                        $ultimoIntento = $intentos->last();
-                                        $mejorIntento = $intentos
-                                            ->sortByDesc(function ($i) {
-                                                return $i->calificacion->puntaje_total ?? 0;
-                                            })
-                                            ->first();
-
-                                        $estado = $ultimoIntento ? ucfirst($ultimoIntento->estado) : 'Sin intento';
-                                        $puntaje =
-                                            $mejorIntento && $mejorIntento->calificacion
-                                                ? $mejorIntento->calificacion->puntaje_total
-                                                : 0;
-                                        $puntajeMax =
-                                            $mejorIntento && $mejorIntento->calificacion
-                                                ? $mejorIntento->calificacion->puntaje_maximo
-                                                : 0;
-                                        $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
-                                        $estadoCalificacion =
-                                            $mejorIntento && $mejorIntento->calificacion
-                                                ? strtoupper($mejorIntento->calificacion->estado)
-                                                : 'SIN ESTADO';
-                                        $colorEstado = $estadoCalificacion === 'APROBADO' ? 'bg-success' : 'bg-danger';
-                                    @endphp
-                                    <tr>
-                                        <td>
-                                            <img src="{{ asset('storage/' . ($estudiante->avatar?->path ?? 'avatares/avatar_defecto.png')) }}"
-                                                alt="Avatar del estudiante" class="avatar-img">
-                                        </td>
-                                        <td class="nombre">{{ $persona->nombre ?? '-' }}</td>
-                                        <td class="apellido">{{ $persona->apellido ?? '-' }}</td>
-                                        <td>
-                                            @if ($estado == 'En progreso')
-                                                <span class="badge bg-warning text-dark">{{ $estado }}</span>
-                                            @elseif($estado == 'Finalizado')
-                                                <span class="badge bg-success">{{ $estado }}</span>
-                                            @else
-                                                <span class="badge bg-secondary">{{ $estado }}</span>
-                                            @endif
-                                        </td>
-                                        @php
-                                            $badgeEstado = 'badge ';
-                                            if ($estadoCalificacion === 'APROBADO') {
-                                                $badgeEstado .= 'bg-success text-white';
-                                            } elseif ($estadoCalificacion === 'DESAPROBADO') {
-                                                $badgeEstado .= 'bg-danger text-white';
-                                            } elseif ($estadoCalificacion === 'SIN ESTADO') {
-                                                $badgeEstado .= 'bg-primary text-white';
-                                            } else {
-                                                $badgeEstado .= 'bg-secondary text-white';
-                                            }
-                                        @endphp
-                                        <td>{{ $puntaje }}/{{ $puntajeMax }}</td>
-
-                                        <td>{{ $intentos->count() }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="fw-bold">{{ $porcentaje }}%</span>
-                                                <div class="progress flex-grow-1"
-                                                    style="height: 18px; min-width: 80px;">
-                                                    <div class="progress-bar 
-                                                        @if ($porcentaje >= 70) bg-success 
-                                                        @elseif($porcentaje >= 50) bg-warning 
-                                                        @else bg-danger @endif"
-                                                        role="progressbar" style="width: {{ $porcentaje }}%;"
-                                                        aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
-                                                        aria-valuemax="100">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="{{ $badgeEstado }}">{{ $estadoCalificacion }}</span>
-                                        </td>
-                                        <td>
-                                            @if ($ultimoIntento)
-                                                @if ($ultimoIntento->estado === 'finalizado')
-                                                    <a href="javascript:void(0);"
-                                                        onclick="verRevision('{{ route('examen.revision', ['intento_id' => $ultimoIntento->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento->revision_vista ? 'true' : 'false' }})"
-                                                        class="btn btn-sm btn-info" title="Ver revisión">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    <button type="button" class="btn btn-sm btn-danger ms-1"
-                                                        onclick="confirmarEliminarIntento({{ $ultimoIntento->id }})"
-                                                        title="Eliminar intento">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                @else
-                                                    <span class="text-warning">En proceso...</span>
-                                                @endif
-                                            @else
-                                                <span class="text-muted">Sin intento</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+            $estado = $ultimoIntento ? ucfirst($ultimoIntento->estado) : 'Sin intento';
+            $puntaje =
+                $mejorIntento && $mejorIntento->calificacion
+                    ? $mejorIntento->calificacion->puntaje_total
+                    : 0;
+            $puntajeMax =
+                $mejorIntento && $mejorIntento->calificacion
+                    ? $mejorIntento->calificacion->puntaje_maximo
+                    : 0;
+            $porcentaje = $puntajeMax > 0 ? round(($puntaje / $puntajeMax) * 100) : 0;
+            $estadoCalificacion =
+                $mejorIntento && $mejorIntento->calificacion
+                    ? strtoupper($mejorIntento->calificacion->estado)
+                    : 'SIN ESTADO';
+            $colorEstado = $estadoCalificacion === 'APROBADO' ? 'bg-success' : 'bg-danger';
+        @endphp
+        <tr>
+            <td>
+                <img src="{{ asset('storage/' . ($estudiante->avatar?->path ?? 'avatares/avatar_defecto.png')) }}"
+                    alt="Avatar del estudiante" class="avatar-img">
+            </td>
+            <td class="nombre">{{ $persona->nombre ?? '-' }}</td>
+            <td class="apellido">{{ $persona->apellido ?? '-' }}</td>
+            <td>
+                @if ($estado == 'En progreso')
+                    <span class="badge bg-warning text-dark">{{ $estado }}</span>
+                @elseif($estado == 'Finalizado')
+                    <span class="badge bg-success">{{ $estado }}</span>
+                @else
+                    <span class="badge bg-secondary">{{ $estado }}</span>
+                @endif
+            </td>
+            @php
+                $badgeEstado = 'badge ';
+                if ($estadoCalificacion === 'APROBADO') {
+                    $badgeEstado .= 'bg-success text-white';
+                } elseif ($estadoCalificacion === 'DESAPROBADO') {
+                    $badgeEstado .= 'bg-danger text-white';
+                } elseif ($estadoCalificacion === 'SIN ESTADO') {
+                    $badgeEstado .= 'bg-primary text-white';
+                } else {
+                    $badgeEstado .= 'bg-secondary text-white';
+                }
+            @endphp
+            <td>{{ $puntaje }}/{{ $puntajeMax }}</td>
+            <td>{{ $intentos->count() }}</td>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold">{{ $porcentaje }}%</span>
+                    <div class="progress flex-grow-1" style="height: 18px; min-width: 80px;">
+                        <div class="progress-bar 
+                            @if ($porcentaje >= 70) bg-success 
+                            @elseif($porcentaje >= 50) bg-warning 
+                            @else bg-danger @endif"
+                            role="progressbar" style="width: {{ $porcentaje }}%;"
+                            aria-valuenow="{{ $porcentaje }}" aria-valuemin="0"
+                            aria-valuemax="100">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    @endif
+            </td>
+            <td>
+                <span class="{{ $badgeEstado }}">{{ $estadoCalificacion }}</span>
+            </td>
+            <td>
+                @if ($ultimoIntento)
+                    @if ($ultimoIntento->estado === 'finalizado')
+                        <a href="javascript:void(0);"
+                            onclick="verRevision('{{ route('examen.revision', ['intento_id' => $ultimoIntento->id]) }}', {{ $intentos ?? 0 }}, {{ $ultimoIntento->revision_vista ? 'true' : 'false' }})"
+                            class="btn btn-sm btn-info" title="Ver revisión">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-danger ms-1"
+                            onclick="confirmarEliminarIntento({{ $ultimoIntento->id }})"
+                            title="Eliminar intento">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    @else
+                        <span class="text-warning">En proceso...</span>
+                    @endif
+                @else
+                    <span class="text-muted">Sin intento</span>
+                @endif
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="9" class="text-center py-4">
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    @if (request('search') || request('estado_filtro'))
+                        No se encontraron estudiantes que coincidan con los filtros aplicados.
+                        <br>
+                        <small>Intenta ajustar los criterios de búsqueda.</small>
+                    @else
+                        No hay estudiantes registrados para esta evaluación.
+                    @endif
+                </div>
+            </td>
+        </tr>
+    @endforelse
+</tbody>
+                            </table>
+                        </div>
+                        <!-- Paginación -->
+                        @if ($estudiantes->hasPages())
+                            <div class="d-flex justify-content-center mt-4">
+                                <nav aria-label="Paginación de estudiantes">
+                                    {{ $estudiantes->links() }}
+                                </nav>
+                            </div>
+                        @endif
 
-    <div id="revisionFullScreen"
-        style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fff; z-index:9999;">
-        <button onclick="cerrarRevision()" class="btn btn-danger m-3 position-absolute"
-            style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
-        <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
-            style="border: none; min-height:100vh; background:#fff;">
+                        <!-- Información adicional de paginación -->
+                        @if ($estudiantes->total() > 0)
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Página {{ $estudiantes->currentPage() }} de {{ $estudiantes->lastPage() }}
+                                </small>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </section>
+        @endif
 
-        </iframe>
-    </div>
+        <div id="revisionFullScreen"
+            style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#fff; z-index:9999;">
+            <button onclick="cerrarRevision()" class="btn btn-danger m-3 position-absolute"
+                style="z-index:10001; right:20px; top:20px;">Cerrar revisión</button>
+            <iframe id="iframeRevision" src="" width="100%" height="100%" frameborder="0"
+                style="border: none; min-height:100vh; background:#fff;">
 
-    <script>
-        window.addEventListener("message", function(event) {
-            if (event.data.type === "iframeHeight") {
-                const iframe = document.getElementById("iframeExamen");
-                if (iframe && event.data.height) {
-                    iframe.style.height = event.data.height + "px";
+            </iframe>
+        </div>
+
+        <script>
+            window.addEventListener("message", function(event) {
+                if (event.data.type === "iframeHeight") {
+                    const iframe = document.getElementById("iframeExamen");
+                    if (iframe && event.data.height) {
+                        iframe.style.height = event.data.height + "px";
+                    }
                 }
-            }
-        });
+            });
 
-        function sendIframeHeight() {
-            const height = document.body.scrollHeight;
-            window.parent.postMessage({
-                type: "iframeHeight",
-                height: height
-            }, "*");
-        }
-        window.onload = sendIframeHeight;
-        window.onresize = sendIframeHeight;
-        window.addEventListener("message", function(event) {
-            if (event.data.type === "redirect" && event.data.url) {
-                window.location.href = event.data.url;
+            function sendIframeHeight() {
+                const height = document.body.scrollHeight;
+                window.parent.postMessage({
+                    type: "iframeHeight",
+                    height: height
+                }, "*");
             }
-        });
+            window.onload = sendIframeHeight;
+            window.onresize = sendIframeHeight;
+            window.addEventListener("message", function(event) {
+                if (event.data.type === "redirect" && event.data.url) {
+                    window.location.href = event.data.url;
+                }
+            });
 
-        function verRevision(url, quedanIntentos, revisionVista) {
-            // Si es docente, abre directamente la revisión
-            @if ($roleId == 2)
-                abrirRevision(url);
-                return;
-            @endif
-
-            // Para estudiantes, sigue la lógica normal
-            if (quedanIntentos <= 0 || revisionVista) {
-                abrirRevision(url);
-                return;
-            }
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, ver revisión',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
+            function verRevision(url, quedanIntentos, revisionVista) {
+                // Si es docente, abre directamente la revisión
+                @if ($roleId == 2)
                     abrirRevision(url);
+                    return;
+                @endif
+
+                // Para estudiantes, sigue la lógica normal
+                if (quedanIntentos <= 0 || revisionVista) {
+                    abrirRevision(url);
+                    return;
                 }
-            });
-        }
-
-        function abrirRevision(url) {
-            document.body.style.overflow = 'hidden';
-            document.getElementById('revisionFullScreen').style.display = 'block';
-            document.getElementById('iframeRevision').src = url;
-            ocultarBotonNuevoIntento();
-        }
-
-        function cerrarRevision() {
-            document.body.style.overflow = '';
-            document.getElementById('revisionFullScreen').style.display = 'none';
-            document.getElementById('iframeRevision').src = '';
-        }
-
-        function ocultarBotonNuevoIntento() {
-            var btn = document.getElementById('btnNuevoIntento');
-            if (btn) btn.style.display = 'none';
-        }
-
-        function confirmarEliminarIntento(intentoId) {
-            Swal.fire({
-                title: '¿Eliminar intento?',
-                text: 'Esta acción eliminará el ÚLTIMO intento, su calificación y sus respuestas. ¿Deseas continuar?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    eliminarIntento(intentoId);
-                }
-            });
-        }
-
-        function eliminarIntento(intentoId) {
-            fetch("{{ url('/intentos') }}/" + intentoId, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: 'Si ves la revisión, ya no podrás enviar más intentos para este examen.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, ver revisión',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        abrirRevision(url);
                     }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire('Eliminado', data.message, 'success')
-                            .then(() => location.reload());
-                    } else {
-                        Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
-                    }
-                })
-                .catch(() => {
-                    Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
                 });
-        }
-    </script>
-    @include('panel.includes.footer3')
-    @include('panel.includes.footer')
-</body>
+            }
 
-</html>
+            function abrirRevision(url) {
+                document.body.style.overflow = 'hidden';
+                document.getElementById('revisionFullScreen').style.display = 'block';
+                document.getElementById('iframeRevision').src = url;
+                ocultarBotonNuevoIntento();
+            }
+
+            function cerrarRevision() {
+                document.body.style.overflow = '';
+                document.getElementById('revisionFullScreen').style.display = 'none';
+                document.getElementById('iframeRevision').src = '';
+            }
+
+            function ocultarBotonNuevoIntento() {
+                var btn = document.getElementById('btnNuevoIntento');
+                if (btn) btn.style.display = 'none';
+            }
+
+            function confirmarEliminarIntento(intentoId) {
+                Swal.fire({
+                    title: '¿Eliminar intento?',
+                    text: 'Esta acción eliminará el ÚLTIMO intento, su calificación y sus respuestas. ¿Deseas continuar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        eliminarIntento(intentoId);
+                    }
+                });
+            }
+
+            function eliminarIntento(intentoId) {
+                fetch("{{ url('/intentos') }}/" + intentoId, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Eliminado', data.message, 'success')
+                                .then(() => location.reload());
+                        } else {
+                            Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
+                        }
+                    })
+                    .catch(() => {
+                        Swal.fire('Error', 'No se pudo eliminar el intento.', 'error');
+                    });
+            }
+        </script>
+        @include('panel.includes.footer3')
+        @include('panel.includes.footer')
+    </body>
+
+    </html>

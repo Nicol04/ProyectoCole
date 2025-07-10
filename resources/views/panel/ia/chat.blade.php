@@ -155,19 +155,19 @@
         // Toma el nombre del usuario autenticado de FilamentPHP (Laravel Auth)
         const authName = @json(auth()->user()->persona->nombre ?? 'Usuario');
         const esSupervisado = @json($esSupervisado);
-        
+        const seguridad = "Esta pregunta gira en un contexto academico. Si la pregunta no es sobre un tema académico, responde: Lo siento pero no puedo responder a esa pregunta. Por favor, haz una pregunta relacionada con tu exámen";
         let instrucciones = "";
                 
         if (esSupervisado == 1) {
-            instrucciones = "Eres un asistente educativo para niños de aproximadamente 10 años. El docente está presente, así que responde de manera corta, sencilla y directa. Usa ejemplos fáciles y evita explicaciones largas. Recibirás un historial de la conversación en formato JSON, donde cada elemento tiene un 'rol' (USUARIO o MODELO) y una 'respuesta'. Responde solo a la última pregunta del usuario.";
+            instrucciones = seguridad + "Eres un asistente educativo para niños de aproximadamente 10 años. El docente está presente, así que responde de manera corta, sencilla y directa. Usa ejemplos fáciles y evita explicaciones largas. Recibirás un historial de la conversación en formato JSON, donde cada elemento tiene un 'rol' (USUARIO o MODELO) y una 'respuesta'. Responde solo a la última pregunta del usuario.";
         }else{
-            instrucciones = "Eres un asistente educativo para niños de aproximadamente 10 años. Te hare una pregunta que tu deberas responder ubicando fuentes confiables y dando una explicación. Recibirás un historial de la conversación en formato JSON, donde cada elemento tiene un 'rol' (USUARIO o MODELO) y una 'respuesta'. Usa este historial para entender el contexto y responder de manera coherente y relevante a la última pregunta del usuario. Responde solo a la última pregunta del usuario.";
+            instrucciones = seguridad + "Eres un asistente educativo para niños de aproximadamente 10 años. Te hare una pregunta que tu deberas responder ubicando fuentes confiables (en caso de encontrar una fuente solo mencionala, no coloques el link) y dando una explicación clara. Recibirás un historial de la conversación en formato JSON, donde cada elemento tiene un 'rol' (USUARIO o MODELO) y una 'respuesta'. Usa este historial para entender el contexto y responder de manera coherente y relevante a la última pregunta del usuario. Responde solo a la última pregunta del usuario.";
         }
 
         return {
             historial: history.getJson(),
             instrucciones: instrucciones,
-            mensaje_adicional: `Mi nombre es ${authName}. Recuerda, la respuesta debe ser clara, comprensible, usando ejemplos que sean fáciles de entender.`
+            mensaje_adicional: `El nombre del estudiante es ${authName}. Recuerda, la respuesta debe ser clara, comprensible, usando ejemplos que sean fáciles de entender.`
         };
     }
 
@@ -256,7 +256,6 @@
 
         // Inicialmente mostrar el chat y ocultar el botón flotante
         showChat();
-
         closeBtn.addEventListener('click', hideChat);
         openBtn.addEventListener('click', showChat);
     });
