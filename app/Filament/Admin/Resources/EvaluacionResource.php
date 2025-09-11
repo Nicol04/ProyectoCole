@@ -122,7 +122,6 @@ class EvaluacionResource extends Resource
                     ->getStateUsing(function ($record) {
                         return optional($record->docente->persona)->nombre . ' ' . optional($record->docente->persona)->apellido;
                     })
-                    ->searchable(['docente.persona.nombre', 'docente.persona.apellido'])
                     ->sortable(),
                 Tables\Columns\IconColumn::make('es_supervisado')
                     ->boolean(),

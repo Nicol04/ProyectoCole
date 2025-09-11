@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Persona;
+use App\Models\persona;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class ExportUser extends BaseExport implements FromCollection, WithHeadings, WithTitle
@@ -25,7 +25,7 @@ class ExportUser extends BaseExport implements FromCollection, WithHeadings, Wit
     }
     public function collection()
     {
-        return Persona::with(['user.roles', 'user.aulas'])
+        return persona::with(['user.roles', 'user.aulas'])
             ->get()
             ->filter(function ($persona) {
                 $user = $persona->user;
