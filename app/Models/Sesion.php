@@ -13,19 +13,25 @@ class Sesion extends Model
         'fecha',
         'dia',
         'titulo',
-        'objetivo',
-        'actividades',
+        'tema',
+        'tiempo_estimado',
+        'proposito_sesion',
         'aula_curso_id',
+        'docente_id',
     ];
 
     public function curso()
     {
         return $this->belongsTo(Curso::class);
     }
-
+    /*
     public function docente()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }*/
+    public function docente()
+    {
+        return $this->belongsTo(User::class, 'docente_id');
     }
 
     public function aulaCurso()

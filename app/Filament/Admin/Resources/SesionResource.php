@@ -50,12 +50,32 @@ class SesionResource extends Resource
                 Forms\Components\TextInput::make('titulo')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('objetivo')
+                Forms\Components\TextInput::make('tema')
+                    ->required()
+                    ->maxLength(100),
+                Forms\Components\TextInput::make('tiempo_estimado')
+                    ->label('Tiempo estimado (minutos)')
+                    ->required()
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(300),
+                Forms\Components\Textarea::make('proposito_sesion')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('actividades')
                     ->required()
                     ->columnSpanFull(),
+
+                Forms\Components\Select::make('docente_id')
+                    ->label('Docente')
+                    ->relationship(
+                        name: 'docente',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn($query) => $query->role('docente') // filtra por rol
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->required(),
 
                 Forms\Components\Section::make('Datos de las aulas')
                     ->columns(3)
@@ -130,8 +150,8 @@ class SesionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('aulaCurso.aula.docente.persona.nombre')
                     ->label('Docente')
-                    ->formatStateUsing(fn ($state, $record) =>
-                        optional($record->aulaCurso?->aula?->docente?->persona)->nombre ?? 'Sin docente'),
+                    ->formatStateUsing(fn($state, $record) =>
+                    optional($record->aulaCurso?->aula?->docente?->persona)->nombre ?? 'Sin docente'),
                 Tables\Columns\TextColumn::make('fecha')
                     ->date()
                     ->sortable(),
@@ -143,7 +163,7 @@ class SesionResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                
+
             ])
             ->filters([
                 //

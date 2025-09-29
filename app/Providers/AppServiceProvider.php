@@ -8,10 +8,12 @@ use App\Models\usuario_aula;
 use App\Observers\UsuarioAulaObserver;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Filament\Support\Facades\FilamentView;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +30,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+
+        FilamentView::registerRenderHook(
+            'panels::auth.login.form.after',
+            fn(): string => Blade::render('@vite(\'resources/css/login.css\')'),
+        );
         Paginator::useBootstrapFive();
         usuario_aula::observe(UsuarioAulaObserver::class);
         Carbon::setLocale('es');

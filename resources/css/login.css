@@ -1,0 +1,10 @@
+body {
+    background: rgb(var(--primary-900));
+    background: url("../../public/assets/img/fondo_docente.png") center / cover, linear-gradient(0deg, rgba(var(--primary-900), 1) 0%, rgba(var(--primary-500)) 100%);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    justify-content: center;
+    align-items: center;
+}

@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -38,7 +39,16 @@ class AulaResource extends Resource
                         '6' => '6',
                     ])
                     ->label('Grado'),
-
+                Forms\Components\Radio::make('nivel')
+                    ->required()
+                    ->options([
+                        'Primaria' => 'Primaria',
+                        'Inicial' => 'Inicial',
+                    ])
+                    ->label('Nivel'),
+                Forms\Components\TextInput::make('nombre')
+                    ->required()
+                    ->label('Nombre'),
                 Forms\Components\Select::make('seccion')
                     ->required()
                     ->options([
@@ -58,6 +68,7 @@ class AulaResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('grado'),
                 Tables\Columns\TextColumn::make('seccion'),
+                Tables\Columns\TextColumn::make('nivel'),
                 Tables\Columns\TextColumn::make('cantidad_usuarios')
                     ->numeric()
                     ->sortable(),
@@ -71,7 +82,17 @@ class AulaResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('grado')
+                    ->label('Grado')
+                    ->options([
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4',
+                        '5' => '5',
+                        '6' => '6',
+                    ])
+                    ->placeholder('Todos'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

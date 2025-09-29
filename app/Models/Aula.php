@@ -11,7 +11,10 @@ class Aula extends Model
     protected $fillable = [
         'grado',
         'seccion',
-        'cantidad_usuarios'
+        'nivel',
+        'cantidad_usuarios',
+        'nivel',
+        'nombre'
     ];
 
     public function users()
