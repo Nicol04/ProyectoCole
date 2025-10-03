@@ -11,32 +11,24 @@ class SesionDetalle extends Model
 
     protected $fillable = [
         'sesion_id',
-        'competencia_id',
-        'capacidad_id',
-        'desempeno_id',
+        'competencias',
+        'capacidades', 
+        'desempenos',
         'criterio_id',
         'evidencia',
         'instrumento'
     ];
 
+    // Esto convierte automáticamente JSON ↔ Array
+    protected $casts = [
+        'competencias' => 'array',
+        'capacidades' => 'array',
+        'desempenos' => 'array',
+    ];
+
     public function sesion()
     {
         return $this->belongsTo(Sesion::class);
-    }
-
-    public function competencia()
-    {
-        return $this->belongsTo(Competencia::class);
-    }
-
-    public function capacidad()
-    {
-        return $this->belongsTo(Capacidad::class);
-    }
-
-    public function desempeno()
-    {
-        return $this->belongsTo(Desempeno::class);
     }
 
     public function criterio()

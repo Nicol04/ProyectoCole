@@ -42,4 +42,14 @@ class Sesion extends Model
     {
         return $this->hasMany(Evaluacion::class);
     }
+    // Nueva relación con detalles pedagógicos
+    public function detalles()
+    {
+        return $this->hasMany(SesionDetalle::class);
+    }
+
+    public function detalle()
+    {
+        return $this->hasOne(SesionDetalle::class);
+    }
 }

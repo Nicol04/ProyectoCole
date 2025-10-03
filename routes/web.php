@@ -51,6 +51,12 @@ Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvat
 
 Route::get('/cursos/{id}', [CursoController::class, 'sesiones'])->name('sesiones.index');
 Route::get('cursos/sesion/create', [SesionController::class, 'create'])->name('sesiones.create');
+Route::get('cursos/sesion/createSession', [SesionController::class, 'createSession'])->name('sesiones.createSession');
+
+Route::get('/cursos/{curso}/competencias', [SesionController::class, 'getCompetenciasByCurso']);
+Route::get('/competencias/{competencia}/capacidades', [SesionController::class, 'getCapacidadesByCompetencia']);
+Route::post('/desempenos/por-competencia-y-grado', [SesionController::class, 'getDesempenosPorCompetenciaYGrado']);
+
 Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
 Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
 Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');

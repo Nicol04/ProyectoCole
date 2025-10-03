@@ -28,7 +28,7 @@
                             icon: "{{ $icono }}"
                         });
                     </script>
-                @endif
+                    @endif
                 </div>
                 <div class="input-container">
                     <i class="fa fa-user"></i>
@@ -39,12 +39,6 @@
                     <input type="password" name="password" placeholder="Contraseña" required autofocus maxlength="30" required>
                     <i class="fa fa-eye" id="togglePassword"></i>
                 </div>
-                <div class="roles">
-                    <input type="radio" id="docente" name="role" value="Docente" required>
-                        <label for="docente">Docente</label>
-                        <input type="radio" id="estudiante" name="role" value="Estudiante" required>
-                        <label for="estudiante">Estudiante</label>
-                </div>                
                 <div class="remember-me-container">
                     <input type="checkbox" name="remember" id="remember-me">
                     <label for="remember-me">Recuérdame</label>

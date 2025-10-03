@@ -13,7 +13,6 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30',
             'password' => 'required|string',
-            'role' => 'required|in:Docente,Estudiante',
         ]);
 
         if ($validator->fails()) {
@@ -23,7 +22,6 @@ class LoginController extends Controller
         }
 
         $credentials = $request->only('name', 'password');
-        $selectedRole = $request->input('role');
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
@@ -36,22 +34,21 @@ class LoginController extends Controller
                     ->with('icono', 'error');
             }
 
-            if ($user->hasRole($selectedRole)) {
+            // Verificar si el usuario es Docente o Estudiante
+            if ($user->hasRole('Docente') || $user->hasRole('Estudiante')) {
                 return redirect()->route('index')
                     ->with('mensaje', 'Inicio de sesión exitoso, Bienvenido a tu aula virtual!')
                     ->with('icono', 'success');
             } else {
                 Auth::logout();
                 return redirect()->route('login')
-                    ->with('mensaje', 'El rol seleccionado no coincide con el usuario.')
+                    ->with('mensaje', 'No tienes permiso para acceder. Solo Docentes y Estudiantes pueden ingresar.')
                     ->with('icono', 'error');
             }
         }
-
         return back()->with('mensaje', 'Credenciales incorrectas.')
             ->with('icono', 'error');
     }
-
 
     public function showLoginForm()
     {
