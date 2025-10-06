@@ -22,29 +22,36 @@ class EstandarResource extends Resource
     protected static ?string $model = Estandar::class;
     protected static ?string $navigationGroup = 'Currículo';
     protected static ?string $navigationLabel = 'Estándares';
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Select::make('tipo_competencia')
+                    ->label('Tipo de competencia')
+                    ->options([
+                        'curso' => 'Competencia de curso',
+                        'transversal' => 'Competencia transversal',
+                    ])
+                    ->reactive()
+                    ->required(),
+
                 Select::make('curso_id')
                     ->label('Curso')
                     ->options(\App\Models\Curso::pluck('curso', 'id'))
                     ->reactive()
                     ->searchable()
-                    ->required()
+                    ->visible(fn($get) => $get('tipo_competencia') === 'curso')
+                    ->required(fn($get) => $get('tipo_competencia') === 'curso') // requerido si es tipo curso
                     ->afterStateUpdated(fn(callable $set) => $set('competencia_id', null))
-                    ->dehydrated(false)
                     ->afterStateHydrated(function ($state, callable $set, $record) {
                         if ($record && $record->competencia) {
                             $set('curso_id', $record->competencia->curso_id);
                         }
                     }),
 
-
-                // Seleccionar competencia según curso
                 Select::make('competencia_id')
                     ->label('Competencia')
                     ->options(function (callable $get) {
@@ -57,9 +64,16 @@ class EstandarResource extends Resource
                     })
                     ->reactive()
                     ->searchable()
-                    ->required()
+                    ->visible(fn($get) => $get('tipo_competencia') === 'curso')
+                    ->required(fn($get) => $get('tipo_competencia') === 'curso')
                     ->disabled(fn(callable $get) => !$get('curso_id')),
 
+                Select::make('competencia_transversal_id')
+                    ->label('Competencia Transversal')
+                    ->options(\App\Models\CompetenciaTransversal::pluck('nombre', 'id'))
+                    ->searchable()
+                    ->visible(fn($get) => $get('tipo_competencia') === 'transversal')
+                    ->required(fn($get) => $get('tipo_competencia') === 'transversal'),
 
                 TextInput::make('ciclo')
                     ->label('Ciclo')
@@ -78,9 +92,32 @@ class EstandarResource extends Resource
             ->columns([
                 TextColumn::make('ciclo')->sortable()->searchable(),
                 TextColumn::make('descripcion')->limit(50)->wrap(),
+                TextColumn::make('pertenencia')
+                    ->label('Pertenece a')
+                    ->getStateUsing(fn($record) => $record->perteneceA()), // Llama al método del modelo
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('pertenencia')
+                ->label('Pertenece a')
+                ->options([
+                    'curso' => 'Competencia de curso',
+                    'transversal' => 'Competencia transversal',
+                    'sin_asignar' => 'Sin asignar',
+                ])
+                ->query(function (Builder $query, array $data) {
+                    $value = $data['value'] ?? null;
+
+                    if ($value === 'curso') {
+                        $query->whereNotNull('competencia_id')
+                            ->whereNull('competencia_transversal_id');
+                    } elseif ($value === 'transversal') {
+                        $query->whereNotNull('competencia_transversal_id')
+                            ->whereNull('competencia_id');
+                    } elseif ($value === 'sin_asignar') {
+                        $query->whereNull('competencia_id')
+                            ->whereNull('competencia_transversal_id');
+                    }
+                }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

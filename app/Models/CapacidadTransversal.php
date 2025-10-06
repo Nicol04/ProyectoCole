@@ -21,4 +21,8 @@ class CapacidadTransversal extends Model
     {
         return $this->belongsTo(CompetenciaTransversal::class, 'competencia_transversal_id');
     }
+    public function desempenos()
+    {
+        return $this->hasMany(Desempeno::class, 'capacidad_transversal_id');
+    }
 }

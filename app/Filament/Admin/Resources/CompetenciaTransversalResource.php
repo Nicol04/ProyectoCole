@@ -68,6 +68,12 @@ protected static ?string $navigationLabel = 'Competencias transversales';
                 ]),
             ]);
     }
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\CapacidadesTransversalesRelationManager::class,
+        ];
+    }
 
     public static function getPages(): array
     {
