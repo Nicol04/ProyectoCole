@@ -8,15 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class SesionDetalle extends Model
 {
     use HasFactory;
-
+    protected $table = 'sesion_detalles';
     protected $fillable = [
         'sesion_id',
         'competencias',
-        'capacidades', 
+        'capacidades',
         'desempenos',
         'criterio_id',
         'evidencia',
-        'instrumento'
+        'instrumento',
+        'competencias_transversales',
+        'capacidades_transversales',
+        'desempenos_transversales'
     ];
 
     // Esto convierte automáticamente JSON ↔ Array
@@ -24,6 +27,9 @@ class SesionDetalle extends Model
         'competencias' => 'array',
         'capacidades' => 'array',
         'desempenos' => 'array',
+        'competencias_transversales' => 'array',
+        'capacidades_transversales' => 'array',
+        'desempenos_transversales' => 'array',
     ];
 
     public function sesion()

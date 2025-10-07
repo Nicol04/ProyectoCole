@@ -57,6 +57,10 @@ Route::get('/cursos/{curso}/competencias', [SesionController::class, 'getCompete
 Route::get('/competencias/{competencia}/capacidades', [SesionController::class, 'getCapacidadesByCompetencia']);
 Route::post('/desempenos/por-competencia-y-grado', [SesionController::class, 'getDesempenosPorCompetenciaYGrado']);
 
+Route::get('/enfoques-transversales', [SesionController::class, 'getEnfoquesTransversales']);
+Route::get('/competencias-transversales', [SesionController::class, 'getCompetenciasTransversales']);
+Route::get('/competencias-transversales/{id}/capacidades', [SesionController::class, 'getCapacidadesByCompetenciaTransversal']);
+
 Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
 Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
 Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');

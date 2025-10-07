@@ -289,7 +289,40 @@ class SesionController extends Controller
             return response()->json(['error' => 'Error al cargar desempeños'], 500);
         }
     }
+    public function getEnfoquesTransversales()
+    {
+        try {
+            $enfoques = \App\Models\EnfoqueTransversal::select('id', 'nombre')->get();
+            return response()->json($enfoques);
+        } catch (\Exception $e) {
+            Log::error("Error al obtener enfoques transversales: " . $e->getMessage());
+            return response()->json(['error' => 'Error al cargar enfoques transversales'], 500);
+        }
+    }
+    public function getCompetenciasTransversales()
+    {
+        try {
+            $competencias = \App\Models\CompetenciaTransversal::select('id', 'nombre')->get();
+            return response()->json($competencias);
+        } catch (\Exception $e) {
+            Log::error("Error al obtener competencias transversales: " . $e->getMessage());
+            return response()->json(['error' => 'Error al cargar competencias transversales'], 500);
+        }
+    }
 
+    public function getCapacidadesByCompetenciaTransversal($id)
+    {
+        try {
+            $capacidades = \App\Models\CapacidadTransversal::where('competencia_transversal_id', $id)
+                ->select('id', 'nombre')
+                ->get();
+
+            return response()->json($capacidades);
+        } catch (\Exception $e) {
+            Log::error("Error al obtener capacidades transversales: " . $e->getMessage());
+            return response()->json(['error' => 'Error al cargar capacidades transversales'], 500);
+        }
+    }
 
     private function getGradoFromAulaId($aulaId)
     {
