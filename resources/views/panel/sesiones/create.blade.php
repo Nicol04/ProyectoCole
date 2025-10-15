@@ -56,180 +56,222 @@
     </section>
     <!--Breadcrumb area end-->
 
-    <!-- Admission application form area start -->
-    <div class="admission-process-area">
+    <section class="kindergarten-top-content wow fadeInUp" data-wow-delay=".3s">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-8">
-                    <div class="admission-form contact-page-form p-4 shadow-sm bg-white rounded">
-                        <h1 class="area-heading font-per style-two text-center mb-4">Nueva Sesión</h1>
-                        <p class="heading-para text-center mb-4">Complete los datos para crear una nueva sesión.</p>
-                        <form action="{{ route('sesiones.store') }}" method="POST">
-                            @csrf
-
-                            <!-- Datos de la sesión -->
-                            <h3 class="font-green mb-3">Datos de la sesión</h3>
-                            <div class="row">
-                                <div class="col-md-12 mb-3">
-                                    <label for="titulo" class="form-label">Título</label>
-                                    <input type="text" name="titulo" id="titulo" placeholder="Título"
-                                        class="form-control form-control-lg" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="curso_id" class="form-label">Curso</label>
-                                    <select name="curso_id" class="form-control" id="curso-select"
-                                        {{ $disableCursoSelect ? 'disabled' : '' }} required>
-                                        <option value="">Seleccione un curso</option>
-                                        @foreach ($cursos as $cursoItem)
-                                            <option value="{{ $cursoItem->id }}"
-                                                {{ (old('curso_id') ?? ($curso->id ?? '')) == $cursoItem->id ? 'selected' : '' }}>
-                                                {{ $cursoItem->curso }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="competencia_id" class="form-label">Competencias</label>
-                                    <select name="competencia_id[]" class="form-control select2" id="competencia-select"
-                                        multiple="multiple" required>
-                                        @if ($competencias)
-                                            @foreach ($competencias as $competencia)
-                                                <option value="{{ $competencia->id }}">{{ $competencia->nombre }}
+                <div class="col-md-8">
+                    <div class="kin-top-con text-center mb-4">
+                        <h3 class="font-per style-two">Crear nueva sesión</h3>
+                        <p>Complete los datos para crear una nueva sesión.</p>
+                    </div>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form action="{{ route('sesiones.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="aula_curso_id" value="{{ $cursos->first()->aula_curso_id }}">
+                                <!-- Datos de la sesión -->
+                                <h4 class="font-green mb-3">Datos Informativos</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Institución Educativa</label>
+                                        <input type="text" class="form-control" value="Ann Goulden" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Directora</label>
+                                        <input type="text" class="form-control"
+                                            value="Dra. Maricarmen Julliana Ruiz Falero" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Docente</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ auth()->user()->persona->nombre . ' ' . auth()->user()->persona->apellido }}"
+                                            readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Grado y Sección</label>
+                                        <input type="text" class="form-control"
+                                            value="{{ (auth()->user()->usuario_aulas->first()?->aula->grado ?? 'No asignado') . ' ' . (auth()->user()->usuario_aulas->first()?->aula->seccion ?? 'No asignado') }}"
+                                            readonly>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="curso_id" class="form-label">Curso</label>
+                                        <select name="curso_id" class="form-control" id="curso-select"
+                                            {{ $disableCursoSelect ? 'disabled' : '' }} required>
+                                            <option value="">Seleccione un curso</option>
+                                            @foreach ($cursos as $cursoItem)
+                                                <option value="{{ $cursoItem->id }}"
+                                                    {{ (old('curso_id') ?? ($curso->id ?? '')) == $cursoItem->id ? 'selected' : '' }}>
+                                                    {{ $cursoItem->curso }}
                                                 </option>
                                             @endforeach
-                                        @endif
-                                    </select>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="capacidad_id" class="form-label">Capacidades</label>
-                                    <select name="capacidad_id[]" class="form-control select2" id="capacidad-select"
-                                        multiple="multiple" required>
-                                        <!-- Las capacidades relacionadas se cargarán dinámicamente aquí -->
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fecha" class="form-label">Fecha</label>
+                                        <input type="date" name="fecha" id="fecha" class="form-control"
+                                            required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="dia" class="form-label">Día</label>
+                                        <input type="text" name="dia" id="dia" class="form-control"
+                                            readonly>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="desempeno_id" class="form-label">Desempeños</label>
-                                    <select name="desempeno_id[]" class="form-control select2" id="desempeno-select"
-                                        multiple="multiple" required>
-                                        <!-- Los desempeños relacionadas se cargarán dinámicamente aquí -->
-                                    </select>
+
+                                <div class="text-center mb-3">
+                                    <button type="button" class="btn btn-outline-info" id="btn-hoy">
+                                        Usar fecha de hoy
+                                    </button>
                                 </div>
-                            </div>
 
-                            <!-- Debajo de desempeños -->
-                            <div class="mb-3">
-                                <input type="checkbox" id="mostrarEnfoques" name="mostrarEnfoques">
-                                <label for="mostrarEnfoques">¿Agregar enfoques transversales?</label>
-                            </div>
+                                <!-- Tiempo estimado -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tiempo_estimado" class="form-label">Tiempo estimado
+                                            (minutos)</label>
+                                        <select name="tiempo_estimado" id="tiempo_estimado" class="form-control"
+                                            required>
+                                            <option value="">Seleccione duración</option>
+                                            <option value="30">30 minutos</option>
+                                            <option value="60">60 minutos</option>
+                                            <option value="90">90 minutos</option>
+                                            <option value="custom">Personalizado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input type="number" id="tiempo_custom" class="form-control" min="1"
+                                            max="300" style="display: none;" placeholder="Ingrese minutos">
+                                    </div>
+                                </div>
 
-                            <div id="camposEnfoques" style="display:none;">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="titulo" class="form-label">Título</label>
+                                        <input type="text" name="titulo" id="titulo" placeholder="Título"
+                                            class="form-control form-control-lg" required>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label for="proposito_sesion" class="form-label">Propósito de la
+                                            sesión</label>
+                                        <textarea name="proposito_sesion" placeholder="Propósito de la sesión" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                </div>
+
+                                <h4 class="font-green mb-3">Propósitos de Aprendizaje</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="competencia_id" class="form-label">Competencias</label>
+                                        <select name="competencia_id[]" class="form-control select2"
+                                            id="competencia-select" multiple="multiple" required>
+                                            @if ($competencias)
+                                                @foreach ($competencias as $competencia)
+                                                    <option value="{{ $competencia->id }}">{{ $competencia->nombre }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="capacidad_id" class="form-label">Capacidades</label>
+                                        <select name="capacidad_id[]" class="form-control select2"
+                                            id="capacidad-select" multiple="multiple" required>
+                                            <!-- Las capacidades relacionadas se cargarán dinámicamente aquí -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="desempeno_id" class="form-label">Desempeños</label>
+                                        <select name="desempeno_id[]" class="form-control select2"
+                                            id="desempeno-select" multiple="multiple" required>
+                                            <!-- Los desempeños relacionadas se cargarán dinámicamente aquí -->
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="mb-3">
-                                    <label for="enfoque_transversal" class="form-label">Enfoque transversal</label>
-                                    <select name="enfoque_transversal[]" id="enfoque_transversal"
-                                        class="form-control select2" multiple="multiple">
-                                        <!-- Opciones cargadas dinámicamente -->
-                                    </select>
+                                    <input type="checkbox" id="mostrarEnfoques" name="mostrarEnfoques">
+                                    <label for="mostrarEnfoques">¿Agregar enfoques transversales?</label>
                                 </div>
 
-                                <div id="camposCompetenciasTransversales">
-                                    <div class="mb-3">
-                                        <label for="competencias_transversales" class="form-label">Competencias
-                                            transversales</label>
-                                        <select name="competencias_transversales[]" id="competencias_transversales"
-                                            class="form-control select2" multiple="multiple">
-                                            <!-- Opciones cargadas dinámicamente -->
-                                        </select>
+                                <div id="camposEnfoques" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="enfoque_transversal" class="form-label">Enfoque
+                                                transversal</label>
+                                            <select name="enfoque_transversal[]" id="enfoque_transversal"
+                                                class="form-control select2" multiple="multiple">
+                                                <!-- Opciones cargadas dinámicamente -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="competencias_transversales" class="form-label">Competencias
+                                                transversales</label>
+                                            <select name="competencias_transversales[]"
+                                                id="competencias_transversales" class="form-control select2"
+                                                multiple="multiple">
+                                                <!-- Opciones cargadas dinámicamente -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="capacidades_transversales" class="form-label">Capacidades
+                                                transversales</label>
+                                            <select name="capacidades_transversales[]" id="capacidades_transversales"
+                                                class="form-control select2" multiple="multiple">
+                                                <!-- Opciones cargadas dinámicamente -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="desempeno_transversal" class="form-label">Desempeños
+                                                transversales</label>
+                                            <select name="desempeno_transversal[]" id="desempeno_transversal"
+                                                class="form-control select2" multiple="multiple">
+                                                <!-- Opciones cargadas dinámicamente -->
+                                            </select>
+                                        </div>
                                     </div>
+                                </div>
 
-                                    <div class="mb-3">
-                                        <label for="capacidades_transversales" class="form-label">Capacidades
-                                            transversales</label>
-                                        <select name="capacidades_transversales[]" id="capacidades_transversales"
-                                            class="form-control select2" multiple="multiple">
-                                            <!-- Opciones cargadas dinámicamente -->
-                                        </select>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="criterios" class="form-label">Criterios</label>
+                                        <textarea name="criterios" id="criterios" class="form-control" rows="3"
+                                            placeholder="Describa los criterios de evaluación..." required></textarea>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="evidencia" class="form-label">Evidencia</label>
+                                        <textarea name="evidencia" id="evidencia" class="form-control" rows="3"
+                                            placeholder="Describa las evidencias de aprendizaje que se recogerán..." required></textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="proposito_sesion" class="form-label">Propósito de la sesión</label>
-                                <textarea name="proposito_sesion" placeholder="Propósito de la sesión" class="form-control" rows="3" required></textarea>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="fecha" class="form-label">Fecha</label>
-                                    <input type="date" name="fecha" id="fecha" placeholder="Fecha"
-                                        class="form-control" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="dia" class="form-label">Día</label>
-                                    <input type="text" name="dia" id="dia" placeholder="Día"
-                                        class="form-control" readonly>
-                                </div>
-                            </div>
-
-                            <div class="text-center mb-3">
-                                <button type="button" class="btn btn-outline-info" id="btn-hoy">
-                                    Usar fecha de hoy
-                                </button>
-                            </div>
-
-                            <!-- Tiempo estimado -->
-                            <div class="mb-3">
-                                <label for="tiempo_estimado" class="form-label">Tiempo estimado (minutos)</label>
-                                <div class="d-flex align-items-center">
-                                    <select name="tiempo_estimado" id="tiempo_estimado" class="form-control mr-2"
-                                        required>
-                                        <option value="">Seleccione duración</option>
-                                        <option value="30">30 minutos</option>
-                                        <option value="60">60 minutos</option>
-                                        <option value="90">90 minutos</option>
+                                <div class="col-mb-3">
+                                    <label for="instrumento" class="form-label">Instrumento de Evaluación</label>
+                                    <select name="instrumento" id="instrumento" class="form-control" required>
+                                        <option value="">Seleccione un instrumento</option>
+                                        <option value="Lista de cotejo">Lista de cotejo</option>
+                                        <option value="Rúbrica">Rúbrica</option>
+                                        <option value="Escala de valoración">Escala de valoración</option>
+                                        <option value="Registro anecdótico">Registro anecdótico</option>
+                                        <option value="Portafolio">Portafolio</option>
+                                        <option value="Observación directa">Observación directa</option>
                                         <option value="custom">Personalizado</option>
                                     </select>
-                                    <input type="number" id="tiempo_custom" class="form-control ml-2"
-                                        min="1" max="300" style="display: none;"
-                                        placeholder="Ingrese minutos">
+                                    <input type="text" id="instrumento_custom" class="form-control mt-2"
+                                        name="instrumento_custom" placeholder="Ingrese el instrumento personalizado"
+                                        style="display: none;">
                                 </div>
-                            </div>
-
-                            <!-- Evidencia -->
-                            <div class="mb-3">
-                                <label for="evidencia" class="form-label">Evidencia</label>
-                                <textarea name="evidencia" id="evidencia" class="form-control" rows="3"
-                                    placeholder="Describa las evidencias de aprendizaje que se recogerán..."></textarea>
-                            </div>
-
-                            <!-- Instrumento -->
-                            <div class="mb-3">
-                                <label for="instrumento" class="form-label">Instrumento de Evaluación</label>
-                                <select name="instrumento" id="instrumento" class="form-control">
-                                    <option value="">Seleccione un instrumento</option>
-                                    <option value="Lista de cotejo">Lista de cotejo</option>
-                                    <option value="Rúbrica">Rúbrica</option>
-                                    <option value="Escala de valoración">Escala de valoración</option>
-                                    <option value="Registro anecdótico">Registro anecdótico</option>
-                                    <option value="Portafolio">Portafolio</option>
-                                    <option value="Observación directa">Observación directa</option>
-                                    <option value="custom">Personalizado</option>
-                                </select>
-                                <input type="text" id="instrumento_custom" class="form-control mt-2"
-                                    name="instrumento_custom" placeholder="Ingrese el instrumento personalizado"
-                                    style="display: none;">
-                            </div>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Guardar Sesión</button>
-                            </div>
-                        </form>
+                                <button type="submit"
+                                    class="first-btn kids-care-btn bgc-orange fadeInRight fadeInLeft animated">
+                                    Guardar sesión
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.getElementById('curso-select').addEventListener('change', function() {
@@ -256,122 +298,165 @@
 
         $(document).ready(function() {
 
-    const mostrarEnfoquesCheckbox = $('#mostrarEnfoques');
-    const camposEnfoques = $('#camposEnfoques');
-    const enfoqueSelect = $('#enfoque_transversal');
-    const competenciasSelect = $('#competencias_transversales');
-    const capacidadesSelect = $('#capacidades_transversales');
+            const mostrarEnfoquesCheckbox = $('#mostrarEnfoques');
+            const camposEnfoques = $('#camposEnfoques');
+            const enfoqueSelect = $('#enfoque_transversal');
+            const competenciasSelect = $('#competencias_transversales');
+            const capacidadesSelect = $('#capacidades_transversales');
 
-    // 🔹 Ocultar los campos al inicio
-    camposEnfoques.hide();
-
-    // 🔹 Inicializar Select2
-    enfoqueSelect.select2({
-        placeholder: "Seleccione o agregue enfoques transversales",
-        tags: true,
-        tokenSeparators: [',', ' '],
-        allowClear: true,
-        width: '100%'
-    });
-
-    competenciasSelect.select2({
-        placeholder: "Seleccione o agregue competencias transversales",
-        tags: true,
-        tokenSeparators: [',', ' '],
-        allowClear: true,
-        width: '100%'
-    });
-
-    capacidadesSelect.select2({
-        placeholder: "Seleccione o agregue capacidades transversales",
-        tags: true,
-        tokenSeparators: [',', ' '],
-        allowClear: true,
-        width: '100%'
-    });
-
-    // 🔹 Mostrar u ocultar los campos según el checkbox
-    mostrarEnfoquesCheckbox.on('change', function() {
-        if (this.checked) {
-            camposEnfoques.show();
-
-            // Limpiar antes de cargar
-            enfoqueSelect.empty();
-            competenciasSelect.empty();
-            capacidadesSelect.empty();
-
-            // 🔸 Cargar enfoques transversales
-            $.ajax({
-                url: '/enfoques-transversales',
-                method: 'GET',
-                success: function(data) {
-                    data.forEach(function(enfoque) {
-                        enfoqueSelect.append(new Option(enfoque.nombre, enfoque.id));
-                    });
-                    enfoqueSelect.trigger('change');
-                },
-                error: function(error) {
-                    console.error('Error al cargar enfoques:', error);
-                }
-            });
-
-            // 🔸 Cargar competencias transversales
-            $.ajax({
-                url: '/competencias-transversales',
-                method: 'GET',
-                success: function(data) {
-                    data.forEach(function(competencia) {
-                        competenciasSelect.append(new Option(competencia.nombre, competencia.id));
-                    });
-                    competenciasSelect.trigger('change');
-                },
-                error: function(error) {
-                    console.error('Error al cargar competencias transversales:', error);
-                }
-            });
-
-        } else {
+            // 🔹 Ocultar los campos al inicio
             camposEnfoques.hide();
-            enfoqueSelect.val(null).trigger('change');
-            competenciasSelect.val(null).trigger('change');
-            capacidadesSelect.val(null).trigger('change');
-        }
-    });
 
-    // 🔹 Al cambiar competencias transversales, cargar capacidades transversales
-    competenciasSelect.on('change', function() {
-        const competenciasSeleccionadas = $(this).val();
-        capacidadesSelect.empty().trigger('change');
+            // 🔹 Inicializar Select2
+            enfoqueSelect.select2({
+                placeholder: "Seleccione o agregue enfoques transversales",
+                tags: true,
+                tokenSeparators: [',', ' '],
+                allowClear: true,
+                width: '100%'
+            });
 
-        if (!competenciasSeleccionadas || competenciasSeleccionadas.length === 0) return;
+            competenciasSelect.select2({
+                placeholder: "Seleccione o agregue competencias transversales",
+                tags: true,
+                tokenSeparators: [',', ' '],
+                allowClear: true,
+                width: '100%'
+            });
 
-        const capacidadesCargadas = new Set();
+            capacidadesSelect.select2({
+                placeholder: "Seleccione o agregue capacidades transversales",
+                tags: true,
+                tokenSeparators: [',', ' '],
+                allowClear: true,
+                width: '100%'
+            });
 
-        competenciasSeleccionadas.forEach(function(competenciaId) {
-            $.ajax({
-                url: `/competencias-transversales/${competenciaId}/capacidades`,
-                method: 'GET',
-                success: function(data) {
-                    data.forEach(function(capacidad) {
-                        if (!capacidadesCargadas.has(capacidad.id)) {
-                            capacidadesCargadas.add(capacidad.id);
-                            capacidadesSelect.append(new Option(capacidad.nombre, capacidad.id));
+            mostrarEnfoquesCheckbox.on('change', function() {
+                if (this.checked) {
+                    camposEnfoques.show();
+
+                    // Limpiar antes de cargar
+                    enfoqueSelect.empty();
+                    competenciasSelect.empty();
+                    capacidadesSelect.empty();
+
+                    // 🔸 Cargar enfoques transversales
+                    $.ajax({
+                        url: '/enfoques-transversales',
+                        method: 'GET',
+                        success: function(data) {
+                            data.forEach(function(enfoque) {
+                                enfoqueSelect.append(new Option(enfoque.nombre, enfoque
+                                    .id));
+                            });
+                            enfoqueSelect.trigger('change');
+                        },
+                        error: function(error) {
+                            console.error('Error al cargar enfoques:', error);
                         }
                     });
-                    capacidadesSelect.trigger('change');
-                },
-                error: function(error) {
-                    console.error('Error al cargar capacidades transversales:', error);
+
+                    // 🔸 Cargar competencias transversales
+                    $.ajax({
+                        url: '/competencias-transversales',
+                        method: 'GET',
+                        success: function(data) {
+                            data.forEach(function(competencia) {
+                                competenciasSelect.append(new Option(competencia.nombre,
+                                    competencia.id));
+                            });
+                            competenciasSelect.trigger('change');
+                        },
+                        error: function(error) {
+                            console.error('Error al cargar competencias transversales:', error);
+                        }
+                    });
+
+                } else {
+                    camposEnfoques.hide();
+                    enfoqueSelect.val(null).trigger('change');
+                    competenciasSelect.val(null).trigger('change');
+                    capacidadesSelect.val(null).trigger('change');
                 }
             });
-        });
-    });
 
-    // 🔹 Al limpiar las competencias, limpiar las capacidades
-    competenciasSelect.on('select2:clear', function() {
-        capacidadesSelect.empty().trigger('change');
-    });
-});
+            $('#capacidades_transversales').on('change', function() {
+                const capacidadesSeleccionadas = $(this).val(); // IDs seleccionados
+                const desempenoTransversalSelect = $('#desempeno_transversal');
+
+                // Limpiar siempre antes de recargar
+                desempenoTransversalSelect.empty().trigger('change');
+
+                if (!capacidadesSeleccionadas || capacidadesSeleccionadas.length === 0) {
+                    return;
+                }
+
+                // Enviar las capacidades seleccionadas al backend
+                $.ajax({
+                    url: '/desempenos/por-capacidad-transversal',
+                    method: 'POST',
+                    data: {
+                        capacidades_transversales: capacidadesSeleccionadas,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        if (data.error) {
+                            console.error(data.error);
+                            return;
+                        }
+
+                        // Agregar los desempeños al select
+                        data.forEach(function(desempeno) {
+                            desempenoTransversalSelect.append(
+                                new Option(desempeno.descripcion, desempeno.id)
+                            );
+                        });
+
+                        desempenoTransversalSelect.trigger('change');
+                    },
+                    error: function(error) {
+                        console.error('Error al cargar desempeños transversales:', error);
+                    }
+                });
+            });
+
+            // 🔹 Al cambiar competencias transversales, cargar capacidades transversales
+            competenciasSelect.on('change', function() {
+                const competenciasSeleccionadas = $(this).val();
+                capacidadesSelect.empty().trigger('change');
+
+                if (!competenciasSeleccionadas || competenciasSeleccionadas.length === 0) return;
+
+                const capacidadesCargadas = new Set();
+
+                competenciasSeleccionadas.forEach(function(competenciaId) {
+                    $.ajax({
+                        url: `/competencias-transversales/${competenciaId}/capacidades`,
+                        method: 'GET',
+                        success: function(data) {
+                            data.forEach(function(capacidad) {
+                                if (!capacidadesCargadas.has(capacidad.id)) {
+                                    capacidadesCargadas.add(capacidad.id);
+                                    capacidadesSelect.append(new Option(
+                                        capacidad.nombre, capacidad.id));
+                                }
+                            });
+                            capacidadesSelect.trigger('change');
+                        },
+                        error: function(error) {
+                            console.error('Error al cargar capacidades transversales:',
+                                error);
+                        }
+                    });
+                });
+            });
+
+            // 🔹 Al limpiar las competencias, limpiar las capacidades
+            competenciasSelect.on('select2:clear', function() {
+                capacidadesSelect.empty().trigger('change');
+            });
+        });
 
         $(document).ready(function() {
 
@@ -396,6 +481,15 @@
             // Inicializar Select2 para capacidades transversales
             $('#capacidades_transversales').select2({
                 placeholder: "Seleccione o agregue capacidades transversales",
+                tags: true,
+                tokenSeparators: [',', ' '],
+                allowClear: true,
+                width: '100%'
+            });
+
+            // Inicializar Select2 para desempeños transversales
+            $('#desempeno_transversal').select2({
+                placeholder: "Seleccione o agregue desempeños transversales",
                 tags: true,
                 tokenSeparators: [',', ' '],
                 allowClear: true,

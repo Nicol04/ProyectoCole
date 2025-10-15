@@ -104,39 +104,54 @@ class SesionController extends Controller
 
     public function store(Request $request)
     {
+        // Validar los datos
         $validated = $request->validate([
             'titulo' => 'required|string|max:255',
             'proposito_sesion' => 'required|string',
             'fecha' => 'required|date',
             'tiempo_estimado' => 'required|integer|min:1',
             'aula_curso_id' => 'required|exists:aula_curso,id',
-            // Campos pedagógicos
-            'competencias' => 'nullable|array',
-            'capacidades' => 'nullable|array',
-            'desempenos' => 'nullable|array',
-            'evidencia' => 'nullable|string',
-            'instrumento' => 'nullable|string',
+            'competencia_id' => 'required|array',
+            'capacidad_id' => 'required|array',
+            'desempeno_id' => 'required|array',
+            'criterios' => 'required|string',
+            'evidencia' => 'required|string',
+            'instrumento' => 'required|string',
+            // Campos opcionales
+            'enfoque_transversal' => 'nullable|array',
+            'competencias_transversales' => 'nullable|array',
+            'capacidades_transversales' => 'nullable|array',
+            'desempeno_transversal' => 'nullable|array',
         ]);
 
-        $validated['dia'] = $request->input('dia');
-        $validated['docente_id'] = Auth::id();
-
         // Crear la sesión
-        $sesion = Sesion::create($validated);
+        $sesion = Sesion::create([
+            'fecha' => $validated['fecha'],
+            'dia' => ucfirst(Carbon::parse($request->fecha)->locale('es')->isoFormat('dddd')),
+            'titulo' => $validated['titulo'],
+            'tiempo_estimado' => $validated['tiempo_estimado'],
+            'proposito_sesion' => $validated['proposito_sesion'],
+            'aula_curso_id' => $validated['aula_curso_id'],
+            'docente_id' => Auth::id(),
+        ]);
 
-        // Crear el detalle pedagógico si hay datos
-        if ($request->has('competencias') || $request->has('capacidades') || $request->has('desempenos')) {
-            SesionDetalle::create([
-                'sesion_id' => $sesion->id,
-                'competencias' => $request->competencias ?? [],
-                'capacidades' => $request->capacidades ?? [],
-                'desempenos' => $request->desempenos ?? [],
-                'evidencia' => $request->evidencia,
-                'instrumento' => $request->instrumento,
-            ]);
-        }
+        // Crear el detalle de la sesión
+        SesionDetalle::create([
+            'sesion_id' => $sesion->id,
+            'competencias' => json_encode($validated['competencia_id']),
+            'capacidades' => json_encode($validated['capacidad_id']),
+            'desempenos' => json_encode($validated['desempeno_id']),
+            'criterio' => $validated['criterios'],
+            'evidencia' => $validated['evidencia'],
+            'instrumento' => $validated['instrumento'],
+            'enfoque_transversal' => $request->has('enfoque_transversal') ? json_encode($request->enfoque_transversal) : null,
+            'competencia_transversal' => $request->has('competencias_transversales') ? json_encode($request->competencias_transversales) : null,
+            'capacidad_transversal' => $request->has('capacidades_transversales') ? json_encode($request->capacidades_transversales) : null,
+            'desempeno_transversal' => $request->has('desempeno_transversal') ? json_encode($request->desempeno_transversal) : null,
+        ]);
 
-        return redirect()->route('sesiones.show', $sesion->id)
+        // Redirigir a la página de momentos
+        return redirect()->route('sesiones.momentos.create', ['sesion_id' => $sesion->id])
             ->with('mensaje', 'Sesión creada exitosamente')
             ->with('icono', 'success');
     }
@@ -321,6 +336,40 @@ class SesionController extends Controller
         } catch (\Exception $e) {
             Log::error("Error al obtener capacidades transversales: " . $e->getMessage());
             return response()->json(['error' => 'Error al cargar capacidades transversales'], 500);
+        }
+    }
+
+    public function getDesempenosPorCapacidadTransversal(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            // Obtener el aula_id del usuario autenticado
+            $aulaId = $user->usuario_aulas()->pluck('aula_id')->first();
+
+            // Determinar el grado a partir del aula_id
+            $grado = $this->getGradoFromAulaId($aulaId);
+
+            if (!$grado) {
+                return response()->json(['error' => 'No se pudo determinar el grado del usuario.'], 400);
+            }
+
+            // Validar que se hayan enviado capacidades transversales
+            $capacidadesTransversales = $request->input('capacidades_transversales');
+            if (!$capacidadesTransversales || count($capacidadesTransversales) === 0) {
+                return response()->json(['error' => 'No se han seleccionado capacidades transversales.'], 400);
+            }
+
+            // Filtrar desempeños por capacidades transversales y grado
+            $desempenos = Desempeno::whereIn('capacidad_transversal_id', $capacidadesTransversales)
+                ->where('grado', $grado) // Filtrar por el grado correspondiente
+                ->select('id', 'descripcion', 'capacidad_transversal_id')
+                ->get();
+
+            return response()->json($desempenos);
+        } catch (\Exception $e) {
+            Log::error("Error al obtener desempeños por capacidades transversales: " . $e->getMessage());
+            return response()->json(['error' => 'Error al cargar desempeños.'], 500);
         }
     }
 

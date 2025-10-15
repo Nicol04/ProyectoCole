@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('unidades', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->string('grado');
+            $table->json('secciones')->nullable();
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->json('profesores_responsables')->nullable();
+            $table->text('situacion_significativa')->nullable();
+            $table->text('productos')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('unidades');
+    }
+};

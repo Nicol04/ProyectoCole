@@ -56,6 +56,13 @@ Route::get('cursos/sesion/createSession', [SesionController::class, 'createSessi
 Route::get('/cursos/{curso}/competencias', [SesionController::class, 'getCompetenciasByCurso']);
 Route::get('/competencias/{competencia}/capacidades', [SesionController::class, 'getCapacidadesByCompetencia']);
 Route::post('/desempenos/por-competencia-y-grado', [SesionController::class, 'getDesempenosPorCompetenciaYGrado']);
+Route::post('/desempenos/por-capacidad-transversal', [SesionController::class, 'getDesempenosPorCapacidadTransversal']);
+
+//sesiones momentos
+Route::get('sesiones/{sesion_id}/momentos/create', function ($sesion_id) {
+    $sesion = App\Models\Sesion::findOrFail($sesion_id);
+    return view('panel.sesiones.momentos.create', compact('sesion'));
+})->name('sesiones.momentos.create');
 
 Route::get('/enfoques-transversales', [SesionController::class, 'getEnfoquesTransversales']);
 Route::get('/competencias-transversales', [SesionController::class, 'getCompetenciasTransversales']);

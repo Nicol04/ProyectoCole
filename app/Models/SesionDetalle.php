@@ -17,9 +17,9 @@ class SesionDetalle extends Model
         'criterio_id',
         'evidencia',
         'instrumento',
-        'competencias_transversales',
-        'capacidades_transversales',
-        'desempenos_transversales'
+        'competencia_transversal',
+        'capacidad_transversal',
+        'desempeno_transversal'
     ];
 
     // Esto convierte automáticamente JSON ↔ Array
@@ -27,9 +27,9 @@ class SesionDetalle extends Model
         'competencias' => 'array',
         'capacidades' => 'array',
         'desempenos' => 'array',
-        'competencias_transversales' => 'array',
-        'capacidades_transversales' => 'array',
-        'desempenos_transversales' => 'array',
+        'competencia_transversal' => 'array',
+        'capacidad_transversal' => 'array',
+        'desempeno_transversal' => 'array',
     ];
 
     public function sesion()
