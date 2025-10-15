@@ -11,6 +11,7 @@ use App\Http\Controllers\RecursoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\RespuestaEstudianteController;
 use App\Http\Controllers\SesionController;
+use App\Http\Controllers\UnidadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use Livewire\Livewire;
@@ -63,6 +64,10 @@ Route::get('sesiones/{sesion_id}/momentos/create', function ($sesion_id) {
     $sesion = App\Models\Sesion::findOrFail($sesion_id);
     return view('panel.sesiones.momentos.create', compact('sesion'));
 })->name('sesiones.momentos.create');
+
+//Crear unidad de aprendizaje
+Route::get('/unidades/create', [UnidadController::class, 'create'])->name('unidades.create');
+Route::post('/unidades', [UnidadController::class, 'store'])->name('unidades.store');
 
 Route::get('/enfoques-transversales', [SesionController::class, 'getEnfoquesTransversales']);
 Route::get('/competencias-transversales', [SesionController::class, 'getCompetenciasTransversales']);

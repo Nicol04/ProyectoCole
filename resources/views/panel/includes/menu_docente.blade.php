@@ -165,7 +165,7 @@
                                     <div class="mega-button">
                                         <a href="{{ route('sesiones.createSession') }}"><span>Crear sesiones</span></a>
                                         <a href="{{ route('retroalimentacion') }}"><span>Crear fichas de aprendizaje</span></a>
-                                        <a href="{{ route('informativa') }}">Crear unidades</a>
+                                        <a href="{{ route('unidades.create') }}">Crear unidades</a>
                                         <a href="{{ route('comunicados.create') }}">Crear comunicados</a>
                                     </div>
                                 </div>
