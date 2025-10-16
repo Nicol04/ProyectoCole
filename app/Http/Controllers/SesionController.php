@@ -254,7 +254,6 @@ class SesionController extends Controller
         }
     }
 
-
     public function getCapacidadesByCompetencia($competenciaId)
     {
         try {
@@ -274,36 +273,41 @@ class SesionController extends Controller
         try {
             $user = Auth::user();
 
-            // Obtener el aula_id del usuario autenticado
+            // Obtener el aula asociada al usuario
             $aulaId = $user->usuario_aulas()->pluck('aula_id')->first();
 
-            // Determinar el grado a partir del aula_id
+            if (!$aulaId) {
+                return response()->json(['error' => 'El usuario no tiene aula asignada.'], 400);
+            }
+
+            // Determinar el grado según el aula
             $grado = $this->getGradoFromAulaId($aulaId);
 
             if (!$grado) {
-                return response()->json(['error' => 'No se pudo determinar el grado del usuario.'], 400);
+                return response()->json(['error' => 'No se pudo determinar el grado del aula.'], 400);
             }
 
-            // Validar competencia_id
+            // Validar competencia
             $competenciaId = $request->input('competencia_id');
             if (!$competenciaId) {
-                return response()->json(['error' => 'No se ha seleccionado una competencia.'], 400);
+                return response()->json(['error' => 'Debe seleccionar una competencia.'], 400);
             }
 
-            // 🔥 Aquí viene la magia:
+            // Obtener desempeños por competencia y grado
             $desempenos = Desempeno::whereHas('capacidad', function ($query) use ($competenciaId) {
                 $query->where('competencia_id', $competenciaId);
             })
-                ->where('grado', $grado) // filtrar por el grado correspondiente
+                ->where('grado', $grado)
                 ->select('id', 'descripcion', 'capacidad_id')
                 ->get();
 
             return response()->json($desempenos);
         } catch (\Exception $e) {
             Log::error("Error al obtener desempeños: " . $e->getMessage());
-            return response()->json(['error' => 'Error al cargar desempeños'], 500);
+            return response()->json(['error' => 'Error interno al cargar desempeños.'], 500);
         }
     }
+
     public function getEnfoquesTransversales()
     {
         try {
