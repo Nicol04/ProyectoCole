@@ -241,6 +241,223 @@
     </section>
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // ✅ ELIMINADO: El evento duplicado del curso-select ya está manejado en form-competencias.blade.php
+
+        // 🔹 MANEJO DE ENFOQUES TRANSVERSALES
+        const mostrarEnfoquesCheckbox = $('#mostrarEnfoques');
+        const camposEnfoques = $('#camposEnfoques');
+        const enfoqueSelect = $('#enfoque_transversal');
+        const competenciasSelect = $('#competencias_transversales');
+        const capacidadesSelect = $('#capacidades_transversales');
+        const desempenoTransversalSelect = $('#desempeno_transversal');
+
+        // Ocultar los campos al inicio
+        camposEnfoques.hide();
+
+        // Inicializar Select2 para enfoques transversales
+        enfoqueSelect.select2({
+            placeholder: "Seleccione o agregue enfoques transversales",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            width: '100%'
+        });
+
+        competenciasSelect.select2({
+            placeholder: "Seleccione o agregue competencias transversales",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            width: '100%'
+        });
+
+        capacidadesSelect.select2({
+            placeholder: "Seleccione o agregue capacidades transversales",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            width: '100%'
+        });
+
+        desempenoTransversalSelect.select2({
+            placeholder: "Seleccione o agregue desempeños transversales",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            allowClear: true,
+            width: '100%'
+        });
+
+        // ✅ MOSTRAR/OCULTAR ENFOQUES
+        mostrarEnfoquesCheckbox.on('change', function() {
+            if (this.checked) {
+                camposEnfoques.show();
+
+                // Limpiar antes de cargar
+                enfoqueSelect.empty();
+                competenciasSelect.empty();
+                capacidadesSelect.empty();
+
+                // Cargar enfoques transversales
+                $.ajax({
+                    url: '/enfoques-transversales',
+                    method: 'GET',
+                    success: function(data) {
+                        data.forEach(function(enfoque) {
+                            enfoqueSelect.append(new Option(enfoque.nombre, enfoque.id));
+                        });
+                        enfoqueSelect.trigger('change');
+                    },
+                    error: function(error) {
+                        console.error('Error al cargar enfoques:', error);
+                    }
+                });
+
+                // Cargar competencias transversales
+                $.ajax({
+                    url: '/competencias-transversales',
+                    method: 'GET',
+                    success: function(data) {
+                        data.forEach(function(competencia) {
+                            competenciasSelect.append(new Option(competencia.nombre, competencia.id));
+                        });
+                        competenciasSelect.trigger('change');
+                    },
+                    error: function(error) {
+                        console.error('Error al cargar competencias transversales:', error);
+                    }
+                });
+            } else {
+                camposEnfoques.hide();
+                enfoqueSelect.val(null).trigger('change');
+                competenciasSelect.val(null).trigger('change');
+                capacidadesSelect.val(null).trigger('change');
+            }
+        });
+
+        // ✅ AL CAMBIAR COMPETENCIAS TRANSVERSALES, CARGAR CAPACIDADES
+        competenciasSelect.on('change', function() {
+            const competenciasSeleccionadas = $(this).val();
+            capacidadesSelect.empty().trigger('change');
+
+            if (!competenciasSeleccionadas || competenciasSeleccionadas.length === 0) return;
+
+            const capacidadesCargadas = new Set();
+
+            competenciasSeleccionadas.forEach(function(competenciaId) {
+                $.ajax({
+                    url: `/competencias-transversales/${competenciaId}/capacidades`,
+                    method: 'GET',
+                    success: function(data) {
+                        data.forEach(function(capacidad) {
+                            if (!capacidadesCargadas.has(capacidad.id)) {
+                                capacidadesCargadas.add(capacidad.id);
+                                capacidadesSelect.append(new Option(capacidad.nombre, capacidad.id));
+                            }
+                        });
+                        capacidadesSelect.trigger('change');
+                    },
+                    error: function(error) {
+                        console.error('Error al cargar capacidades transversales:', error);
+                    }
+                });
+            });
+        });
+
+        // ✅ AL CAMBIAR CAPACIDADES TRANSVERSALES, CARGAR DESEMPEÑOS
+        capacidadesSelect.on('change', function() {
+            const capacidadesSeleccionadas = $(this).val();
+            desempenoTransversalSelect.empty().trigger('change');
+
+            if (!capacidadesSeleccionadas || capacidadesSeleccionadas.length === 0) {
+                return;
+            }
+
+            $.ajax({
+                url: '/desempenos/por-capacidad-transversal',
+                method: 'POST',
+                data: {
+                    capacidades_transversales: capacidadesSeleccionadas,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    if (data.error) {
+                        console.error(data.error);
+                        return;
+                    }
+
+                    data.forEach(function(desempeno) {
+                        desempenoTransversalSelect.append(new Option(desempeno.descripcion, desempeno.id));
+                    });
+
+                    desempenoTransversalSelect.trigger('change');
+                },
+                error: function(error) {
+                    console.error('Error al cargar desempeños transversales:', error);
+                }
+            });
+        });
+
+        // Al limpiar las competencias, limpiar las capacidades
+        competenciasSelect.on('select2:clear', function() {
+            capacidadesSelect.empty().trigger('change');
+            desempenoTransversalSelect.empty().trigger('change');
+        });
+
+        // ✅ EVENTOS DE FECHA Y OTROS CAMPOS
+        $('#fecha').on('change', function() {
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const fechaSeleccionada = new Date(this.value);
+            const dia = dias[fechaSeleccionada.getDay()];
+            $('#dia').val(dia);
+        });
+
+        $('#btn-hoy').on('click', function() {
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoy.getDate()).padStart(2, '0');
+            const fechaHoy = `${yyyy}-${mm}-${dd}`;
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const diaHoy = dias[hoy.getDay()];
+
+            $('#fecha').val(fechaHoy);
+            $('#dia').val(diaHoy);
+        });
+
+        $('#tiempo_estimado').on('change', function() {
+            const customInput = $('#tiempo_custom');
+            if (this.value === 'custom') {
+                customInput.show().attr('name', 'tiempo_estimado');
+                $(this).removeAttr('name');
+            } else {
+                customInput.hide().removeAttr('name');
+                $(this).attr('name', 'tiempo_estimado');
+            }
+        });
+
+        $('#instrumento').on('change', function() {
+            const customInput = $('#instrumento_custom');
+            if (this.value === 'custom') {
+                customInput.show().attr('name', 'instrumento');
+                $(this).removeAttr('name');
+            } else {
+                customInput.hide().removeAttr('name');
+                $(this).attr('name', 'instrumento');
+            }
+        });
+
+        // ✅ DEBUG: Verificar si hay curso preseleccionado
+        @if (isset($curso_id) && $curso_id)
+            console.log('Curso preseleccionado: {{ $curso_id }}');
+            const cursoSelect = document.getElementById('curso-select');
+            if (cursoSelect) {
+                cursoSelect.dispatchEvent(new Event('change'));
+            }
+        @endif
+    });
+    </script>
     
     @include('panel.includes.footer3')
     @include('panel.includes.footer')

@@ -48,28 +48,40 @@
 {{-- Script para la funcionalidad AJAX --}}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Evento para cambio de curso
+    // ✅ MEJORADO: Evento para cambio de curso
     const cursoSelect = document.getElementById('curso-select');
     if (cursoSelect) {
         cursoSelect.addEventListener('change', function() {
             const cursoId = this.value;
             const competenciaSelect = document.getElementById('competencia-select');
 
+            // Limpiar competencias
+            if (typeof $ !== 'undefined') {
+                $('#competencia-select').empty().trigger('change');
+                $('#capacidad-select').empty().trigger('change');
+                $('#desempeno-select').empty().trigger('change');
+            }
+
             if (cursoId) {
                 fetch(`/cursos/${cursoId}/competencias`)
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
-                        competenciaSelect.innerHTML = '<option value="">Seleccione una competencia</option>';
-                        data.forEach(competencia => {
-                            competenciaSelect.innerHTML +=
-                                `<option value="${competencia.id}">${competencia.nombre}</option>`;
-                        });
+                        console.log('Competencias cargadas:', data);
+                        if (typeof $ !== 'undefined') {
+                            data.forEach(competencia => {
+                                $('#competencia-select').append(new Option(competencia.nombre, competencia.id));
+                            });
+                            $('#competencia-select').trigger('change');
+                        }
                     })
                     .catch(error => {
                         console.error('Error al cargar competencias:', error);
                     });
-            } else {
-                competenciaSelect.innerHTML = '<option value="">Seleccione una competencia</option>';
             }
         });
     }
@@ -77,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicialización de Select2 si jQuery está disponible
     if (typeof $ !== 'undefined') {
         $(document).ready(function() {
-            // Inicializar Select2 para competencias
+            // Inicializar Select2
             $('#competencia-select').select2({
                 placeholder: "Escriba para buscar o seleccione competencias",
                 tags: true,
@@ -98,13 +110,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 width: '100%'
             });
 
-            // Cargar capacidades al seleccionar competencias
+            // ✅ MEJORADO: Cargar capacidades y desempeños al seleccionar competencias
             $('#competencia-select').on('change', function() {
                 const competenciasSeleccionadas = $(this).val();
                 const capacidadSelect = $('#capacidad-select');
                 const desempenoSelect = $('#desempeno-select');
 
-                // Limpiar siempre antes de recargar
+                console.log('Competencias seleccionadas:', competenciasSeleccionadas);
+
+                // Limpiar antes de cargar
                 capacidadSelect.empty().trigger('change');
                 desempenoSelect.empty().trigger('change');
 
@@ -112,60 +126,76 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                // Crear un Set para evitar duplicados
+                // Crear Sets para evitar duplicados
                 const capacidadesCargadas = new Set();
                 const desempenosCargados = new Set();
 
-                // Recorre todas las competencias seleccionadas
-                competenciasSeleccionadas.forEach(function(competenciaId) {
-                    // Cargar capacidades relacionadas
+                // Recorrer todas las competencias seleccionadas
+                competenciasSeleccionadas.forEach(function(competenciaId, index) {
+                    // 1️⃣ Cargar capacidades
                     fetch(`/competencias/${competenciaId}/capacidades`)
                         .then(response => response.json())
                         .then(data => {
+                            console.log(`Capacidades para competencia ${competenciaId}:`, data);
                             data.forEach(function(capacidad) {
                                 if (!capacidadesCargadas.has(capacidad.id)) {
                                     capacidadesCargadas.add(capacidad.id);
                                     capacidadSelect.append(new Option(capacidad.nombre, capacidad.id));
                                 }
                             });
-                            capacidadSelect.trigger('change');
+                            if (index === 0) capacidadSelect.trigger('change');
                         })
                         .catch(error => {
                             console.error('Error al cargar capacidades:', error);
                         });
 
-                    // Cargar desempeños relacionados
+                    // 2️⃣ Cargar desempeños
                     $.ajax({
                         url: '/desempenos/por-competencia-y-grado',
                         method: 'POST',
                         data: {
-                            competencia_id: competenciaId,
-                            grado: '{{ auth()->user()->usuario_aulas->first()?->aula->grado ?? "" }}',
+                            competencia_id: [competenciaId], // ✅ Enviar como array
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(data) {
+                            console.log(`Desempeños para competencia ${competenciaId}:`, data);
+                            
                             if (data.error) {
-                                console.error(data.error);
+                                console.error('Error del servidor:', data.error);
                                 return;
                             }
 
-                            data.forEach(function(desempeno) {
-                                if (!desempenosCargados.has(desempeno.id)) {
-                                    desempenosCargados.add(desempeno.id);
-                                    desempenoSelect.append(new Option(desempeno.descripcion, desempeno.id));
+                            if (Array.isArray(data)) {
+                                data.forEach(function(desempeno) {
+                                    if (!desempenosCargados.has(desempeno.id)) {
+                                        desempenosCargados.add(desempeno.id);
+                                        desempenoSelect.append(new Option(desempeno.descripcion, desempeno.id));
+                                    }
+                                });
+                                
+                                // Trigger change solo en el último elemento
+                                if (index === competenciasSeleccionadas.length - 1) {
+                                    desempenoSelect.trigger('change');
                                 }
-                            });
-
-                            desempenoSelect.trigger('change');
+                            }
                         },
-                        error: function(error) {
-                            console.error('Error al cargar desempeños:', error);
+                        error: function(xhr, status, error) {
+                            console.error('Error AJAX al cargar desempeños:', {
+                                competencia_id: competenciaId,
+                                status: status,
+                                error: error,
+                                response: xhr.responseText
+                            });
+                            
+                            if (xhr.responseJSON && xhr.responseJSON.error) {
+                                console.error('Error específico:', xhr.responseJSON.error);
+                            }
                         }
                     });
                 });
             });
 
-            // Evento al limpiar competencias manualmente
+            // Limpiar al quitar selección
             $('#competencia-select').on('select2:clear', function() {
                 $('#capacidad-select').empty().trigger('change');
                 $('#desempeno-select').empty().trigger('change');
@@ -173,12 +203,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Si ya hay un curso seleccionado, cargar sus competencias al cargar la página
+    // ✅ Si hay curso preseleccionado, cargar competencias
     @if (isset($curso_id) && $curso_id)
-        const cursoSelectElement = document.getElementById('curso-select');
-        if (cursoSelectElement) {
-            cursoSelectElement.dispatchEvent(new Event('change'));
-        }
+        setTimeout(() => {
+            const cursoSelectElement = document.getElementById('curso-select');
+            if (cursoSelectElement && cursoSelectElement.value) {
+                cursoSelectElement.dispatchEvent(new Event('change'));
+            }
+        }, 500);
     @endif
 });
 </script>

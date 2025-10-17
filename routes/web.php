@@ -66,15 +66,12 @@ Route::middleware(['auth'])->group(function () {
         return view('panel.sesiones.momentos.create', compact('sesion'));
     })->name('sesiones.momentos.create');
 
-    Route::get('/curso/{id}/show', [CursoController::class, 'show'])->name('curso.show');
-
     //Unidades de aprendizaje
     Route::get('/unidades', [UnidadController::class, 'index'])->name('unidades.index');
     Route::get('/unidades/create', [UnidadController::class, 'create'])->name('unidades.create');
     Route::post('/unidades', [UnidadController::class, 'store'])->name('unidades.store');
     Route::get('/unidades/{id}', [UnidadController::class, 'show'])->name('unidades.show');
     
-    // ✅ RUTAS ACTUALIZADAS: Vista previa y descarga separadas
     Route::get('/unidades/{id}/vista-previa', [UnidadDocumentController::class, 'vistaPreviaHtml'])
         ->name('unidades.vista.previa');
     Route::get('/unidades/{id}/previsualizar', [UnidadDocumentController::class, 'previsualizar'])

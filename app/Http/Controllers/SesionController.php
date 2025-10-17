@@ -287,23 +287,43 @@ class SesionController extends Controller
                 return response()->json(['error' => 'No se pudo determinar el grado del aula.'], 400);
             }
 
-            // Validar competencia
-            $competenciaId = $request->input('competencia_id');
-            if (!$competenciaId) {
-                return response()->json(['error' => 'Debe seleccionar una competencia.'], 400);
+            // ✅ CAMBIO: Ahora puede recibir una sola competencia o múltiples
+            $competenciaIds = $request->input('competencia_id');
+            
+            // Si es un solo valor, convertirlo a array
+            if (!is_array($competenciaIds)) {
+                $competenciaIds = [$competenciaIds];
+            }
+            
+            // Filtrar IDs vacíos o nulos
+            $competenciaIds = array_filter($competenciaIds);
+
+            if (empty($competenciaIds)) {
+                return response()->json(['error' => 'Debe seleccionar al menos una competencia.'], 400);
             }
 
-            // Obtener desempeños por competencia y grado
-            $desempenos = Desempeno::whereHas('capacidad', function ($query) use ($competenciaId) {
-                $query->where('competencia_id', $competenciaId);
+            // ✅ MEJORADO: Obtener desempeños por múltiples competencias y grado
+            $desempenos = Desempeno::whereHas('capacidad', function ($query) use ($competenciaIds) {
+                $query->whereIn('competencia_id', $competenciaIds);
             })
                 ->where('grado', $grado)
                 ->select('id', 'descripcion', 'capacidad_id')
                 ->get();
 
+            // ✅ DEBUG: Agregar logs para troubleshooting
+            Log::info("Búsqueda de desempeños:", [
+                'aula_id' => $aulaId,
+                'grado' => $grado,
+                'competencias_ids' => $competenciaIds,
+                'desempenos_encontrados' => $desempenos->count()
+            ]);
+
             return response()->json($desempenos);
         } catch (\Exception $e) {
-            Log::error("Error al obtener desempeños: " . $e->getMessage());
+            Log::error("Error al obtener desempeños: " . $e->getMessage(), [
+                'request_data' => $request->all(),
+                'user_id' => Auth::id()
+            ]);
             return response()->json(['error' => 'Error interno al cargar desempeños.'], 500);
         }
     }
@@ -318,6 +338,7 @@ class SesionController extends Controller
             return response()->json(['error' => 'Error al cargar enfoques transversales'], 500);
         }
     }
+
     public function getCompetenciasTransversales()
     {
         try {
@@ -379,20 +400,24 @@ class SesionController extends Controller
 
     private function getGradoFromAulaId($aulaId)
     {
-        if ($aulaId >= 22 && $aulaId <= 25) {
-            return '1° grado';
-        } elseif ($aulaId >= 18 && $aulaId <= 21) {
-            return '2° grado';
-        } elseif ($aulaId >= 14 && $aulaId <= 17) {
-            return '3° grado';
-        } elseif ($aulaId >= 10 && $aulaId <= 13) {
-            return '4° grado';
-        } elseif ($aulaId >= 1 && $aulaId <= 4) {
-            return '5° grado';
-        } elseif ($aulaId >= 5 && $aulaId <= 9) {
-            return '6° grado';
+        // ✅ MEJORADO: Mapeo más claro y con logs
+        $gradoMap = [
+            '1° grado' => range(22, 25),
+            '2° grado' => range(18, 21), 
+            '3° grado' => range(14, 17),
+            '4° grado' => range(10, 13),
+            '5° grado' => range(1, 4),
+            '6° grado' => range(5, 9)
+        ];
+
+        foreach ($gradoMap as $grado => $rango) {
+            if (in_array($aulaId, $rango)) {
+                Log::info("Grado determinado:", ['aula_id' => $aulaId, 'grado' => $grado]);
+                return $grado;
+            }
         }
 
+        Log::warning("No se pudo determinar grado para aula_id: " . $aulaId);
         return null;
     }
 }

@@ -33,6 +33,60 @@
     </section>
     <!--Breadcrumb area end-->
 
+    <!-- Información del curso -->
+    <section class="kids-care-event-area py-5">
+        <div class="container-fluid custom-container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-book"></i> {{ $curso->curso }}
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-card mb-3">
+                                        <h6><i class="fas fa-info-circle text-info"></i> Descripción</h6>
+                                        <p class="text-muted">{{ $curso->descripcion ?? 'Sin descripción disponible' }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-card mb-3">
+                                        <h6><i class="fas fa-graduation-cap text-success"></i> Información del Aula</h6>
+                                        <p class="mb-1"><strong>Grado:</strong> {{ $aula->grado ?? 'No asignado' }}</p>
+                                        <p class="mb-1"><strong>Sección:</strong> {{ $aula->seccion ?? 'No asignado' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opciones del curso -->
+                    <div class="row">
+                        
+                        
+                        @if(auth()->user()->roles->first()?->id == 2)
+                        <div class="col-md-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-alt fa-3x text-info mb-3"></i>
+                                    <h5>Fichas de Aprendizaje</h5>
+                                    <p class="text-muted">Crear y gestionar fichas didácticas</p>
+                                    <a href="#" class="btn btn-info">
+                                        <i class="fas fa-plus"></i> Crear Ficha
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!--Class area start-->
     <section class="choose-class-area ">
         <div class="container-fluid custom-container">
