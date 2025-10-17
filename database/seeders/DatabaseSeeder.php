@@ -21,18 +21,10 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
-            // AvatarUsuariosSeeder::class,
-            // PersonasSeeder::class,
-            // UsersSeeder::class,
-            // AulasSeeder::class,
-            // UsuarioAulaSeeder::class,
-            // RolesSeeder::class,
-            // PermisosSeeder::class,
-            // RoleUserSeeder::class,
-            SeedersEstudiantes5aSeeder::class,
-            SeedersEstudiantes5bSeeder::class,
-            SeedersEstudiantes5cSeeder::class,
-            SeedersEstudiantes5dSeeder::class,
+            //SeedersEstudiantes5aSeeder::class,
+            //SeedersEstudiantes5bSeeder::class,
+            //SeedersEstudiantes5cSeeder::class,
+            //SeedersEstudiantes5dSeeder::class,
         ]);
     }
 }

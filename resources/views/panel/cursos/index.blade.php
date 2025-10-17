@@ -39,6 +39,42 @@
                     <p class="area-subline">Aquí podrás ver todas las materias en tu salón. En cada curso encontrarás clases, tareas y evaluaciones que te ayudarán a aprender de forma divertida. ¡Haz clic y descubre todo lo que puedes aprender!</p>
                 </div>
             </div>
+
+            <!-- Sección de Unidades de Aprendizaje -->
+            @if($roleId == 2)
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card shadow-sm border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clipboard-list"></i> Unidades de Aprendizaje
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h6 class="mb-2">Gestión de Unidades Didácticas</h6>
+                                    <p class="text-muted mb-0">
+                                        Las unidades de aprendizaje integran todos los cursos y competencias. 
+                                        Aquí puedes crear y gestionar las unidades didácticas para tu grado.
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="d-flex flex-column flex-md-row gap-2 justify-content-md-end">
+                                        <a href="{{ route('unidades.index') }}" class="btn btn-success">
+                                            <i class="fas fa-eye"></i> Ver Unidades
+                                        </a>
+                                        <a href="{{ route('unidades.create') }}" class="btn btn-outline-success">
+                                            <i class="fas fa-plus"></i> Crear Unidad
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
     
             <div class="row">
                 @foreach ($cursos as $index => $curso)
@@ -56,7 +92,7 @@
                             <div class="sin-up-content">
                                 <h6>{{ $curso->curso }}</h6>
                                 <p>{{ Str::limit($curso->descripcion, 100) }}</p>
-                                    <a class="{{ $bgColor }}" href="{{ route('sesiones.index', ['id' => $curso->id]) }}">Ver más</a>
+                                    <a class="{{ $bgColor }}" href="{{ route('curso.show', ['id' => $curso->id]) }}">Ver más</a>
                             </div>
                         </div>
                     </div>

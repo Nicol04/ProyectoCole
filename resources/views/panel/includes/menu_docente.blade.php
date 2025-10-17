@@ -60,7 +60,7 @@
                             <ul class="submenu font-sky">
                                 <li><a href="{{ route('sesiones.createSession') }}">Crear sesiones</a></li>
                                 <li><a href="">Crear fichas de aprendizaje</a></li>
-                                <li><a href="">Crear unidades</a></li>
+                                <li><a href="{{ route('unidades.index') }}">Unidades</a></li>
                                 <li><a href="">Planificaciones</a></li>
                             </ul>
                         </li>

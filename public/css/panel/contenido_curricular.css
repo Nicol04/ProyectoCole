@@ -1,0 +1,186 @@
+/* Estilos específicos para el contenido curricular */
+#contenido-curricular-container {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+#cursos-container {
+    width: 100% !important;
+    display: block !important;
+    overflow: visible !important;
+}
+
+.curso-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    margin-bottom: 1.5rem !important;
+    position: relative !important;
+    clear: both !important;
+}
+
+.curso-block .card-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1.25rem !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+.competencias-container,
+.competencias-list {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    clear: both !important;
+}
+
+.competencia-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    margin-bottom: 1rem !important;
+    position: relative !important;
+    clear: both !important;
+    float: none !important;
+}
+
+.competencia-block .row {
+    width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+}
+
+.competencia-block .col-md-6,
+.competencia-block .col-md-12 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    padding: 0.375rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+@media (min-width: 768px) {
+    .competencia-block .col-md-6 {
+        flex: 0 0 48% !important;
+        max-width: 48% !important;
+        width: 48% !important;
+        margin-right: 2% !important;
+    }
+    
+    .competencia-block .col-md-6:nth-child(even) {
+        margin-right: 0 !important;
+    }
+}
+
+/* Select2 específico */
+.select2-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    z-index: 9999 !important;
+}
+
+.select2-dropdown {
+    z-index: 9999 !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-height: 38px !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #007bff !important;
+    border: 1px solid #007bff !important;
+    color: white !important;
+    padding: 0 8px !important;
+    border-radius: 3px !important;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: white !important;
+    margin-right: 5px !important;
+}
+
+/* Estilos para selects normales */
+.competencia-select,
+.curso-select {
+    height: 38px !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075) !important;
+}
+
+/* Formularios */
+.form-control, .form-select {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+}
+
+/* Botones */
+.btn {
+    display: inline-block !important;
+    white-space: nowrap !important;
+}
+
+/* Contenedores de Bootstrap */
+.container, .container-fluid {
+    overflow: visible !important;
+}
+
+/* Cards */
+.card {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+/* Forzar visibilidad */
+.d-flex {
+    display: flex !important;
+}
+
+.justify-content-between {
+    justify-content: space-between !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+/* Márgenes específicos */
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Corrige problemas de posicionamiento */
+#contenido-curricular-container * {
+    box-sizing: border-box !important;
+}
+
+/* Asegura que los templates no interfieran */
+template {
+    display: none !important;
+}

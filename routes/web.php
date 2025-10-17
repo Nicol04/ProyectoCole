@@ -4,6 +4,7 @@ use App\Http\Controllers\CalificacionController;
 use App\Http\Controllers\ComunicadoController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CursoController;
+use App\Http\Controllers\Documents\UnidadDocumentController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\ExamenPreguntaController;
 use App\Http\Controllers\LoginController;
@@ -34,114 +35,129 @@ Route::post('/logout', function () {
 })->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-Route::get('/panel/index', function () {
+    Route::get('/panel/index', function () {
         return view('panel.index');
     })->name('index');
 
-Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
+    Route::get('/panel/cursos', [CursoController::class, 'index'])->name('panel.cursos');
 
-//Ruta de los estudiantes
-Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
-//Ruta de informacion de estudiantes
-Route::get('/panel/estudiantes/{id}', [UserController::class, 'show'])->name('estudiantes.show');
+    //Ruta de los estudiantes
+    Route::get('/panel/estudiantes', [UserController::class, 'index'])->name('estudiantes.index');
+    //Ruta de informacion de estudiantes
+    Route::get('/panel/estudiantes/{id}', [UserController::class, 'show'])->name('estudiantes.show');
 
-Route::get('/users/exportar',[UserController::class,'exportarUsuarios'])->name('users.exportarUsuarios');
-Route::get('/users/perfil',[UserController::class,'perfil'])->name('users.perfil');
-Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->name('users.avatar.edit');
-Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvatar'])->name('user.avatar.update');
+    Route::get('/users/exportar', [UserController::class, 'exportarUsuarios'])->name('users.exportarUsuarios');
+    Route::get('/users/perfil', [UserController::class, 'perfil'])->name('users.perfil');
+    Route::get('/users/perfil/{id}/edit', [UserController::class, 'editarAvatar'])->name('users.avatar.edit');
+    Route::post('/users/perfil/{id}/update', [UserController::class, 'actualizarAvatar'])->name('user.avatar.update');
 
-Route::get('/cursos/{id}', [CursoController::class, 'sesiones'])->name('sesiones.index');
-Route::get('cursos/sesion/create', [SesionController::class, 'create'])->name('sesiones.create');
-Route::get('cursos/sesion/createSession', [SesionController::class, 'createSession'])->name('sesiones.createSession');
+    Route::get('/cursos/{id}', [CursoController::class, 'sesiones'])->name('sesiones.index');
+    Route::get('cursos/sesion/create', [SesionController::class, 'create'])->name('sesiones.create');
+    Route::get('cursos/sesion/createSession', [SesionController::class, 'createSession'])->name('sesiones.createSession');
 
-Route::get('/cursos/{curso}/competencias', [SesionController::class, 'getCompetenciasByCurso']);
-Route::get('/competencias/{competencia}/capacidades', [SesionController::class, 'getCapacidadesByCompetencia']);
-Route::post('/desempenos/por-competencia-y-grado', [SesionController::class, 'getDesempenosPorCompetenciaYGrado']);
-Route::post('/desempenos/por-capacidad-transversal', [SesionController::class, 'getDesempenosPorCapacidadTransversal']);
+    Route::get('/cursos/{curso}/competencias', [SesionController::class, 'getCompetenciasByCurso']);
+    Route::get('/competencias/{competencia}/capacidades', [SesionController::class, 'getCapacidadesByCompetencia']);
+    Route::post('/desempenos/por-competencia-y-grado', [SesionController::class, 'getDesempenosPorCompetenciaYGrado']);
+    Route::post('/desempenos/por-capacidad-transversal', [SesionController::class, 'getDesempenosPorCapacidadTransversal']);
 
-//sesiones momentos
-Route::get('sesiones/{sesion_id}/momentos/create', function ($sesion_id) {
-    $sesion = App\Models\Sesion::findOrFail($sesion_id);
-    return view('panel.sesiones.momentos.create', compact('sesion'));
-})->name('sesiones.momentos.create');
+    //sesiones momentos
+    Route::get('sesiones/{sesion_id}/momentos/create', function ($sesion_id) {
+        $sesion = App\Models\Sesion::findOrFail($sesion_id);
+        return view('panel.sesiones.momentos.create', compact('sesion'));
+    })->name('sesiones.momentos.create');
 
-//Crear unidad de aprendizaje
-Route::get('/unidades/create', [UnidadController::class, 'create'])->name('unidades.create');
-Route::post('/unidades', [UnidadController::class, 'store'])->name('unidades.store');
+    Route::get('/curso/{id}/show', [CursoController::class, 'show'])->name('curso.show');
 
-Route::get('/enfoques-transversales', [SesionController::class, 'getEnfoquesTransversales']);
-Route::get('/competencias-transversales', [SesionController::class, 'getCompetenciasTransversales']);
-Route::get('/competencias-transversales/{id}/capacidades', [SesionController::class, 'getCapacidadesByCompetenciaTransversal']);
+    //Unidades de aprendizaje
+    Route::get('/unidades', [UnidadController::class, 'index'])->name('unidades.index');
+    Route::get('/unidades/create', [UnidadController::class, 'create'])->name('unidades.create');
+    Route::post('/unidades', [UnidadController::class, 'store'])->name('unidades.store');
+    Route::get('/unidades/{id}', [UnidadController::class, 'show'])->name('unidades.show');
+    
+    // ✅ RUTAS ACTUALIZADAS: Vista previa y descarga separadas
+    Route::get('/unidades/{id}/vista-previa', [UnidadDocumentController::class, 'vistaPreviaHtml'])
+        ->name('unidades.vista.previa');
+    Route::get('/unidades/{id}/previsualizar', [UnidadDocumentController::class, 'previsualizar'])
+        ->name('unidades.previsualizar');
+    
+    Route::get('/debug-unidad/{id}', [UnidadDocumentController::class, 'debug']);
 
-Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
-Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
-Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');
-//Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');
-Route::put('cursos/sesion/{id}', [SesionController::class, 'update'])->name('sesiones.update');
 
-Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
-Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos.show');
+    Route::get('/enfoques-transversales', [SesionController::class, 'getEnfoquesTransversales']);
+    Route::get('/competencias-transversales', [SesionController::class, 'getCompetenciasTransversales']);
+    Route::get('/competencias-transversales/{id}/capacidades', [SesionController::class, 'getCapacidadesByCompetenciaTransversal']);
 
-Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evaluacion.index');
+    Route::post('cursos/sesion', [SesionController::class, 'store'])->name('sesiones.store');
+    Route::get('cursos/sesion/{id}', [SesionController::class, 'show'])->name('sesiones.show');
+    Route::get('cursos/sesion/{id}/editar', [SesionController::class, 'edit'])->name('sesiones.edit');
+    //Route::get('cursos/sesion/{id}/ver', [SesionController::class, 'show'])->name('sesiones.show');
+    Route::put('cursos/sesion/{id}', [SesionController::class, 'update'])->name('sesiones.update');
 
-Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
-Route::get('/evaluaciones/create-sesion', [EvaluacionController::class, 'create_sesion'])->name('evaluacion.create.sesion');
-Route::post('/evaluaciones', [EvaluacionController::class, 'store'])->name('evaluacion.store');
+    Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
+    Route::get('/recursos/{id}', [RecursoController::class, 'show'])->name('recursos.show');
 
-Route::put('/evaluacion/{id}/actualizar', [EvaluacionController::class, 'actualizar'])->name('evaluacion.actualizar');
+    Route::get('/evaluaciones', [EvaluacionController::class, 'index'])->name('evaluacion.index');
 
-Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
+    Route::get('/evaluaciones/create', [EvaluacionController::class, 'create'])->name('evaluacion.create');
+    Route::get('/evaluaciones/create-sesion', [EvaluacionController::class, 'create_sesion'])->name('evaluacion.create.sesion');
+    Route::post('/evaluaciones', [EvaluacionController::class, 'store'])->name('evaluacion.store');
 
-Route::get('/evaluacion/{id}/generarexamen', [ExamenPreguntaController::class, 'generarExamen'])->name('evaluaciones.generarExamen');
-Route::get('/formulario_examen',[ExamenPreguntaController::class, 'formulario'])->name('examen.formulario_examen');
+    Route::put('/evaluacion/{id}/actualizar', [EvaluacionController::class, 'actualizar'])->name('evaluacion.actualizar');
 
-Route::get('/examen/renderizar', [ExamenPreguntaController::class, 'renderizar'])->name('examen.renderizar');
+    Route::get('/sesiones/por-curso/{curso}', [EvaluacionController::class, 'getSesionesPorCurso']);
 
-Route::post('/examen/guardar',[ExamenPreguntaController::class, 'store'])->name('examen.guardar');
-Route::put('/examen/{examenPregunta}/actualizar', [ExamenPreguntaController::class, 'update'])->name('examen.actualizar');
+    Route::get('/evaluacion/{id}/generarexamen', [ExamenPreguntaController::class, 'generarExamen'])->name('evaluaciones.generarExamen');
+    Route::get('/formulario_examen', [ExamenPreguntaController::class, 'formulario'])->name('examen.formulario_examen');
 
-Route::get('/evaluacion/{evaluacion_id}/examen', [ExamenPreguntaController::class, 'show'])->name('evaluaciones.examen');
-Route::delete('/evaluacion/{evaluacion}', [EvaluacionController::class, 'destroy'])->name('evaluaciones.eliminar');
-Route::delete('/sesion/{sesion}', [SesionController::class, 'destroy'])->name('sesiones.eliminar');
-Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 'edit'])->name('examen.editar');
+    Route::get('/examen/renderizar', [ExamenPreguntaController::class, 'renderizar'])->name('examen.renderizar');
 
-//Promedio de calificaciones:
-Route::get('/calificaciones/{id}', [CalificacionController::class, 'index'])->name('calificacion.index');
-//Exportar calificaciones de estudiante:
-Route::get('/panel/estudiantes/{id}/exportar', [UserController::class, 'exportarCalificacionesEstudiante'])->name('estudiantes.exportarCalificaciones');
-//Ver calificaciones de todos los estudiantes:
-Route::get('/calificaciones', [CalificacionController::class, 'show'])->name('calificacion.show');
+    Route::post('/examen/guardar', [ExamenPreguntaController::class, 'store'])->name('examen.guardar');
+    Route::put('/examen/{examenPregunta}/actualizar', [ExamenPreguntaController::class, 'update'])->name('examen.actualizar');
 
-Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
-Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');
-Route::post('/respuesta-estudiante', [RespuestaEstudianteController::class, 'store'])->name('respuesta_estudiante.store');
-Route::get('/examen/revision/{intento_id}', [RespuestaEstudianteController::class, 'revision'])->name('examen.revision');
+    Route::get('/evaluacion/{evaluacion_id}/examen', [ExamenPreguntaController::class, 'show'])->name('evaluaciones.examen');
+    Route::delete('/evaluacion/{evaluacion}', [EvaluacionController::class, 'destroy'])->name('evaluaciones.eliminar');
+    Route::delete('/sesion/{sesion}', [SesionController::class, 'destroy'])->name('sesiones.eliminar');
+    Route::get('/examen/{examenPregunta}/editar', [ExamenPreguntaController::class, 'edit'])->name('examen.editar');
 
-Route::delete('/intentos/{id}', [RespuestaEstudianteController::class, 'destroy'])->name('intentos.destroy');
+    //Promedio de calificaciones:
+    Route::get('/calificaciones/{id}', [CalificacionController::class, 'index'])->name('calificacion.index');
+    //Exportar calificaciones de estudiante:
+    Route::get('/panel/estudiantes/{id}/exportar', [UserController::class, 'exportarCalificacionesEstudiante'])->name('estudiantes.exportarCalificaciones');
+    //Ver calificaciones de todos los estudiantes:
+    Route::get('/calificaciones', [CalificacionController::class, 'show'])->name('calificacion.show');
 
-Route::get('/retroalimentacion', function () {return view('panel.ia.retroalimentacion');})->name('retroalimentacion');
+    Route::get('/evaluacion/{id}/iniciar', [EvaluacionController::class, 'iniciar'])->name('evaluacion.iniciar');
+    Route::get('/examen/estudiantes', [ExamenPreguntaController::class, 'mostrarExamenEstudiante'])->name('examen.estudiantes');
+    Route::post('/respuesta-estudiante', [RespuestaEstudianteController::class, 'store'])->name('respuesta_estudiante.store');
+    Route::get('/examen/revision/{intento_id}', [RespuestaEstudianteController::class, 'revision'])->name('examen.revision');
 
-//REPORTES:
-Route::get('/reporte/historial-estudiantes', [RespuestaEstudianteController::class, 'exportarHistorialEstudiantes'])->name('reporte.historial.estudiantes');
-//Comunicados:
-Route::get('/comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
-Route::get('/comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
-Route::post('/comunicados', [ComunicadoController::class, 'store'])->name('comunicados.store');
-Route::get('/comunicados/{comunicado}/edit', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
-Route::put('/comunicados/{comunicado}', [ComunicadoController::class, 'update'])->name('comunicados.update');
-Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
-Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
-Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
-//Reporte de usuarios por aula
-Route::get('/aulas/{aulaId}/exportar-usuarios', [UserController::class, 'exportarUsuariosPorAula'])->name('aulas.exportarUsuarios');
+    Route::delete('/intentos/{id}', [RespuestaEstudianteController::class, 'destroy'])->name('intentos.destroy');
+
+    Route::get('/retroalimentacion', function () {
+        return view('panel.ia.retroalimentacion');
+    })->name('retroalimentacion');
+
+    //REPORTES:
+    Route::get('/reporte/historial-estudiantes', [RespuestaEstudianteController::class, 'exportarHistorialEstudiantes'])->name('reporte.historial.estudiantes');
+    //Comunicados:
+    Route::get('/comunicados', [ComunicadoController::class, 'index'])->name('comunicados.index');
+    Route::get('/comunicados/create', [ComunicadoController::class, 'create'])->name('comunicados.create');
+    Route::post('/comunicados', [ComunicadoController::class, 'store'])->name('comunicados.store');
+    Route::get('/comunicados/{comunicado}/edit', [ComunicadoController::class, 'edit'])->name('comunicados.edit');
+    Route::put('/comunicados/{comunicado}', [ComunicadoController::class, 'update'])->name('comunicados.update');
+    Route::delete('/comunicados/{comunicado}', [ComunicadoController::class, 'destroy'])->name('comunicados.destroy');
+    Route::post('/comunicados/{comunicado}/visto', [ComunicadoController::class, 'marcarVisto'])->name('comunicados.visto');
+    Route::get('/informativa', [ComunicadoController::class, 'informativa'])->name('informativa');
+    //Reporte de usuarios por aula
+    Route::get('/aulas/{aulaId}/exportar-usuarios', [UserController::class, 'exportarUsuariosPorAula'])->name('aulas.exportarUsuarios');
 });
 
 
 
 Livewire::setScriptRoute(function ($handle) {
-return Route::get('/ProyectoCole/public/livewire/livewire.js', $handle);
+    return Route::get('/ProyectoCole/public/livewire/livewire.js', $handle);
 });
 
 Livewire::setUpdateRoute(function ($handle) {
-return Route::post('/ProyectoCole/public/livewire/update', $handle);
+    return Route::post('/ProyectoCole/public/livewire/update', $handle);
 });

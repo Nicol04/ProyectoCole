@@ -48,4 +48,28 @@ class CursoController extends Controller
 
         return view('panel.sesiones.index', compact('curso', 'sesiones', 'aulaCurso'));
     }
+    public function show($id)
+    {
+        $curso = Curso::findOrFail($id);
+        $user = Auth::user();
+        $aula = $user->aulas()->first();
+        
+        // Obtener información del docente
+        $docente = null;
+        if ($aula) {
+            $docente = $aula->users()
+                ->whereHas('roles', function ($query) {
+                    $query->where('name', 'docente');
+                })
+                ->first();
+        }
+        $nombreDocente = $docente ? $docente->persona->nombre . ' ' . $docente->persona->apellido : 'No asignado';
+        
+        // Obtener el aulaCurso para acceder a sesiones y otros datos
+        $aulaCurso = AulaCurso::where('curso_id', $id)
+            ->where('aula_id', $aula->id)
+            ->first();
+            
+        return view('panel.cursos.show', compact('curso', 'aula', 'nombreDocente', 'aulaCurso'));
+    }
 }
